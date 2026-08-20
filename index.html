@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SANGEETH SASIKUMAR K S · Mechatronics · IoT · Embedded AI</title>
+<meta name="description" content="SANGEETH SASIKUMAR K S — Mechatronics, IoT, Embedded AI, Robotics and Cybersecurity portfolio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07110d;--surface:#0c1712;--surface2:#101d17;--border:#20342a;
+  --copper:#c6884a;--copperL:#e0a868;--signal:#5fcba3;--signalD:#2f6b52;
+  --text:#eef4ed;--muted:#95a69b;--faint:#5b6d61;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",sans-serif}
+a{color:inherit}
+.app{min-height:100vh;overflow-x:hidden;position:relative;background:
+radial-gradient(circle at 78% 9%,rgba(95,203,163,.09),transparent 23%),
+radial-gradient(circle at 18% 16%,rgba(198,136,74,.06),transparent 26%)}
+.grid{position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:
+linear-gradient(rgba(95,203,163,.06) 1px,transparent 1px),
+linear-gradient(90deg,rgba(95,203,163,.06) 1px,transparent 1px);background-size:40px 40px}
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+padding:17px 5vw;background:rgba(7,17,13,.58);backdrop-filter:blur(14px);border-bottom:1px solid rgba(32,52,42,.6)}
+.brand{font:600 16px "IBM Plex Mono";letter-spacing:1px;text-decoration:none}.brand span{color:var(--copper);margin-left:7px}
+.navlinks{display:flex;gap:28px}.navlinks a{font:12px "IBM Plex Mono";text-decoration:none;color:var(--muted)}.navlinks a:hover{color:var(--signal)}
+.menu{display:none;background:none;border:0;color:var(--text);font-size:22px}
+.hero{min-height:100vh;max-width:1400px;margin:auto;padding:106px 5vw 70px;display:grid;grid-template-columns:1.03fr .97fr;align-items:center;gap:18px}
+.hero-copy{position:relative;z-index:2;max-width:760px}.status{display:flex;align-items:center;gap:10px;color:var(--muted);font:12px "IBM Plex Mono";letter-spacing:1.2px}
+.dot{width:8px;height:8px;background:var(--signal);border-radius:50%;box-shadow:0 0 0 5px rgba(47,107,82,.35),0 0 22px rgba(95,203,163,.6);animation:pulse 2s infinite}
+.hero h1{font:500 clamp(40px,6.3vw,90px)/.98 "IBM Plex Mono";letter-spacing:-3px;margin:22px 0 8px}.hero h1 span{color:var(--copperL)}
+.hero-label{color:var(--copper);font:12px "IBM Plex Mono";letter-spacing:1px}
+.lead{font-size:clamp(21px,2.8vw,34px);line-height:1.25;margin:28px 0 10px;font-weight:500}.lead em{color:var(--signal);font-style:normal}
+.hero-text{color:var(--muted);font-size:16px;line-height:1.8;max-width:700px}.tags,.actions{display:flex;gap:8px;flex-wrap:wrap}
+.tags{margin-top:22px}.tag{font:11px "IBM Plex Mono";padding:5px 9px;border:1px solid rgba(198,136,74,.35);color:var(--copperL);border-radius:4px}.tag.signal{border-color:rgba(95,203,163,.35);color:var(--signal)}
+.actions{margin-top:28px}.btn{padding:11px 15px;border:1px solid var(--border);border-radius:5px;color:var(--text);text-decoration:none;font:12px "IBM Plex Mono";background:rgba(16,29,23,.72);transition:.2s}
+.btn:hover{transform:translateY(-2px);border-color:var(--signal);color:var(--signal)}.btn.primary{border-color:var(--copper);background:rgba(198,136,74,.09)}
+.scene{height:min(77vh,760px);min-height:540px;position:relative;border-left:1px solid rgba(32,52,42,.65);overflow:hidden}.scene canvas{display:block;width:100%;height:100%}
+.hud{position:absolute;inset:0;pointer-events:none;font:10px "IBM Plex Mono";letter-spacing:1px;color:var(--faint)}
+.hud .core{position:absolute;top:18%;right:8%;color:var(--signal)}.hud .left{position:absolute;left:8%;top:46%;border:1px solid rgba(95,203,163,.25);padding:5px 7px;background:rgba(7,17,13,.38)}
+.hud .right{position:absolute;right:8%;top:55%;border:1px solid rgba(198,136,74,.25);padding:5px 7px;color:var(--copper);background:rgba(7,17,13,.38)}
+.hud .bottom{position:absolute;left:24%;bottom:15%;color:var(--muted)}
+.section{max-width:1180px;margin:0 auto;padding:84px 5vw}.section-head{display:flex;align-items:center;gap:12px;margin-bottom:30px;color:var(--copper);font:12px "IBM Plex Mono";letter-spacing:1px}.section-head i{height:1px;flex:1;background:var(--border)}
+.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.card,.domain,.skills,.learning,.project,.contact{background:linear-gradient(180deg,rgba(12,23,18,.95),rgba(9,18,14,.94));border:1px solid var(--border);border-radius:8px}
+.card{padding:28px}.eyebrow{font:11px "IBM Plex Mono";color:var(--copper);letter-spacing:1.2px}.card h2,.contact h2{font:500 clamp(25px,3.3vw,43px)/1.15 "IBM Plex Mono";margin:14px 0}.card p,.contact p{color:var(--muted);line-height:1.8}
+.stack{font:500 15px/1.8 "IBM Plex Mono";color:var(--signal)}
+.timeline{position:relative;padding-left:8px}.timeline:before{content:"";position:absolute;left:24px;top:18px;bottom:18px;width:1px;background:repeating-linear-gradient(180deg,var(--signalD) 0 7px,transparent 7px 14px)}
+.trow{width:100%;border:0;background:transparent;color:inherit;display:grid;grid-template-columns:48px 1fr;gap:16px;padding:0 0 25px;text-align:left;cursor:pointer}.node{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--border);background:var(--surface);font:11px "IBM Plex Mono";color:var(--faint);z-index:1;transition:.2s}.trow.active .node{border-color:var(--signal);color:var(--signal);box-shadow:0 0 24px rgba(95,203,163,.13)}
+.trow strong{display:block;margin:4px 0 3px;font-size:16px;font-weight:500}.trow small{font:12px "IBM Plex Mono";color:var(--muted)}.target{font:12px "IBM Plex Mono";color:var(--faint);margin-top:10px}
+.domains{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.domain{padding:20px;transition:.22s}.domain:hover{transform:translateY(-4px);border-color:rgba(95,203,163,.35);box-shadow:0 18px 45px rgba(0,0,0,.22)}
+.domain h3{font:500 15px "IBM Plex Mono";color:var(--copperL);margin:0 0 12px}.domain ul{list-style:none;margin:0;padding:0}.domain li{color:var(--muted);padding:4px 0;font-size:13.5px}.domain li b{color:var(--signalD);margin-right:8px}
+.skills{padding:22px}.skillrow{display:flex;gap:18px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid rgba(32,52,42,.55)}.skillrow:last-child{border-bottom:0}
+.skilllabel{width:135px;flex:0 0 135px;color:var(--faint);font:11px "IBM Plex Mono";letter-spacing:.7px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chips span{padding:5px 9px;border:1px solid rgba(32,52,42,.9);border-radius:4px;background:rgba(16,29,23,.75);font-size:12px}
+.learning{margin-top:16px;padding:20px}.learning .chips{margin-top:12px}.learning .chips span{color:var(--signal);border-color:rgba(47,107,82,.8)}
+.projects{display:flex;flex-direction:column;gap:12px}.project{display:grid;grid-template-columns:58px 1fr 24px;gap:16px;align-items:start;padding:22px;transition:.25s}.project:hover{transform:translateX(4px);border-color:rgba(198,136,74,.4);box-shadow:0 18px 45px rgba(0,0,0,.22)}.featured{background:linear-gradient(110deg,rgba(198,136,74,.1),rgba(12,23,18,.94) 32%)}
+.picon{width:44px;height:44px;border:1px solid rgba(198,136,74,.32);display:grid;place-items:center;border-radius:8px;color:var(--copper);font-size:20px}.ptop{display:flex;justify-content:space-between;gap:12px}.project h3{margin:0;font:500 17px "IBM Plex Mono"}.project p{color:var(--muted);font-size:14px;line-height:1.7;margin:9px 0}.tech{font:11px "IBM Plex Mono";color:var(--copper)}.parrow{color:var(--faint);font-size:20px}
+.contact{padding:30px;display:grid;grid-template-columns:1fr .7fr;gap:32px}.clines>div{display:flex;gap:18px;padding:11px 0;border-bottom:1px solid rgba(32,52,42,.55);font:12px "IBM Plex Mono"}.clines span{width:78px;color:var(--faint)}.clines a{color:var(--signal);text-decoration:none}.clines strong{font-weight:400}
+footer{display:flex;justify-content:space-between;gap:20px;padding-top:25px;color:var(--faint);font:10px "IBM Plex Mono";letter-spacing:.8px}
+
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--copper),var(--signal));z-index:100;box-shadow:0 0 14px rgba(95,203,163,.55)}
+.core-button{cursor:pointer;pointer-events:auto;position:absolute;right:8%;top:18%;color:var(--signal);font:10px "IBM Plex Mono";letter-spacing:1px;background:transparent;border:0;padding:0}.core-button:hover{color:var(--copperL)}
+.project{cursor:pointer}.project:focus-visible,.trow:focus-visible{outline:1px solid var(--signal);outline-offset:3px}
+.modal{position:fixed;inset:0;display:none;place-items:center;padding:22px;background:rgba(2,8,6,.72);backdrop-filter:blur(10px);z-index:90}.modal.open{display:grid}.modal-card{width:min(720px,100%);max-height:85vh;overflow:auto;background:linear-gradient(180deg,#0d1913,#09110d);border:1px solid var(--border);border-radius:12px;box-shadow:0 30px 100px rgba(0,0,0,.55);padding:28px;position:relative}.modal-close{position:absolute;right:18px;top:15px;background:none;border:0;color:var(--muted);font:18px "IBM Plex Mono";cursor:pointer}.modal-close:hover{color:var(--signal)}.modal-card h3{font:500 28px "IBM Plex Mono";margin:8px 0 12px;color:var(--text)}.modal-card p{color:var(--muted);line-height:1.8}.modal-meta{font:11px "IBM Plex Mono";color:var(--copper);letter-spacing:.7px}.modal-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.modal-list span{padding:5px 8px;border:1px solid rgba(47,107,82,.8);border-radius:4px;color:var(--signal);font:11px "IBM Plex Mono"}.focus-ring{position:fixed;inset:0;pointer-events:none;z-index:70;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(95,203,163,.07),transparent 65%)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.86)}}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.scene{order:-1;min-height:470px;border-left:0;border-bottom:1px solid var(--border)}.grid2,.contact{grid-template-columns:1fr}.domains{grid-template-columns:1fr}.navlinks{display:none;position:absolute;top:64px;right:5vw;flex-direction:column;background:rgba(7,17,13,.97);border:1px solid var(--border);padding:16px;min-width:180px}.navlinks.open{display:flex}.menu{display:block}}
+@media(max-width:620px){.hero{padding-left:20px;padding-right:20px}.section{padding-left:20px;padding-right:20px}.hero h1{font-size:42px;letter-spacing:-2px}.scene{min-height:370px}.project{grid-template-columns:1fr}.picon{display:none}.skilllabel{width:100%;flex-basis:100%}.clines>div{display:grid;grid-template-columns:70px 1fr}footer{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="progress" id="progress"></div><div class="focus-ring" id="focusRing"></div><div class="grid"></div>
+<header class="nav">
+  <a class="brand" href="#top">SS<span>//</span></a>
+  <button class="menu" id="menuBtn">☰</button>
+  <nav class="navlinks" id="navLinks">
+    <a href="#about">About</a><a href="#journey">Journey</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="hero-copy">
+    <div class="status"><span class="dot"></span> STATUS · ENGINEERING STUDENT</div>
+    <h1>SANGEETH<br><span>SASIKUMAR K S</span></h1>
+    <div class="hero-label">MECHATRONICS-STUDENT · IoT / EMBEDDED-AI · REV.02</div>
+    <p class="lead">Building intelligent, connected <em>&amp;</em> secure machines.</p>
+    <p class="hero-text">I'm a Mechatronics Engineering student at Jyothi Engineering College, Kerala, passionate about IoT, embedded systems, robotics and Edge AI. I enjoy building real-world hardware projects using microcontrollers, sensors and intelligent software, while working toward a career in IoT and Embedded AI — with cybersecurity as a complementary specialization.</p>
+    <div class="tags"><span class="tag">Kerala, India</span><span class="tag">B.Tech · Mechatronics</span><span class="tag signal">Jyothi Engineering College</span></div>
+    <div class="actions"><a class="btn primary" href="#projects">Explore Projects</a><a class="btn" href="#journey">Engineering Journey ↘</a></div>
+  </div>
+  <div class="scene" id="scene">
+    <div class="hud"><button class="core-button" id="coreButton" type="button">WEBGL CORE // ONLINE</button><div class="left">ESP32</div><div class="right">EDGE AI</div><div class="bottom">IoT BUS // SECURE</div></div>
+  </div>
+</section>
+
+<section class="section" id="about">
+<div class="section-head"><span>// 01 · engineering identity</span><i></i></div>
+<div class="grid2">
+  <div class="card"><div class="eyebrow">PRIMARY DIRECTION</div><h2>IoT / Embedded AI Engineer</h2><p>Mechatronics is my engineering base. IoT is my main career direction. Edge AI and cybersecurity are the layers I want to build on top.</p></div>
+  <div class="card"><div class="eyebrow">FOCUS STACK</div><div class="stack">Mechatronics<br>↓<br>Embedded Systems<br>↓<br>IoT<br>↓<br>Edge AI<br>↓<br>Secure Cyber-Physical Systems</div></div>
+</div>
+</section>
+
+<section class="section" id="journey">
+<div class="section-head"><span>// 02 · engineering journey</span><i></i></div>
+<div class="timeline" id="timeline"></div>
+<div class="target">→ target: secure intelligent industrial IoT systems</div>
+</section>
+
+<section class="section">
+<div class="section-head"><span>// 03 · areas of interest</span><i></i></div>
+<div class="domains" id="domains"></div>
+</section>
+
+<section class="section" id="skills">
+<div class="section-head"><span>// 04 · skills &amp; tools</span><i></i></div>
+<div class="skills" id="skillsPanel"></div>
+<div class="learning"><div class="eyebrow">CURRENTLY LEARNING</div><div class="chips" id="learning"></div></div>
+</section>
+
+<section class="section" id="projects">
+<div class="section-head"><span>// 05 · projects</span><i></i></div>
+<div class="projects" id="projectsPanel"></div>
+</section>
+
+<section class="section" id="contact">
+<div class="section-head"><span>// 06 · contact</span><i></i></div>
+<div class="contact">
+  <div><div class="eyebrow">LET'S BUILD SOMETHING INTELLIGENT</div><h2>Hardware → software → intelligence.</h2><p>Open to learning, building and connecting around IoT, robotics, embedded AI and secure connected systems.</p></div>
+  <div class="clines">
+    <div><span>EMAIL</span><a href="mailto:sangeethcherur@gmail.com">sangeethcherur@gmail.com</a></div>
+    <div><span>GITHUB</span><a href="https://github.com/sangeeth2008" target="_blank" rel="noreferrer">github.com/sangeeth2008</a></div>
+    <div><span>LINKEDIN</span><a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noreferrer">linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422</a></div>
+    <div><span>LOCATION</span><strong>Kerala, India</strong></div>
+  </div>
+</div>
+<footer><span>© <span id="year"></span> SANGEETH SASIKUMAR K S</span><span>MECHATRONICS · IoT · EMBEDDED AI</span></footer>
+</section>
+</main>
+</div>
+
+
+<div class="modal" id="projectModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    <div class="modal-meta" id="modalMeta">PROJECT // DETAIL</div>
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+    <div class="eyebrow">TECHNOLOGY STACK</div>
+    <div class="modal-list" id="modalTech"></div>
+  </div>
+</div>
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script>
+const journey=[
+ ['01','Mechatronics engineering','Mechanical systems + electronics + control'],
+ ['02','Embedded systems','C / C++ + microcontrollers + sensors + actuators'],
+ ['03','IoT','ESP32 + networking + MQTT + cloud + connected devices'],
+ ['04','Edge AI','Python + machine learning + Edge Impulse + TinyML'],
+ ['05','Robotics','Sensors + motors + control + computer vision'],
+ ['06','Cybersecurity','Networking + IoT security + embedded security']
+];
+const domains=[
+ ['Mechatronics',['Robotics','Automation','Sensors & actuators','Control systems','PLC','PID']],
+ ['IoT',['ESP32 / ESP8266','Wireless communication','MQTT','IoT dashboards','Industrial IoT']],
+ ['Edge AI',['TinyML','Edge Impulse','Computer vision','TensorFlow Lite','AI on embedded devices']],
+ ['Embedded systems',['Embedded C / C++','Microcontrollers','Sensor interfacing','Motor control','Embedded Linux']],
+ ['Cybersecurity',['Networking','IoT security','Embedded security','Secure device comms','Cyber-physical security']]
+];
+const skills=[
+ ['DEVELOPING',['C','C++','Python']],
+ ['ALSO USING',['Arduino','HTML','CSS','JavaScript']],
+ ['HARDWARE',['ESP32','ESP32-CAM','ESP8266 NodeMCU','Arduino Uno','Raspberry Pi 3B+']],
+ ['SENSORS / MODULES',['DHT11 / DHT22','Soil moisture','LDR','MQ-2','MQ-135','Ultrasonic','IR','Rain','Flame','RFID']],
+ ['TOOLS',['Arduino IDE','VS Code','Blynk IoT','Edge Impulse','TensorFlow Lite','GitHub','Ollama']]
+];
+const learning=['C/C++','Networking','IoT','Embedded systems','Edge AI','TinyML','Cybersecurity','PLC','PID control','Industrial automation'];
+const projects=[
+ ['Smart Security Patrol Robot','A security and surveillance robot combining embedded systems, sensors and camera vision, with future Edge AI. Planned upgrade path: Raspberry Pi + object detection + secure remote monitoring.',['ESP32','ESP32-CAM','Ultrasonic sensors','Motor driver','Computer vision'],'◈'],
+ ['Search & Rescue Robot','A robotic platform for search-and-rescue scenarios, using cameras, sensors and wireless communication, with future Edge AI capability.',['Cameras','Sensors','Wireless comms'],'⌁'],
+ ['AI Smart Agriculture','A modular system for crop and environmental monitoring, aiming at AI-based plant and crop detection.',['ESP32-CAM','Edge Impulse','Soil moisture sensor','DHT22','Blynk IoT'],'❖'],
+ ['Smart LPG Safety System','An ESP32-based gas safety automation project that detects gas leakage and triggers automated safety actions.',['MQ-2','Servo motor','Relay','Buzzer','LCD I2C'],'◉'],
+ ['Smart Classroom Management System','An ESP32-based classroom automation concept covering RFID attendance and temperature/humidity-driven fan control.',['RFID','DHT22','LCD I2C','Relay'],'▣']
+];
+
+document.getElementById('year').textContent=new Date().getFullYear();
+document.getElementById('timeline').innerHTML=journey.map((x,i)=>`<button class="trow ${i===0?'active':''}" data-i="${i}"><span class="node">${x[0]}</span><span><strong>${x[1]}</strong><small>${x[2]}</small></span></button>`).join('');
+document.querySelectorAll('.trow').forEach(btn=>{
+  const activate=()=>{document.querySelectorAll('.trow').forEach(b=>b.classList.remove('active'));btn.classList.add('active')};
+  btn.addEventListener('mouseenter',activate);btn.addEventListener('click',activate);
+});
+document.getElementById('domains').innerHTML=domains.map(d=>`<article class="domain"><h3>${d[0]}</h3><ul>${d[1].map(x=>`<li><b>·</b>${x}</li>`).join('')}</ul></article>`).join('');
+document.getElementById('skillsPanel').innerHTML=skills.map(g=>`<div class="skillrow"><div class="skilllabel">${g[0]}</div><div class="chips">${g[1].map(x=>`<span>${x}</span>`).join('')}</div></div>`).join('');
+document.getElementById('learning').innerHTML=learning.map(x=>`<span>${x}</span>`).join('');
+document.getElementById('projectsPanel').innerHTML=projects.map((p,i)=>`<article class="project ${i===0?'featured':''}" data-project="${i}" tabindex="0" role="button"><div class="picon">${p[3]}</div><div><div class="ptop"><h3>${p[0]}</h3><span class="tag signal">concept</span></div><p>${p[1]}</p><div class="tech">${p[2].join(' · ')}</div></div><div class="parrow">↗</div></article>`).join('');
+
+const menuBtn=document.getElementById('menuBtn'),navLinks=document.getElementById('navLinks');
+menuBtn.addEventListener('click',()=>navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+
+// interaction layer
+const progress=document.getElementById('progress');
+const focusRing=document.getElementById('focusRing');
+window.addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=(max>0?(scrollY/max)*100:0)+'%'});
+window.addEventListener('pointermove',e=>{focusRing.style.setProperty('--mx',e.clientX+'px');focusRing.style.setProperty('--my',e.clientY+'px')});
+
+const modal=document.getElementById('projectModal'), modalTitle=document.getElementById('modalTitle'), modalDesc=document.getElementById('modalDesc'), modalTech=document.getElementById('modalTech');
+function openProject(i){const p=projects[i];modalTitle.textContent=p[0];modalDesc.textContent=p[1];modalTech.innerHTML=p[2].map(x=>`<span>${x}</span>`).join('');modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+function closeProject(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+document.getElementById('modalClose').addEventListener('click',closeProject);modal.addEventListener('click',e=>{if(e.target===modal)closeProject()});window.addEventListener('keydown',e=>{if(e.key==='Escape')closeProject()});
+document.querySelectorAll('.project').forEach((el,i)=>{el.addEventListener('click',()=>openProject(i));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openProject(i)}})});
+
+// keyboard navigation: 1-6 jumps to major sections
+const sectionMap={1:'about',2:'journey',3:'skills',4:'projects',5:'contact',6:'top'};
+window.addEventListener('keydown',e=>{if(modal.classList.contains('open'))return;const id=sectionMap[e.key];if(id)document.getElementById(id)?.scrollIntoView({behavior:'smooth'})});
+
+const mount=document.getElementById('scene');
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(44,mount.clientWidth/mount.clientHeight,.1,100);
+camera.position.set(.3,.3,7.2);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(mount.clientWidth,mount.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;mount.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0x7fb59b,1.4));
+const key=new THREE.PointLight(0xc6884a,22,18);key.position.set(3,4,5);scene.add(key);
+const fill=new THREE.PointLight(0x5fcba3,18,16);fill.position.set(-4,-1,3);scene.add(fill);
+const group=new THREE.Group();scene.add(group);
+
+const core=new THREE.Mesh(new THREE.IcosahedronGeometry(1.25,2),
+new THREE.MeshStandardMaterial({color:0x10221a,metalness:.72,roughness:.28,emissive:0x15372a,emissiveIntensity:1.2}));
+group.add(core);
+const coreButton=document.getElementById('coreButton');
+let reactorMode=0;
+coreButton.addEventListener('click',()=>{
+  reactorMode=(reactorMode+1)%3;
+  const modes=[
+    {label:'WEBGL CORE // ONLINE', color:0x15372a, glow:1.2},
+    {label:'EDGE AI // INFERENCE', color:0x3a2819, glow:1.8},
+    {label:'SECURE BUS // ACTIVE', color:0x102b22, glow:1.6}
+  ];
+  const m=modes[reactorMode];coreButton.textContent=m.label;core.material.emissive.setHex(m.color);core.material.emissiveIntensity=m.glow;
+});
+
+const torus=new THREE.TorusGeometry(1.75,.024,10,140);
+[0,Math.PI/3,-Math.PI/3].forEach((r,i)=>{
+ const ring=new THREE.Mesh(torus,new THREE.MeshBasicMaterial({color:i===1?0xc6884a:0x5fcba3,transparent:true,opacity:.84}));
+ ring.rotation.set(r,i===2?Math.PI/2:Math.PI/3,0);group.add(ring);
+});
+const nodes=[];
+for(let i=0;i<42;i++){
+ const a=i/42*Math.PI*2,r=2.15+(i%3)*.06;
+ const n=new THREE.Mesh(new THREE.SphereGeometry(.045,12,12),new THREE.MeshBasicMaterial({color:i%5===0?0xc6884a:0x5fcba3}));
+ n.position.set(Math.cos(a)*r,Math.sin(a*1.9)*.42,Math.sin(a)*r*.55);group.add(n);nodes.push(n);
+}
+const pgeo=new THREE.BufferGeometry(), pts=new Float32Array(700*3);
+for(let i=0;i<700;i++){const r=3+Math.random()*4.5,a=Math.random()*Math.PI*2;pts[i*3]=Math.cos(a)*r;pts[i*3+1]=(Math.random()-.5)*5;pts[i*3+2]=Math.sin(a)*r}
+pgeo.setAttribute('position',new THREE.BufferAttribute(pts,3));
+const particles=new THREE.Points(pgeo,new THREE.PointsMaterial({color:0x6fae94,size:.015,transparent:true,opacity:.55}));scene.add(particles);
+
+const mouse={x:0,y:0};
+mount.addEventListener('pointermove',e=>{const r=mount.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width-.5)*2;mouse.y=((e.clientY-r.top)/r.height-.5)*2});
+mount.addEventListener('pointerdown',()=>{core.scale.setScalar(1.16);setTimeout(()=>core.scale.setScalar(1),170)});
+const clock=new THREE.Clock();
+function resize(){camera.aspect=mount.clientWidth/mount.clientHeight;camera.updateProjectionMatrix();renderer.setSize(mount.clientWidth,mount.clientHeight)}
+window.addEventListener('resize',resize);
+function animate(){
+ const t=clock.getElapsedTime();
+ group.rotation.y+=.0025;
+ group.rotation.x=THREE.MathUtils.lerp(group.rotation.x,mouse.y*.18,.03);
+ group.rotation.z=THREE.MathUtils.lerp(group.rotation.z,mouse.x*.12,.03);
+ core.rotation.x=t*.15;core.rotation.y=t*.22;
+ nodes.forEach((n,i)=>n.scale.setScalar(1+Math.sin(t*2+i*.7)*.18));
+ particles.rotation.y=t*.025;
+ renderer.render(scene,camera);requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
