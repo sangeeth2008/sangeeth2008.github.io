@@ -153,7 +153,7 @@
     .nav-right-tools {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .nav-links {
@@ -193,6 +193,28 @@
     .nav-links a:hover::after,
     .nav-links a.active::after {
       width: 100%;
+    }
+
+    .sfx-toggle-btn {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--status-green);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(0, 230, 118, 0.12) 100%);
+      border: 1px solid var(--status-green);
+      border-radius: 6px;
+      padding: 8px 12px;
+      min-height: 40px;
+      cursor: pointer;
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      box-shadow: var(--liquid-highlight);
+      transition: all 0.3s var(--liquid-spring);
+    }
+
+    .sfx-toggle-btn.muted {
+      color: var(--text-faint);
+      border-color: var(--text-faint);
+      background: rgba(4, 11, 7, 0.5);
     }
 
     .cli-btn-header {
@@ -1575,7 +1597,7 @@
     }
   </style>
 </head>
-<body>
+<body onclick="initAudioOnFirstClick()">
 
   <!-- Top Progress Bar -->
   <div class="progress-bar" id="progressBar"></div>
@@ -1586,18 +1608,19 @@
 
   <!-- Header Navigation -->
   <header class="header" id="header">
-    <a href="#top" class="brand">
+    <a href="#top" class="brand" onclick="playSfx('click')">
       SANGEETH SASIKUMAR K S <span class="brand-tag">// ELECTRONICS-LAB</span>
     </a>
     <div class="nav-right-tools">
       <ul class="nav-links" id="navLinks">
-        <li><a href="#about" class="nav-item">About</a></li>
-        <li><a href="#skills" class="nav-item">Skills</a></li>
-        <li><a href="#projects" class="nav-item">Projects</a></li>
-        <li><a href="#pipeline" class="nav-item">Pipeline</a></li>
-        <li><a href="#journey" class="nav-item">Journey</a></li>
-        <li><a href="#contact" class="nav-item">Contact</a></li>
+        <li><a href="#about" class="nav-item" onclick="playSfx('click')">About</a></li>
+        <li><a href="#skills" class="nav-item" onclick="playSfx('click')">Skills</a></li>
+        <li><a href="#projects" class="nav-item" onclick="playSfx('click')">Projects</a></li>
+        <li><a href="#pipeline" class="nav-item" onclick="playSfx('click')">Pipeline</a></li>
+        <li><a href="#journey" class="nav-item" onclick="playSfx('click')">Journey</a></li>
+        <li><a href="#contact" class="nav-item" onclick="playSfx('click')">Contact</a></li>
       </ul>
+      <button class="sfx-toggle-btn" id="sfxToggleBtn" onclick="toggleSfx()">🔊 SFX: ON</button>
       <button class="cli-btn-header" onclick="openCliModal()">&gt;_ CLI TERMINAL</button>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">MENU ☰</button>
     </div>
@@ -1617,8 +1640,8 @@
           Engineering intelligent connected systems by combining electronics, embedded technology, robotics, IoT and Edge AI.
         </p>
         <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary">EXPLORE PROJECTS ↘</a>
-          <a href="#journey" class="btn btn-secondary">VIEW ENGINEERING JOURNEY</a>
+          <a href="#projects" class="btn btn-primary" onclick="playSfx('click')">EXPLORE PROJECTS ↘</a>
+          <a href="#journey" class="btn btn-secondary" onclick="playSfx('click')">VIEW ENGINEERING JOURNEY</a>
         </div>
       </div>
 
@@ -2062,7 +2085,7 @@
 
       <div class="contact-container">
         <div class="contact-info reveal-left">
-          <a href="mailto:sangeethcherur@gmail.com" class="contact-card liquid-glass-card">
+          <a href="mailto:sangeethcherur@gmail.com" class="contact-card liquid-glass-card" onclick="playSfx('click')">
             <div class="contact-icon">✉️</div>
             <div class="contact-details">
               <label>Direct Email</label>
@@ -2070,7 +2093,7 @@
             </div>
           </a>
 
-          <a href="https://github.com/sangeeth2008" target="_blank" rel="noopener noreferrer" class="contact-card liquid-glass-card">
+          <a href="https://github.com/sangeeth2008" target="_blank" rel="noopener noreferrer" class="contact-card liquid-glass-card" onclick="playSfx('click')">
             <div class="contact-icon">💻</div>
             <div class="contact-details">
               <label>GitHub Code Repositories</label>
@@ -2078,7 +2101,7 @@
             </div>
           </a>
 
-          <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noopener noreferrer" class="contact-card liquid-glass-card">
+          <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noopener noreferrer" class="contact-card liquid-glass-card" onclick="playSfx('click')">
             <div class="contact-icon">🔗</div>
             <div class="contact-details">
               <label>LinkedIn Network</label>
@@ -2090,15 +2113,15 @@
         <form class="contact-form liquid-glass-card reveal-right" onsubmit="handleFormSubmit(event)">
           <div class="form-group">
             <label for="name">Your Name</label>
-            <input type="text" id="name" class="form-control" required placeholder="Recruiter / Engineer Name">
+            <input type="text" id="name" class="form-control" required placeholder="Recruiter / Engineer Name" onkeydown="playSfx('terminal')">
           </div>
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" class="form-control" required placeholder="name@company.com">
+            <input type="email" id="email" class="form-control" required placeholder="name@company.com" onkeydown="playSfx('terminal')">
           </div>
           <div class="form-group">
             <label for="message">Project Inquiry / Message</label>
-            <textarea id="message" class="form-control" required placeholder="Discussing IoT, Edge AI or Mechatronics opportunities..."></textarea>
+            <textarea id="message" class="form-control" required placeholder="Discussing IoT, Edge AI or Mechatronics opportunities..." onkeydown="playSfx('terminal')"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="justify-content: center; width: 100%;">
             SEND COMMUNICATION SIGNAL ↗
@@ -2170,8 +2193,93 @@
     <div>Jyothi Engineering College, Kerala, India</div>
   </footer>
 
-  <!-- Script for Liquid PCB Canvas Animation, Oscilloscope & Interactive Tools -->
+  <!-- Script for Web Audio SFX Synthesizer, PCB Canvas, Oscilloscope & Interactive Tools -->
   <script>
+    // WEB AUDIO API HIGH-TECH SOUND SYNTHESIZER
+    let audioCtx = null;
+    let sfxEnabled = true;
+
+    function initAudioOnFirstClick() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleSfx() {
+      initAudioOnFirstClick();
+      sfxEnabled = !sfxEnabled;
+      const btn = document.getElementById('sfxToggleBtn');
+      if (sfxEnabled) {
+        btn.textContent = '🔊 SFX: ON';
+        btn.classList.remove('muted');
+        playSfx('click');
+      } else {
+        btn.textContent = '🔇 SFX: OFF';
+        btn.classList.add('muted');
+      }
+    }
+
+    function playSfx(type) {
+      if (!sfxEnabled) return;
+      initAudioOnFirstClick();
+      if (!audioCtx) return;
+
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      if (type === 'click') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, now);
+        osc.frequency.exponentialRampToValueAtTime(300, now + 0.04);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + 0.04);
+      } else if (type === 'hover') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(2400, now);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + 0.02);
+      } else if (type === 'scope') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.08);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + 0.08);
+      } else if (type === 'pipeline') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(700, now);
+        osc.frequency.exponentialRampToValueAtTime(1500, now + 0.09);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + 0.09);
+      } else if (type === 'terminal') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(850, now);
+        gain.gain.setValueAtTime(0.03, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + 0.03);
+      } else if (type === 'modal') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(1100, now + 0.14);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + 0.14);
+      }
+    }
+
     const projectData = {
       'patrol-robot': {
         title: 'Smart Security Patrol Robot V1',
@@ -2226,6 +2334,7 @@
     };
 
     function openProjectModal(key) {
+      playSfx('modal');
       const data = projectData[key];
       if (!data) return;
       document.getElementById('modalCategory').textContent = data.category;
@@ -2242,6 +2351,7 @@
     }
 
     function closeModal() {
+      playSfx('click');
       const backdrop = document.getElementById('modalBackdrop');
       backdrop.classList.remove('active');
       document.body.style.overflow = 'auto';
@@ -2253,12 +2363,14 @@
 
     // CLI TERMINAL CONTROLLER
     function openCliModal() {
+      playSfx('modal');
       const backdrop = document.getElementById('cliBackdrop');
       backdrop.classList.add('active');
       document.getElementById('cliInput').focus();
     }
 
     function closeCliModal() {
+      playSfx('click');
       document.getElementById('cliBackdrop').classList.remove('active');
     }
 
@@ -2267,6 +2379,7 @@
     }
 
     function handleCliKey(e) {
+      playSfx('terminal');
       if (e.key === 'Enter') {
         const val = e.target.value.trim().toLowerCase();
         e.target.value = '';
@@ -2312,6 +2425,7 @@
 
     function handleFormSubmit(e) {
       e.preventDefault();
+      playSfx('modal');
       alert('Signal Sent! Sangeeth Sasikumar will review your message shortly.');
       e.target.reset();
     }
@@ -2330,7 +2444,10 @@
     // Mobile Nav Drawer Toggle
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
-    menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+    menuToggle.addEventListener('click', () => {
+      playSfx('click');
+      navLinks.classList.toggle('active');
+    });
 
     // HARDWARE ACCELERATED SCROLL REVEAL & SCROLLSPY
     const observerOptions = { root: null, rootMargin: '0px 0px -60px 0px', threshold: 0.15 };
@@ -2360,6 +2477,7 @@
 
     // INTERACTIVE PIPELINE STEPPER FUNCTION
     function triggerPipelineStep(stepIdx) {
+      playSfx('pipeline');
       const nodes = document.querySelectorAll('.pipeline-node');
       nodes.forEach((n, idx) => {
         if (idx <= stepIdx) {
@@ -2407,6 +2525,8 @@
     resizePcbCanvas();
 
     let mouseX = -100, mouseY = -100;
+    let lastHoveredId = null;
+
     stage.addEventListener('mousemove', (e) => {
       const rect = stage.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
@@ -2418,7 +2538,7 @@
       const rotX = -(y / rect.height) * 16;
       board.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
 
-      // PCB Component Hit Testing for Interactive Tooltip
+      // PCB Component Hit Testing for Interactive Tooltip & SFX
       const W = pcbCanvas.width; const H = pcbCanvas.height;
       let hovered = false;
       pcbComponents.forEach(c => {
@@ -2429,15 +2549,24 @@
           pcbTooltip.innerHTML = `<strong>${c.label} (${c.id})</strong><br>Type: ${c.type} | Status: ACTIVE<br>Bus: 3.3V Logic OK`;
           pcbTooltip.classList.add('active');
           hovered = true;
+
+          if (lastHoveredId !== c.id) {
+            playSfx('hover');
+            lastHoveredId = c.id;
+          }
         }
       });
-      if (!hovered) pcbTooltip.classList.remove('active');
+      if (!hovered) {
+        pcbTooltip.classList.remove('active');
+        lastHoveredId = null;
+      }
     });
 
     stage.addEventListener('mouseleave', () => {
       board.style.transform = `rotateY(-7deg) rotateX(5deg)`;
       mouseX = -100; mouseY = -100;
       pcbTooltip.classList.remove('active');
+      lastHoveredId = null;
     });
 
     const pcbComponents = [
@@ -2553,6 +2682,7 @@
     resizeScope();
 
     function setOscilloscopeMode(mode, btn) {
+      playSfx('scope');
       oscMode = mode;
       document.querySelectorAll('.scope-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
