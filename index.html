@@ -1,281 +1,2005 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SANGEETH SASIKUMAR K S · Mechatronics · IoT · Embedded AI</title>
-<meta name="description" content="SANGEETH SASIKUMAR K S — Mechatronics, IoT, Embedded AI, Robotics and Cybersecurity portfolio.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#07110d;--surface:#0c1712;--surface2:#101d17;--border:#20342a;
-  --copper:#c6884a;--copperL:#e0a868;--signal:#5fcba3;--signalD:#2f6b52;
-  --text:#eef4ed;--muted:#95a69b;--faint:#5b6d61;
-}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",sans-serif}
-a{color:inherit}
-.app{min-height:100vh;overflow-x:hidden;position:relative;background:
-radial-gradient(circle at 78% 9%,rgba(95,203,163,.09),transparent 23%),
-radial-gradient(circle at 18% 16%,rgba(198,136,74,.06),transparent 26%)}
-.grid{position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:
-linear-gradient(rgba(95,203,163,.06) 1px,transparent 1px),
-linear-gradient(90deg,rgba(95,203,163,.06) 1px,transparent 1px);background-size:40px 40px}
-.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
-padding:17px 5vw;background:rgba(7,17,13,.58);backdrop-filter:blur(14px);border-bottom:1px solid rgba(32,52,42,.6)}
-.brand{font:600 16px "IBM Plex Mono";letter-spacing:1px;text-decoration:none}.brand span{color:var(--copper);margin-left:7px}
-.navlinks{display:flex;gap:28px}.navlinks a{font:12px "IBM Plex Mono";text-decoration:none;color:var(--muted)}.navlinks a:hover{color:var(--signal)}
-.menu{display:none;background:none;border:0;color:var(--text);font-size:22px}
-.hero{min-height:100vh;max-width:1400px;margin:auto;padding:106px 5vw 70px;display:grid;grid-template-columns:1.03fr .97fr;align-items:center;gap:18px}
-.hero-copy{position:relative;z-index:2;max-width:760px}.status{display:flex;align-items:center;gap:10px;color:var(--muted);font:12px "IBM Plex Mono";letter-spacing:1.2px}
-.dot{width:8px;height:8px;background:var(--signal);border-radius:50%;box-shadow:0 0 0 5px rgba(47,107,82,.35),0 0 22px rgba(95,203,163,.6);animation:pulse 2s infinite}
-.hero h1{font:500 clamp(40px,6.3vw,90px)/.98 "IBM Plex Mono";letter-spacing:-3px;margin:22px 0 8px}.hero h1 span{color:var(--copperL)}
-.hero-label{color:var(--copper);font:12px "IBM Plex Mono";letter-spacing:1px}
-.lead{font-size:clamp(21px,2.8vw,34px);line-height:1.25;margin:28px 0 10px;font-weight:500}.lead em{color:var(--signal);font-style:normal}
-.hero-text{color:var(--muted);font-size:16px;line-height:1.8;max-width:700px}.tags,.actions{display:flex;gap:8px;flex-wrap:wrap}
-.tags{margin-top:22px}.tag{font:11px "IBM Plex Mono";padding:5px 9px;border:1px solid rgba(198,136,74,.35);color:var(--copperL);border-radius:4px}.tag.signal{border-color:rgba(95,203,163,.35);color:var(--signal)}
-.actions{margin-top:28px}.btn{padding:11px 15px;border:1px solid var(--border);border-radius:5px;color:var(--text);text-decoration:none;font:12px "IBM Plex Mono";background:rgba(16,29,23,.72);transition:.2s}
-.btn:hover{transform:translateY(-2px);border-color:var(--signal);color:var(--signal)}.btn.primary{border-color:var(--copper);background:rgba(198,136,74,.09)}
-.scene{height:min(77vh,760px);min-height:540px;position:relative;border-left:1px solid rgba(32,52,42,.65);overflow:hidden}.scene canvas{display:block;width:100%;height:100%}
-.hud{position:absolute;inset:0;pointer-events:none;font:10px "IBM Plex Mono";letter-spacing:1px;color:var(--faint)}
-.hud .core{position:absolute;top:18%;right:8%;color:var(--signal)}.hud .left{position:absolute;left:8%;top:46%;border:1px solid rgba(95,203,163,.25);padding:5px 7px;background:rgba(7,17,13,.38)}
-.hud .right{position:absolute;right:8%;top:55%;border:1px solid rgba(198,136,74,.25);padding:5px 7px;color:var(--copper);background:rgba(7,17,13,.38)}
-.hud .bottom{position:absolute;left:24%;bottom:15%;color:var(--muted)}
-.section{max-width:1180px;margin:0 auto;padding:84px 5vw}.section-head{display:flex;align-items:center;gap:12px;margin-bottom:30px;color:var(--copper);font:12px "IBM Plex Mono";letter-spacing:1px}.section-head i{height:1px;flex:1;background:var(--border)}
-.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.card,.domain,.skills,.learning,.project,.contact{background:linear-gradient(180deg,rgba(12,23,18,.95),rgba(9,18,14,.94));border:1px solid var(--border);border-radius:8px}
-.card{padding:28px}.eyebrow{font:11px "IBM Plex Mono";color:var(--copper);letter-spacing:1.2px}.card h2,.contact h2{font:500 clamp(25px,3.3vw,43px)/1.15 "IBM Plex Mono";margin:14px 0}.card p,.contact p{color:var(--muted);line-height:1.8}
-.stack{font:500 15px/1.8 "IBM Plex Mono";color:var(--signal)}
-.timeline{position:relative;padding-left:8px}.timeline:before{content:"";position:absolute;left:24px;top:18px;bottom:18px;width:1px;background:repeating-linear-gradient(180deg,var(--signalD) 0 7px,transparent 7px 14px)}
-.trow{width:100%;border:0;background:transparent;color:inherit;display:grid;grid-template-columns:48px 1fr;gap:16px;padding:0 0 25px;text-align:left;cursor:pointer}.node{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--border);background:var(--surface);font:11px "IBM Plex Mono";color:var(--faint);z-index:1;transition:.2s}.trow.active .node{border-color:var(--signal);color:var(--signal);box-shadow:0 0 24px rgba(95,203,163,.13)}
-.trow strong{display:block;margin:4px 0 3px;font-size:16px;font-weight:500}.trow small{font:12px "IBM Plex Mono";color:var(--muted)}.target{font:12px "IBM Plex Mono";color:var(--faint);margin-top:10px}
-.domains{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.domain{padding:20px;transition:.22s}.domain:hover{transform:translateY(-4px);border-color:rgba(95,203,163,.35);box-shadow:0 18px 45px rgba(0,0,0,.22)}
-.domain h3{font:500 15px "IBM Plex Mono";color:var(--copperL);margin:0 0 12px}.domain ul{list-style:none;margin:0;padding:0}.domain li{color:var(--muted);padding:4px 0;font-size:13.5px}.domain li b{color:var(--signalD);margin-right:8px}
-.skills{padding:22px}.skillrow{display:flex;gap:18px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid rgba(32,52,42,.55)}.skillrow:last-child{border-bottom:0}
-.skilllabel{width:135px;flex:0 0 135px;color:var(--faint);font:11px "IBM Plex Mono";letter-spacing:.7px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chips span{padding:5px 9px;border:1px solid rgba(32,52,42,.9);border-radius:4px;background:rgba(16,29,23,.75);font-size:12px}
-.learning{margin-top:16px;padding:20px}.learning .chips{margin-top:12px}.learning .chips span{color:var(--signal);border-color:rgba(47,107,82,.8)}
-.projects{display:flex;flex-direction:column;gap:12px}.project{display:grid;grid-template-columns:58px 1fr 24px;gap:16px;align-items:start;padding:22px;transition:.25s}.project:hover{transform:translateX(4px);border-color:rgba(198,136,74,.4);box-shadow:0 18px 45px rgba(0,0,0,.22)}.featured{background:linear-gradient(110deg,rgba(198,136,74,.1),rgba(12,23,18,.94) 32%)}
-.picon{width:44px;height:44px;border:1px solid rgba(198,136,74,.32);display:grid;place-items:center;border-radius:8px;color:var(--copper);font-size:20px}.ptop{display:flex;justify-content:space-between;gap:12px}.project h3{margin:0;font:500 17px "IBM Plex Mono"}.project p{color:var(--muted);font-size:14px;line-height:1.7;margin:9px 0}.tech{font:11px "IBM Plex Mono";color:var(--copper)}.parrow{color:var(--faint);font-size:20px}
-.contact{padding:30px;display:grid;grid-template-columns:1fr .7fr;gap:32px}.clines>div{display:flex;gap:18px;padding:11px 0;border-bottom:1px solid rgba(32,52,42,.55);font:12px "IBM Plex Mono"}.clines span{width:78px;color:var(--faint)}.clines a{color:var(--signal);text-decoration:none}.clines strong{font-weight:400}
-footer{display:flex;justify-content:space-between;gap:20px;padding-top:25px;color:var(--faint);font:10px "IBM Plex Mono";letter-spacing:.8px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANGEETH SASIKUMAR K S | Mechatronics, Electronics & Edge AI</title>
+  <meta name="description" content="Portfolio of SANGEETH SASIKUMAR K S — Mechatronics & Electronics Engineering Student specializing in Embedded Systems, IoT, Edge AI, Robotics & Cybersecurity.">
+  <meta name="keywords" content="Sangeeth Sasikumar, Electronics, Mechatronics, Embedded Systems, IoT, Edge AI, TinyML, Robotics, ESP32, PCB Design">
+  <meta name="author" content="SANGEETH SASIKUMAR K S">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SANGEETH SASIKUMAR K S | Mechatronics, Electronics & Edge AI">
+  <meta property="og:description" content="Building Electronics That Sense, Think & Act.">
 
-.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--copper),var(--signal));z-index:100;box-shadow:0 0 14px rgba(95,203,163,.55)}
-.core-button{cursor:pointer;pointer-events:auto;position:absolute;right:8%;top:18%;color:var(--signal);font:10px "IBM Plex Mono";letter-spacing:1px;background:transparent;border:0;padding:0}.core-button:hover{color:var(--copperL)}
-.project{cursor:pointer}.project:focus-visible,.trow:focus-visible{outline:1px solid var(--signal);outline-offset:3px}
-.modal{position:fixed;inset:0;display:none;place-items:center;padding:22px;background:rgba(2,8,6,.72);backdrop-filter:blur(10px);z-index:90}.modal.open{display:grid}.modal-card{width:min(720px,100%);max-height:85vh;overflow:auto;background:linear-gradient(180deg,#0d1913,#09110d);border:1px solid var(--border);border-radius:12px;box-shadow:0 30px 100px rgba(0,0,0,.55);padding:28px;position:relative}.modal-close{position:absolute;right:18px;top:15px;background:none;border:0;color:var(--muted);font:18px "IBM Plex Mono";cursor:pointer}.modal-close:hover{color:var(--signal)}.modal-card h3{font:500 28px "IBM Plex Mono";margin:8px 0 12px;color:var(--text)}.modal-card p{color:var(--muted);line-height:1.8}.modal-meta{font:11px "IBM Plex Mono";color:var(--copper);letter-spacing:.7px}.modal-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.modal-list span{padding:5px 8px;border:1px solid rgba(47,107,82,.8);border-radius:4px;color:var(--signal);font:11px "IBM Plex Mono"}.focus-ring{position:fixed;inset:0;pointer-events:none;z-index:70;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(95,203,163,.07),transparent 65%)}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.86)}}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.scene{order:-1;min-height:470px;border-left:0;border-bottom:1px solid var(--border)}.grid2,.contact{grid-template-columns:1fr}.domains{grid-template-columns:1fr}.navlinks{display:none;position:absolute;top:64px;right:5vw;flex-direction:column;background:rgba(7,17,13,.97);border:1px solid var(--border);padding:16px;min-width:180px}.navlinks.open{display:flex}.menu{display:block}}
-@media(max-width:620px){.hero{padding-left:20px;padding-right:20px}.section{padding-left:20px;padding-right:20px}.hero h1{font-size:42px;letter-spacing:-2px}.scene{min-height:370px}.project{grid-template-columns:1fr}.picon{display:none}.skilllabel{width:100%;flex-basis:100%}.clines>div{display:grid;grid-template-columns:70px 1fr}footer{flex-direction:column}}
-</style>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #040907;
+      --bg-pcb: #07120c;
+      --bg-panel: #0a1710;
+      --bg-card: rgba(12, 26, 18, 0.85);
+      --border-color: rgba(32, 64, 48, 0.7);
+      --border-glow: rgba(0, 229, 255, 0.35);
+      
+      --cyan: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.25);
+      --copper: #c6884a;
+      --copper-glow: rgba(198, 136, 74, 0.2);
+      --status-green: #00e676;
+      
+      --text-main: #f0f6f4;
+      --text-muted: #9ab4a5;
+      --text-faint: #4e6657;
+      
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Scroll progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--status-green), var(--copper));
+      z-index: 1000;
+      box-shadow: 0 0 12px var(--cyan);
+      transition: width 0.1s linear;
+    }
+
+    /* Technical PCB Background Grid & Marks */
+    .pcb-grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.15;
+      background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .radial-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(circle at 75% 25%, rgba(0, 229, 255, 0.06), transparent 45%),
+        radial-gradient(circle at 20% 80%, rgba(198, 136, 74, 0.05), transparent 40%);
+    }
+
+    /* Header Navigation */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 6vw;
+      background: rgba(4, 9, 7, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .header.scrolled {
+      padding: 12px 6vw;
+      background: rgba(4, 9, 7, 0.94);
+      border-bottom-color: var(--cyan);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .brand {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.02rem;
+      letter-spacing: 1px;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-tag {
+      color: var(--cyan);
+      font-size: 0.8rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      position: relative;
+      padding: 4px 0;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--cyan);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--cyan);
+      transition: width 0.25s ease;
+      box-shadow: 0 0 8px var(--cyan);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+    }
+
+    /* Layout Containers */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 100px 6vw;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--copper);
+      letter-spacing: 1px;
+    }
+
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-color), transparent);
+    }
+
+    /* HERO SECTION — PREMIUM ELECTRONICS LAB WORKSPACE */
+    .hero-container {
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 120px 6vw 40px;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-left {
+      z-index: 2;
+    }
+
+    .tech-pill-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--cyan);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      padding: 6px 14px;
+      background: rgba(0, 229, 255, 0.06);
+      border: 1px solid var(--border-glow);
+      border-radius: 4px;
+    }
+
+    .hero-name {
+      font-family: var(--font-mono);
+      font-size: clamp(2.3rem, 4.4vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+      color: var(--text-main);
+    }
+
+    .hero-headline {
+      font-family: var(--font-sans);
+      font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    .hero-headline span {
+      color: var(--cyan);
+    }
+
+    .hero-subhead {
+      font-family: var(--font-mono);
+      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      color: var(--copper);
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+
+    .hero-description {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 560px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--cyan);
+      color: #000;
+      box-shadow: 0 0 30px var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(12, 26, 18, 0.8);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--copper);
+      color: var(--copper);
+      box-shadow: 0 0 20px var(--copper-glow);
+      transform: translateY(-2px);
+    }
+
+    /* RIGHT SIDE — ADVANCED 3D PCB CANVAS WORKSPACE */
+    .hero-pcb-stage {
+      position: relative;
+      height: 560px;
+      width: 100%;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pcb-board {
+      width: 100%;
+      height: 100%;
+      background: #060e0a;
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        inset 0 0 50px rgba(0, 0, 0, 0.9),
+        0 25px 60px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(0, 229, 255, 0.15);
+      transform: rotateY(-7deg) rotateX(5deg);
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .hero-pcb-stage:hover .pcb-board {
+      transform: rotateY(0deg) rotateX(0deg);
+    }
+
+    #pcbCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Electronic HUD Overlays */
+    .hud-panel {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+    }
+
+    .hud-top-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .hud-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(4, 9, 7, 0.85);
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(4px);
+    }
+
+    .status-dot-green {
+      width: 7px;
+      height: 7px;
+      background: var(--status-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--status-green);
+    }
+
+    .hud-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .hud-stat-box {
+      background: rgba(4, 9, 7, 0.85);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hud-stat-label {
+      color: var(--text-faint);
+      font-size: 0.65rem;
+    }
+
+    .hud-stat-val {
+      color: var(--cyan);
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    /* HERO TO PROJECTS TRANSITION BUS TRACE */
+    .hero-transition-bus {
+      width: 100%;
+      height: 40px;
+      max-width: 1320px;
+      margin: 0 auto;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bus-trace-line {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--copper), transparent);
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .bus-trace-label {
+      position: absolute;
+      background: var(--bg-dark);
+      padding: 4px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      letter-spacing: 1px;
+    }
+
+    /* About Section */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 32px;
+    }
+
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 36px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-card h3 {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      color: var(--cyan);
+      margin-bottom: 16px;
+    }
+
+    .about-card p {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .about-focus-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .focus-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-main);
+      background: rgba(4, 9, 7, 0.7);
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .focus-item::before {
+      content: '◈';
+      color: var(--copper);
+    }
+
+    .learning-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 32px;
+    }
+
+    .badge-heading {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--copper);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .tech-pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tech-pill {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      border-radius: 4px;
+      background: rgba(12, 26, 18, 0.9);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+
+    .tech-pill.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.08);
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--copper);
+      opacity: 0.4;
+      transition: all 0.3s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px var(--cyan-glow);
+    }
+
+    .skill-card:hover::before {
+      background: var(--cyan);
+      opacity: 1;
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .skill-category {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .skill-icon {
+      color: var(--copper);
+      font-size: 1.2rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 6px 12px;
+      background: rgba(4, 9, 7, 0.75);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+
+    .skill-card:hover .skill-tag {
+      border-color: rgba(0, 229, 255, 0.3);
+      color: var(--text-main);
+    }
+
+    /* Projects Section */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 28px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--cyan);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--cyan-glow);
+    }
+
+    .project-card.featured-card {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .project-img-wrapper {
+      position: relative;
+      height: 220px;
+      background: #060e0a;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .project-card.featured-card .project-img-wrapper {
+      height: 100%;
+      min-height: 280px;
+      border-bottom: none;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .project-blueprint {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      opacity: 0.25;
+      background-image: 
+        radial-gradient(var(--cyan) 1px, transparent 1px),
+        linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-blueprint {
+      transform: scale(1.08);
+      opacity: 0.35;
+    }
+
+    .project-icon-large {
+      font-size: 3.5rem;
+      color: var(--copper);
+      z-index: 1;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .project-card:hover .project-icon-large {
+      transform: scale(1.1);
+      color: var(--cyan);
+    }
+
+    .project-content {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .project-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--copper);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .project-title {
+      font-family: var(--font-mono);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .project-tech-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(4, 9, 7, 0.85);
+      border: 1px solid var(--border-color);
+      color: var(--cyan);
+    }
+
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(32, 64, 48, 0.4);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .project-link-btn {
+      color: var(--cyan);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Modal Inspector Panel */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(3, 8, 5, 0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      width: min(840px, 95vw);
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 30px var(--cyan-glow);
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .modal-backdrop.active .modal-panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: rgba(12, 26, 18, 0.9);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .modal-header {
+      padding: 32px 36px 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-title {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .modal-body {
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .modal-section-title {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--copper);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .modal-text {
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-size: 0.98rem;
+    }
+
+    .modal-specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      background: rgba(4, 9, 7, 0.6);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* System Architecture Pipeline Section */
+    .pipeline-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 20px 0;
+    }
+
+    .pipeline-node {
+      background: rgba(4, 9, 7, 0.85);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px 20px;
+      min-width: 140px;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pipeline-node:hover {
+      border-color: var(--cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .node-title {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--cyan);
+      margin-bottom: 4px;
+    }
+
+    .node-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .pipeline-arrow {
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      opacity: 0.7;
+      animation: arrow-glow 2s infinite ease-in-out;
+    }
+
+    @keyframes arrow-glow {
+      0%, 100% { opacity: 0.4; transform: translateX(0); }
+      50% { opacity: 1; transform: translateX(4px); }
+    }
+
+    /* Journey Timeline Section */
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-left: 30px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--cyan), var(--status-green), var(--copper));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 36px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -26px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .timeline-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+
+    .timeline-title {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .timeline-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    /* Contact Section */
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: all 0.25s ease;
+    }
+
+    .contact-card:hover {
+      border-color: var(--cyan);
+      transform: translateX(6px);
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .contact-icon {
+      font-size: 1.5rem;
+      color: var(--copper);
+    }
+
+    .contact-details label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .contact-details span {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--cyan);
+    }
+
+    .contact-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(4, 9, 7, 0.75);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--cyan);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 30px 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: rgba(4, 9, 7, 0.95);
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 960px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        padding-top: 100px;
+      }
+      .hero-pcb-stage {
+        height: 400px;
+      }
+      .pcb-board {
+        transform: rotateY(0deg) rotateX(0deg);
+      }
+      .about-grid, .contact-container, .project-card.featured-card {
+        grid-template-columns: 1fr;
+      }
+      .project-card.featured-card .project-img-wrapper {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(4, 9, 7, 0.96);
+        border-bottom: 1px solid var(--border-color);
+        padding: 24px 6vw;
+        gap: 18px;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="app">
-<div class="progress" id="progress"></div><div class="focus-ring" id="focusRing"></div><div class="grid"></div>
-<header class="nav">
-  <a class="brand" href="#top">SS<span>//</span></a>
-  <button class="menu" id="menuBtn">☰</button>
-  <nav class="navlinks" id="navLinks">
-    <a href="#about">About</a><a href="#journey">Journey</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
-  </nav>
-</header>
 
-<main id="top">
-<section class="hero">
-  <div class="hero-copy">
-    <div class="status"><span class="dot"></span> STATUS · ENGINEERING STUDENT</div>
-    <h1>SANGEETH<br><span>SASIKUMAR K S</span></h1>
-    <div class="hero-label">MECHATRONICS-STUDENT · IoT / EMBEDDED-AI · REV.02</div>
-    <p class="lead">Building intelligent, connected <em>&amp;</em> secure machines.</p>
-    <p class="hero-text">I'm a Mechatronics Engineering student at Jyothi Engineering College, Kerala, passionate about IoT, embedded systems, robotics and Edge AI. I enjoy building real-world hardware projects using microcontrollers, sensors and intelligent software, while working toward a career in IoT and Embedded AI — with cybersecurity as a complementary specialization.</p>
-    <div class="tags"><span class="tag">Kerala, India</span><span class="tag">B.Tech · Mechatronics</span><span class="tag signal">Jyothi Engineering College</span></div>
-    <div class="actions"><a class="btn primary" href="#projects">Explore Projects</a><a class="btn" href="#journey">Engineering Journey ↘</a></div>
+  <!-- Top Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- PCB Grid & Glow Overlays -->
+  <div class="pcb-grid-overlay"></div>
+  <div class="radial-glow"></div>
+
+  <!-- Header Navigation -->
+  <header class="header" id="header">
+    <a href="#top" class="brand">
+      SANGEETH SASIKUMAR K S <span class="brand-tag">// ELECTRONICS-LAB</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">MENU ☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </header>
+
+  <main id="top">
+    <!-- HERO SECTION — PREMIUM ELECTRONICS LAB WORKSPACE -->
+    <section class="hero-container">
+      <div class="hero-left">
+        <div class="tech-pill-header">
+          ENGINEERING • ELECTRONICS • INTELLIGENT SYSTEMS
+        </div>
+        <h1 class="hero-name">SANGEETH SASIKUMAR K S</h1>
+        <h2 class="hero-headline">Building Electronics That <span>Sense, Think & Act.</span></h2>
+        <div class="hero-subhead">Mechatronics × Embedded Systems × IoT × Edge AI</div>
+        <p class="hero-description">
+          Engineering intelligent connected systems by combining electronics, embedded technology, robotics, IoT and Edge AI.
+        </p>
+        <div class="hero-buttons">
+          <a href="#projects" class="btn btn-primary">EXPLORE PROJECTS ↘</a>
+          <a href="#journey" class="btn btn-secondary">VIEW ENGINEERING JOURNEY</a>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: ADVANCED PCB EMBEDDED SYSTEM CANVAS -->
+      <div class="hero-pcb-stage">
+        <div class="pcb-board" id="pcbBoard">
+          <canvas id="pcbCanvas"></canvas>
+          
+          <!-- Electronic HUD Overlays -->
+          <div class="hud-panel">
+            <div class="hud-top-row">
+              <div class="hud-item">
+                <span class="status-dot-green"></span> SYSTEM STATUS: ONLINE
+              </div>
+              <div class="hud-item">
+                CPU: 240 MHz
+              </div>
+            </div>
+            
+            <div class="hud-bottom-row">
+              <div class="hud-stat-box">
+                <span class="hud-stat-label">EDGE AI</span>
+                <span class="hud-stat-val">ACTIVE</span>
+              </div>
+              <div class="hud-stat-box">
+                <span class="hud-stat-label">IoT BUS</span>
+                <span class="hud-stat-val">CONNECTED</span>
+              </div>
+              <div class="hud-stat-box">
+                <span class="hud-stat-label">SENSORS</span>
+                <span class="hud-stat-val">06 ONLINE</span>
+              </div>
+              <div class="hud-stat-box">
+                <span class="hud-stat-label">SECURITY</span>
+                <span class="hud-stat-val">PROTECTED</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Transition Bus Trace connecting Hero to Projects -->
+    <div class="hero-transition-bus">
+      <div class="bus-trace-line"></div>
+      <div class="bus-trace-label">// EMBEDDED SYSTEM BUS → MY ENGINEERING PROJECTS</div>
+    </div>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+      <div class="section-header">
+        <span class="section-num">// 01</span>
+        <h2 class="section-title">Engineering Intelligent Systems</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Pioneering Cyber-Physical Hardware</h3>
+          <p>I am pursuing my B.Tech in <strong>Mechatronics Engineering</strong> at Jyothi Engineering College, Kerala. My focus lies at the intersection of mechanical dynamics, embedded microcontrollers, connected IoT infrastructure, and local machine intelligence (Edge AI).</p>
+          <p>My goal is to design real-world autonomous systems that sense environmental parameters, process decisions on edge hardware, communicate securely over networks, and take precise physical action.</p>
+          
+          <div class="about-focus-list">
+            <div class="focus-item">Mechanical Systems</div>
+            <div class="focus-item">Electronics</div>
+            <div class="focus-item">Embedded C/C++</div>
+            <div class="focus-item">IoT Architectures</div>
+            <div class="focus-item">Robotics</div>
+            <div class="focus-item">TinyML & Edge AI</div>
+            <div class="focus-item">Automation</div>
+            <div class="focus-item">Cybersecurity</div>
+          </div>
+        </div>
+
+        <div class="learning-card">
+          <div class="badge-heading">Hands-on vs. Currently Learning</div>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+            A transparent view of my active build stack versus skills currently being refined.
+          </p>
+          
+          <div class="badge-heading" style="color: var(--cyan); margin-top: 12px;">Active Build & Projects</div>
+          <div class="tech-pill-list" style="margin-bottom: 20px;">
+            <span class="tech-pill active">ESP32 & ESP32-CAM</span>
+            <span class="tech-pill active">Arduino C++</span>
+            <span class="tech-pill active">Sensor Interfacing</span>
+            <span class="tech-pill active">Blynk IoT & MQTT</span>
+            <span class="tech-pill active">Obstacle Avoidance FSM</span>
+          </div>
+
+          <div class="badge-heading">Currently Expanding</div>
+          <div class="tech-pill-list">
+            <span class="tech-pill">Edge Impulse / TinyML</span>
+            <span class="tech-pill">Raspberry Pi OpenCV</span>
+            <span class="tech-pill">IoT Security Protocol</span>
+            <span class="tech-pill">Industrial PLC</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Skills Section -->
+    <section class="section" id="skills">
+      <div class="section-header">
+        <span class="section-num">// 02</span>
+        <h2 class="section-title">Technical Domains</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3 class="skill-category"><span class="skill-icon">⚡</span> Embedded & Electronics</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">ESP32</span>
+            <span class="skill-tag">ESP32-CAM</span>
+            <span class="skill-tag">Arduino</span>
+            <span class="skill-tag">Raspberry Pi</span>
+            <span class="skill-tag">Sensors (DHT22, MPU6050, Ultrasonic)</span>
+            <span class="skill-tag">Actuators</span>
+            <span class="skill-tag">TB6612FNG Motor Drivers</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h3 class="skill-category"><span class="skill-icon">🌐</span> Internet of Things (IoT)</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Blynk IoT</span>
+            <span class="skill-tag">MQTT Protocol</span>
+            <span class="skill-tag">Cloud Connectivity</span>
+            <span class="skill-tag">Sensor Monitoring</span>
+            <span class="skill-tag">Telemetry Dashboards</span>
+            <span class="skill-tag">HTTP API Streaming</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h3 class="skill-category"><span class="skill-icon">🧠</span> Edge AI & TinyML</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">TinyML</span>
+            <span class="skill-tag">Edge Impulse</span>
+            <span class="skill-tag">TensorFlow Lite Micro</span>
+            <span class="skill-tag">Computer Vision</span>
+            <span class="skill-tag">AI-assisted Embedded Systems</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h3 class="skill-category"><span class="skill-icon">🤖</span> Robotics & Automation</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Differential Robotics</span>
+            <span class="skill-tag">Servo Motors</span>
+            <span class="skill-tag">DC Geared Motors</span>
+            <span class="skill-tag">Ultrasonic Avoidance</span>
+            <span class="skill-tag">Non-blocking FSM</span>
+            <span class="skill-tag">Control Systems</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h3 class="skill-category"><span class="skill-icon">🛡️</span> Cybersecurity</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Network Security Fundamentals</span>
+            <span class="skill-tag">IoT Device Security</span>
+            <span class="skill-tag">Secure Connected Systems</span>
+            <span class="skill-tag">Hardware Watchdogs</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h3 class="skill-category"><span class="skill-icon">💻</span> Programming Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">C / C++</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">HTML5</span>
+            <span class="skill-tag">CSS3</span>
+            <span class="skill-tag">JavaScript</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+      <div class="section-header">
+        <span class="section-num">// 03</span>
+        <h2 class="section-title">Engineered Projects</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1: Smart Security Patrol Robot (Featured) -->
+        <div class="project-card featured-card" onclick="openProjectModal('patrol-robot')">
+          <div class="project-img-wrapper">
+            <div class="project-blueprint"></div>
+            <div class="project-icon-large">🤖</div>
+          </div>
+          <div class="project-content">
+            <span class="project-badge">FEATURED HARDWARE & EMBEDDED SYSTEM</span>
+            <h3 class="project-title">Smart Security Patrol Robot V1</h3>
+            <p class="project-desc">Autonomous differential security rover with non-blocking FSM patrol, ultrasonic safety barrier detection, PIR motion intrusion alert, IMU pitch/roll tilt alarms, and standalone ESP32-CAM live MJPEG video streaming.</p>
+            <div class="project-tech">
+              <span class="project-tech-tag">ESP32</span>
+              <span class="project-tech-tag">ESP32-CAM</span>
+              <span class="project-tech-tag">TB6612FNG</span>
+              <span class="project-tech-tag">HC-SR04</span>
+              <span class="project-tech-tag">MPU6050</span>
+              <span class="project-tech-tag">MJPEG Stream</span>
+            </div>
+            <div class="project-footer">
+              <span>Click to inspect full architecture 🔍</span>
+              <span class="project-link-btn">Inspect System ↗</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Search & Rescue Robot -->
+        <div class="project-card" onclick="openProjectModal('search-rescue')">
+          <div class="project-img-wrapper">
+            <div class="project-blueprint"></div>
+            <div class="project-icon-large">🛰️</div>
+          </div>
+          <div class="project-content">
+            <span class="project-badge">ROBOTICS & SENSING</span>
+            <h3 class="project-title">Search & Rescue Mobile Platform</h3>
+            <p class="project-desc">Rugged remote mobile sensing unit equipped with real-time video feed and sensor monitoring to assist physical exploration in restricted zones.</p>
+            <div class="project-tech">
+              <span class="project-tech-tag">ESP32</span>
+              <span class="project-tech-tag">Camera Stream</span>
+              <span class="project-tech-tag">Multi-Sensor Array</span>
+              <span class="project-tech-tag">Raspberry Pi Ready</span>
+            </div>
+            <div class="project-footer">
+              <span>View details</span>
+              <span class="project-link-btn">Inspect ↗</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Smart Agriculture / AI Crop Monitoring -->
+        <div class="project-card" onclick="openProjectModal('smart-agri')">
+          <div class="project-img-wrapper">
+            <div class="project-blueprint"></div>
+            <div class="project-icon-large">🌱</div>
+          </div>
+          <div class="project-content">
+            <span class="project-badge">IoT & EDGE AI</span>
+            <h3 class="project-title">Smart Agriculture & AI Crop Monitoring</h3>
+            <p class="project-desc">IoT agricultural node integrating soil moisture, DHT22 climate telemetry, and ESP32-CAM visual monitoring with Edge Impulse classification.</p>
+            <div class="project-tech">
+              <span class="project-tech-tag">ESP32-CAM</span>
+              <span class="project-tech-tag">Edge Impulse</span>
+              <span class="project-tech-tag">Blynk IoT</span>
+              <span class="project-tech-tag">Soil & DHT22</span>
+            </div>
+            <div class="project-footer">
+              <span>View details</span>
+              <span class="project-link-btn">Inspect ↗</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Smart Classroom Management -->
+        <div class="project-card" onclick="openProjectModal('smart-classroom')">
+          <div class="project-img-wrapper">
+            <div class="project-blueprint"></div>
+            <div class="project-icon-large">🏫</div>
+          </div>
+          <div class="project-content">
+            <span class="project-badge">EMBEDDED AUTOMATION</span>
+            <h3 class="project-title">Smart Classroom Automation System</h3>
+            <p class="project-desc">Automated indoor environment and access controller featuring RFID student check-in, LCD status feedback, and climate-triggered relay fan actuation.</p>
+            <div class="project-tech">
+              <span class="project-tech-tag">ESP32</span>
+              <span class="project-tech-tag">RFID RC522</span>
+              <span class="project-tech-tag">DHT22</span>
+              <span class="project-tech-tag">LCD I2C</span>
+              <span class="project-tech-tag">Relay Modules</span>
+            </div>
+            <div class="project-footer">
+              <span>View details</span>
+              <span class="project-link-btn">Inspect ↗</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: Smart LPG Safety System -->
+        <div class="project-card" onclick="openProjectModal('lpg-safety')">
+          <div class="project-img-wrapper">
+            <div class="project-blueprint"></div>
+            <div class="project-icon-large">🔥</div>
+          </div>
+          <div class="project-content">
+            <span class="project-badge">SAFETY & CONTROL</span>
+            <h3 class="project-title">Smart LPG Safety & Shutoff System</h3>
+            <p class="project-desc">High-priority hazard detection system utilizing MQ-2 gas sensing to immediately actuate servo isolation valves, trigger buzzer alarms, and send cloud alerts.</p>
+            <div class="project-tech">
+              <span class="project-tech-tag">ESP32</span>
+              <span class="project-tech-tag">MQ-2 Gas Sensor</span>
+              <span class="project-tech-tag">Servo Shutoff</span>
+              <span class="project-tech-tag">Buzzer & LCD</span>
+            </div>
+            <div class="project-footer">
+              <span>View details</span>
+              <span class="project-link-btn">Inspect ↗</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Engineering System Visualization -->
+    <section class="section" id="pipeline">
+      <div class="section-header">
+        <span class="section-num">// 04</span>
+        <h2 class="section-title">How I Build Intelligent Systems</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="pipeline-container">
+        <div class="pipeline-flow">
+          <div class="pipeline-node">
+            <div class="node-title">SENSORS</div>
+            <div class="node-sub">IMU, Ultrasonic, PIR, Camera</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="node-title">MICROCONTROLLER</div>
+            <div class="node-sub">ESP32 / Dual Buck</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="node-title">EDGE PROCESSING</div>
+            <div class="node-sub">FSM & Filtering</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="node-title">AI / DECISION</div>
+            <div class="node-sub">TinyML / Impulse</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="node-title">IoT CONNECTIVITY</div>
+            <div class="node-sub">MQTT / Wi-Fi</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="node-title">CLOUD DASHBOARD</div>
+            <div class="node-sub">Blynk / Web Interface</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="node-title">PHYSICAL ACTION</div>
+            <div class="node-sub">Motors, Servos, Relays</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Career Path / Journey -->
+    <section class="section" id="journey">
+      <div class="section-header">
+        <span class="section-num">// 05</span>
+        <h2 class="section-title">My Engineering Journey</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">01. Mechatronics Foundation</h3>
+            <p class="timeline-desc">Mastering mechanical dynamics, circuit analysis, CAD fundamentals, and physical electronics control at Jyothi Engineering College.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">02. Embedded Programming & Microcontrollers</h3>
+            <p class="timeline-desc">Building non-blocking C/C++ finite state machines for ESP32, Arduino, and multi-sensor interfacing.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">03. Internet of Things (IoT) Systems</h3>
+            <p class="timeline-desc">Connecting hardware nodes to wireless networks via Blynk, MQTT protocols, and telemetry dashboards.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">04. Edge AI & TinyML Integration</h3>
+            <p class="timeline-desc">Deploying lightweight machine learning models onto embedded hardware using Edge Impulse and computer vision.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">05. Cybersecurity Specialization</h3>
+            <p class="timeline-desc">Complementary focus area ensuring hardware nodes, wireless protocols, and connected cyber-physical systems remain resilient against unauthorized access.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 class="timeline-title">06. Autonomous Intelligent Systems</h3>
+            <p class="timeline-desc">Long-term vision: Designing fully autonomous, self-monitoring industrial robotic platforms.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+      <div class="section-header">
+        <span class="section-num">// 06</span>
+        <h2 class="section-title">Let's Build Something Intelligent</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="contact-container">
+        <div class="contact-info">
+          <a href="mailto:sangeethcherur@gmail.com" class="contact-card">
+            <div class="contact-icon">✉️</div>
+            <div class="contact-details">
+              <label>Direct Email</label>
+              <span>sangeethcherur@gmail.com</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/sangeeth2008" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon">💻</div>
+            <div class="contact-details">
+              <label>GitHub Code Repositories</label>
+              <span>github.com/sangeeth2008</span>
+            </div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon">🔗</div>
+            <div class="contact-details">
+              <label>LinkedIn Network</label>
+              <span>linkedin.com/in/sangeeth-sasikumar-k-s</span>
+            </div>
+          </a>
+        </div>
+
+        <form class="contact-form" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" class="form-control" required placeholder="Recruiter / Engineer Name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" class="form-control" required placeholder="name@company.com">
+          </div>
+          <div class="form-group">
+            <label for="message">Project Inquiry / Message</label>
+            <textarea id="message" class="form-control" required placeholder="Discussing IoT, Edge AI or Mechatronics opportunities..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="justify-content: center; width: 100%;">
+            SEND COMMUNICATION SIGNAL ↗
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Inspector Window -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-panel" id="modalPanel">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close modal">×</button>
+      <div class="modal-header">
+        <div id="modalCategory" class="project-badge">SPECIFICATION SHEET</div>
+        <h3 id="modalTitle" class="modal-title">Project Title</h3>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="modal-section-title">Problem & Objective</div>
+          <p id="modalProblem" class="modal-text"></p>
+        </div>
+        <div>
+          <div class="modal-section-title">Engineered Solution</div>
+          <p id="modalSolution" class="modal-text"></p>
+        </div>
+        <div class="modal-specs-grid">
+          <div>
+            <div class="modal-section-title">Hardware Architecture</div>
+            <p id="modalHardware" class="modal-text" style="font-family: var(--font-mono); font-size: 0.85rem;"></p>
+          </div>
+          <div>
+            <div class="modal-section-title">Software & Firmware</div>
+            <p id="modalSoftware" class="modal-text" style="font-family: var(--font-mono); font-size: 0.85rem;"></p>
+          </div>
+        </div>
+        <div>
+          <div class="modal-section-title">AI & IoT Integration</div>
+          <p id="modalAiIot" class="modal-text"></p>
+        </div>
+        <div>
+          <div class="modal-section-title">Future Upgrade Path</div>
+          <p id="modalUpgrades" class="modal-text"></p>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="scene" id="scene">
-    <div class="hud"><button class="core-button" id="coreButton" type="button">WEBGL CORE // ONLINE</button><div class="left">ESP32</div><div class="right">EDGE AI</div><div class="bottom">IoT BUS // SECURE</div></div>
-  </div>
-</section>
 
-<section class="section" id="about">
-<div class="section-head"><span>// 01 · engineering identity</span><i></i></div>
-<div class="grid2">
-  <div class="card"><div class="eyebrow">PRIMARY DIRECTION</div><h2>IoT / Embedded AI Engineer</h2><p>Mechatronics is my engineering base. IoT is my main career direction. Edge AI and cybersecurity are the layers I want to build on top.</p></div>
-  <div class="card"><div class="eyebrow">FOCUS STACK</div><div class="stack">Mechatronics<br>↓<br>Embedded Systems<br>↓<br>IoT<br>↓<br>Edge AI<br>↓<br>Secure Cyber-Physical Systems</div></div>
-</div>
-</section>
+  <!-- Footer -->
+  <footer>
+    <div>© 2026 SANGEETH SASIKUMAR K S — Mechatronics × Electronics × Edge AI</div>
+    <div>Jyothi Engineering College, Kerala, India</div>
+  </footer>
 
-<section class="section" id="journey">
-<div class="section-head"><span>// 02 · engineering journey</span><i></i></div>
-<div class="timeline" id="timeline"></div>
-<div class="target">→ target: secure intelligent industrial IoT systems</div>
-</section>
+  <!-- Script for PCB Canvas Animation & Interactions -->
+  <script>
+    // Project Data Dictionary
+    const projectData = {
+      'patrol-robot': {
+        title: 'Smart Security Patrol Robot V1',
+        category: 'FEATURED HARDWARE & EMBEDDED SYSTEM',
+        problem: 'Autonomous industrial facility security requires continuous perimeter monitoring, obstacle avoidance, and tilt hazard detection without continuous human manual drive.',
+        solution: 'Built a 2-wheel differential security rover managed by a non-blocking Finite State Machine (FSM) running on an ESP32 micro-controller, with isolated power bucks to eliminate brownouts during motor acceleration.',
+        hardware: 'ESP32 Dev Module, ESP32-CAM, TB6612FNG Dual H-Bridge, HC-SR04 Ultrasonic, MPU6050 6-DOF IMU, PIR HC-SR501, Dual 5A Buck Converters.',
+        software: 'C++ Modular Arduino Firmware, Non-blocking FSM patrol cycle, Servo pan scanning algorithm, MJPEG Streaming Server.',
+        aiIot: 'Dedicated ESP32-CAM Wi-Fi MJPEG video server stream with built-in UART protocol hooks for V2 computer vision integration.',
+        upgrades: 'V2 Architecture upgrade plan ready for Raspberry Pi Zero 2 W with OpenCV intruder motion tracking & Edge Impulse object classification.'
+      },
+      'search-rescue': {
+        title: 'Search & Rescue Mobile Platform',
+        category: 'ROBOTICS & SENSING',
+        problem: 'Navigating dangerous collapsed or hazardous areas during search and rescue operations without risking human responders.',
+        solution: 'Designed a compact remote mobile exploration platform equipped with thermal/camera video feed and environmental sensor monitoring.',
+        hardware: 'ESP32, Camera module, Distance sensors, RF/Wi-Fi wireless transceivers.',
+        software: 'Embedded C++, telemetry data protocol, motor control library.',
+        aiIot: 'Live sensor telemetry streaming to central monitoring unit.',
+        upgrades: 'Integration of Raspberry Pi host controller for mapping and SLAM autonomous navigation.'
+      },
+      'smart-agri': {
+        title: 'Smart Agriculture & AI Crop Monitoring',
+        category: 'IoT & EDGE AI',
+        problem: 'Manual agricultural crop health monitoring and soil moisture checking is labor-intensive and inefficient.',
+        solution: 'Created an intelligent agricultural sensor node that tracks soil hydration and ambient climate, combined with camera vision.',
+        hardware: 'ESP32-CAM, Capacitive Soil Moisture Sensor, DHT22 Temp/Humidity Sensor, Solar power module.',
+        software: 'C++, Blynk IoT library, Edge Impulse TinyML vision model.',
+        aiIot: 'Edge Impulse visual classification model for plant disease identification and cloud telemetry via Blynk IoT.',
+        upgrades: 'Automated solar irrigation valve control based on predictive weather & AI soil models.'
+      },
+      'smart-classroom': {
+        title: 'Smart Classroom Automation System',
+        category: 'EMBEDDED AUTOMATION',
+        problem: 'Manual student attendance recording and unmanaged electrical consumption in educational spaces.',
+        solution: 'Integrated RFID reader for instant student check-in with DHT22 temperature sensor automating fan relay switching.',
+        hardware: 'ESP32, MFRC522 RFID, DHT22, 16x2 I2C LCD Display, 5V Relay Modules.',
+        software: 'C++, RFID UID validation, I2C driver integration.',
+        aiIot: 'Local storage logging with cloud database synchronization.',
+        upgrades: 'Occupancy counter integration using dual ultrasonic beam sensors.'
+      },
+      'lpg-safety': {
+        title: 'Smart LPG Safety & Shutoff System',
+        category: 'SAFETY & CONTROL',
+        problem: 'LPG gas leaks pose severe fire hazards in commercial and domestic environments if not shut off immediately.',
+        solution: 'Engineered a safety monitoring node that senses gas concentrations via MQ-2, immediately actuating a high-torque servo to physically close the gas valve.',
+        hardware: 'ESP32, MQ-2 Gas Sensor, High-torque Servo Motor, Piezo Buzzer, LCD Display.',
+        software: 'C++, Threshold interrupt detection, Servo valve controller.',
+        aiIot: 'Instant Wi-Fi emergency push notification sent to mobile devices when gas concentration exceeds threshold.',
+        upgrades: 'Integration of load-cell weight sensor for automated cylinder refilling alert.'
+      }
+    };
 
-<section class="section">
-<div class="section-head"><span>// 03 · areas of interest</span><i></i></div>
-<div class="domains" id="domains"></div>
-</section>
+    function openProjectModal(key) {
+      const data = projectData[key];
+      if (!data) return;
+      document.getElementById('modalCategory').textContent = data.category;
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalProblem').textContent = data.problem;
+      document.getElementById('modalSolution').textContent = data.solution;
+      document.getElementById('modalHardware').textContent = data.hardware;
+      document.getElementById('modalSoftware').textContent = data.software;
+      document.getElementById('modalAiIot').textContent = data.aiIot;
+      document.getElementById('modalUpgrades').textContent = data.upgrades;
+      const backdrop = document.getElementById('modalBackdrop');
+      backdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
 
-<section class="section" id="skills">
-<div class="section-head"><span>// 04 · skills &amp; tools</span><i></i></div>
-<div class="skills" id="skillsPanel"></div>
-<div class="learning"><div class="eyebrow">CURRENTLY LEARNING</div><div class="chips" id="learning"></div></div>
-</section>
+    function closeModal() {
+      const backdrop = document.getElementById('modalBackdrop');
+      backdrop.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
 
-<section class="section" id="projects">
-<div class="section-head"><span>// 05 · projects</span><i></i></div>
-<div class="projects" id="projectsPanel"></div>
-</section>
+    function closeModalOnBackdrop(e) {
+      if (e.target === document.getElementById('modalBackdrop')) closeModal();
+    }
 
-<section class="section" id="contact">
-<div class="section-head"><span>// 06 · contact</span><i></i></div>
-<div class="contact">
-  <div><div class="eyebrow">LET'S BUILD SOMETHING INTELLIGENT</div><h2>Hardware → software → intelligence.</h2><p>Open to learning, building and connecting around IoT, robotics, embedded AI and secure connected systems.</p></div>
-  <div class="clines">
-    <div><span>EMAIL</span><a href="mailto:sangeethcherur@gmail.com">sangeethcherur@gmail.com</a></div>
-    <div><span>GITHUB</span><a href="https://github.com/sangeeth2008" target="_blank" rel="noreferrer">github.com/sangeeth2008</a></div>
-    <div><span>LINKEDIN</span><a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noreferrer">linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422</a></div>
-    <div><span>LOCATION</span><strong>Kerala, India</strong></div>
-  </div>
-</div>
-<footer><span>© <span id="year"></span> SANGEETH SASIKUMAR K S</span><span>MECHATRONICS · IoT · EMBEDDED AI</span></footer>
-</section>
-</main>
-</div>
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
 
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      alert('Signal Sent! Sangeeth Sasikumar will review your message shortly.');
+      e.target.reset();
+    }
 
-<div class="modal" id="projectModal" aria-hidden="true">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
-    <div class="modal-meta" id="modalMeta">PROJECT // DETAIL</div>
-    <h3 id="modalTitle"></h3>
-    <p id="modalDesc"></p>
-    <div class="eyebrow">TECHNOLOGY STACK</div>
-    <div class="modal-list" id="modalTech"></div>
-  </div>
-</div>
-<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-<script>
-const journey=[
- ['01','Mechatronics engineering','Mechanical systems + electronics + control'],
- ['02','Embedded systems','C / C++ + microcontrollers + sensors + actuators'],
- ['03','IoT','ESP32 + networking + MQTT + cloud + connected devices'],
- ['04','Edge AI','Python + machine learning + Edge Impulse + TinyML'],
- ['05','Robotics','Sensors + motors + control + computer vision'],
- ['06','Cybersecurity','Networking + IoT security + embedded security']
-];
-const domains=[
- ['Mechatronics',['Robotics','Automation','Sensors & actuators','Control systems','PLC','PID']],
- ['IoT',['ESP32 / ESP8266','Wireless communication','MQTT','IoT dashboards','Industrial IoT']],
- ['Edge AI',['TinyML','Edge Impulse','Computer vision','TensorFlow Lite','AI on embedded devices']],
- ['Embedded systems',['Embedded C / C++','Microcontrollers','Sensor interfacing','Motor control','Embedded Linux']],
- ['Cybersecurity',['Networking','IoT security','Embedded security','Secure device comms','Cyber-physical security']]
-];
-const skills=[
- ['DEVELOPING',['C','C++','Python']],
- ['ALSO USING',['Arduino','HTML','CSS','JavaScript']],
- ['HARDWARE',['ESP32','ESP32-CAM','ESP8266 NodeMCU','Arduino Uno','Raspberry Pi 3B+']],
- ['SENSORS / MODULES',['DHT11 / DHT22','Soil moisture','LDR','MQ-2','MQ-135','Ultrasonic','IR','Rain','Flame','RFID']],
- ['TOOLS',['Arduino IDE','VS Code','Blynk IoT','Edge Impulse','TensorFlow Lite','GitHub','Ollama']]
-];
-const learning=['C/C++','Networking','IoT','Embedded systems','Edge AI','TinyML','Cybersecurity','PLC','PID control','Industrial automation'];
-const projects=[
- ['Smart Security Patrol Robot','A security and surveillance robot combining embedded systems, sensors and camera vision, with future Edge AI. Planned upgrade path: Raspberry Pi + object detection + secure remote monitoring.',['ESP32','ESP32-CAM','Ultrasonic sensors','Motor driver','Computer vision'],'◈'],
- ['Search & Rescue Robot','A robotic platform for search-and-rescue scenarios, using cameras, sensors and wireless communication, with future Edge AI capability.',['Cameras','Sensors','Wireless comms'],'⌁'],
- ['AI Smart Agriculture','A modular system for crop and environmental monitoring, aiming at AI-based plant and crop detection.',['ESP32-CAM','Edge Impulse','Soil moisture sensor','DHT22','Blynk IoT'],'❖'],
- ['Smart LPG Safety System','An ESP32-based gas safety automation project that detects gas leakage and triggers automated safety actions.',['MQ-2','Servo motor','Relay','Buzzer','LCD I2C'],'◉'],
- ['Smart Classroom Management System','An ESP32-based classroom automation concept covering RFID attendance and temperature/humidity-driven fan control.',['RFID','DHT22','LCD I2C','Relay'],'▣']
-];
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+      const header = document.getElementById('header');
+      if (winScroll > 50) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    });
 
-document.getElementById('year').textContent=new Date().getFullYear();
-document.getElementById('timeline').innerHTML=journey.map((x,i)=>`<button class="trow ${i===0?'active':''}" data-i="${i}"><span class="node">${x[0]}</span><span><strong>${x[1]}</strong><small>${x[2]}</small></span></button>`).join('');
-document.querySelectorAll('.trow').forEach(btn=>{
-  const activate=()=>{document.querySelectorAll('.trow').forEach(b=>b.classList.remove('active'));btn.classList.add('active')};
-  btn.addEventListener('mouseenter',activate);btn.addEventListener('click',activate);
-});
-document.getElementById('domains').innerHTML=domains.map(d=>`<article class="domain"><h3>${d[0]}</h3><ul>${d[1].map(x=>`<li><b>·</b>${x}</li>`).join('')}</ul></article>`).join('');
-document.getElementById('skillsPanel').innerHTML=skills.map(g=>`<div class="skillrow"><div class="skilllabel">${g[0]}</div><div class="chips">${g[1].map(x=>`<span>${x}</span>`).join('')}</div></div>`).join('');
-document.getElementById('learning').innerHTML=learning.map(x=>`<span>${x}</span>`).join('');
-document.getElementById('projectsPanel').innerHTML=projects.map((p,i)=>`<article class="project ${i===0?'featured':''}" data-project="${i}" tabindex="0" role="button"><div class="picon">${p[3]}</div><div><div class="ptop"><h3>${p[0]}</h3><span class="tag signal">concept</span></div><p>${p[1]}</p><div class="tech">${p[2].join(' · ')}</div></div><div class="parrow">↗</div></article>`).join('');
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
 
-const menuBtn=document.getElementById('menuBtn'),navLinks=document.getElementById('navLinks');
-menuBtn.addEventListener('click',()=>navLinks.classList.toggle('open'));
-navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+    // REALISTIC EMBEDDED ELECTRONICS PCB CANVAS RENDERER
+    const pcbCanvas = document.getElementById('pcbCanvas');
+    const ctx = pcbCanvas.getContext('2d');
+    const stage = document.querySelector('.hero-pcb-stage');
+    const board = document.getElementById('pcbBoard');
 
-// interaction layer
-const progress=document.getElementById('progress');
-const focusRing=document.getElementById('focusRing');
-window.addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=(max>0?(scrollY/max)*100:0)+'%'});
-window.addEventListener('pointermove',e=>{focusRing.style.setProperty('--mx',e.clientX+'px');focusRing.style.setProperty('--my',e.clientY+'px')});
+    function resizePcbCanvas() {
+      pcbCanvas.width = pcbBoard.offsetWidth;
+      pcbCanvas.height = pcbBoard.offsetHeight;
+    }
+    window.addEventListener('resize', resizePcbCanvas);
+    resizePcbCanvas();
 
-const modal=document.getElementById('projectModal'), modalTitle=document.getElementById('modalTitle'), modalDesc=document.getElementById('modalDesc'), modalTech=document.getElementById('modalTech');
-function openProject(i){const p=projects[i];modalTitle.textContent=p[0];modalDesc.textContent=p[1];modalTech.innerHTML=p[2].map(x=>`<span>${x}</span>`).join('');modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
-function closeProject(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
-document.getElementById('modalClose').addEventListener('click',closeProject);modal.addEventListener('click',e=>{if(e.target===modal)closeProject()});window.addEventListener('keydown',e=>{if(e.key==='Escape')closeProject()});
-document.querySelectorAll('.project').forEach((el,i)=>{el.addEventListener('click',()=>openProject(i));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openProject(i)}})});
+    // Mouse Parallax Micro-interaction
+    let mouseX = 0, mouseY = 0;
+    stage.addEventListener('mousemove', (e) => {
+      const rect = stage.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      
+      const rotY = (x / rect.width) * 14;
+      const rotX = -(y / rect.height) * 14;
+      board.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+    });
 
-// keyboard navigation: 1-6 jumps to major sections
-const sectionMap={1:'about',2:'journey',3:'skills',4:'projects',5:'contact',6:'top'};
-window.addEventListener('keydown',e=>{if(modal.classList.contains('open'))return;const id=sectionMap[e.key];if(id)document.getElementById(id)?.scrollIntoView({behavior:'smooth'})});
+    stage.addEventListener('mouseleave', () => {
+      board.style.transform = `rotateY(-7deg) rotateX(5deg)`;
+      mouseX = -100; mouseY = -100;
+    });
 
-const mount=document.getElementById('scene');
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(44,mount.clientWidth/mount.clientHeight,.1,100);
-camera.position.set(.3,.3,7.2);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setSize(mount.clientWidth,mount.clientHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;mount.appendChild(renderer.domElement);
-scene.add(new THREE.AmbientLight(0x7fb59b,1.4));
-const key=new THREE.PointLight(0xc6884a,22,18);key.position.set(3,4,5);scene.add(key);
-const fill=new THREE.PointLight(0x5fcba3,18,16);fill.position.set(-4,-1,3);scene.add(fill);
-const group=new THREE.Group();scene.add(group);
+    // Electronics Circuit Components & Bus Definitions
+    const pcbComponents = [
+      { id: 'U01', label: 'ESP32 / EDGE AI', type: 'MCU', x: 0.5, y: 0.5, w: 120, h: 120 },
+      { id: 'U02', label: 'SENSORS BUS', type: 'IC', x: 0.5, y: 0.2, w: 90, h: 48 },
+      { id: 'J01', label: 'IoT / Wi-Fi', type: 'MODULE', x: 0.22, y: 0.72, w: 84, h: 54 },
+      { id: 'J02', label: 'ROBOTICS DRIVER', type: 'IC', x: 0.78, y: 0.72, w: 96, h: 54 },
+      { id: 'R01', label: 'R01', type: 'RES', x: 0.32, y: 0.38, w: 24, h: 10 },
+      { id: 'C04', label: 'C04', type: 'CAP', x: 0.68, y: 0.38, w: 16, h: 16 }
+    ];
 
-const core=new THREE.Mesh(new THREE.IcosahedronGeometry(1.25,2),
-new THREE.MeshStandardMaterial({color:0x10221a,metalness:.72,roughness:.28,emissive:0x15372a,emissiveIntensity:1.2}));
-group.add(core);
-const coreButton=document.getElementById('coreButton');
-let reactorMode=0;
-coreButton.addEventListener('click',()=>{
-  reactorMode=(reactorMode+1)%3;
-  const modes=[
-    {label:'WEBGL CORE // ONLINE', color:0x15372a, glow:1.2},
-    {label:'EDGE AI // INFERENCE', color:0x3a2819, glow:1.8},
-    {label:'SECURE BUS // ACTIVE', color:0x102b22, glow:1.6}
-  ];
-  const m=modes[reactorMode];coreButton.textContent=m.label;core.material.emissive.setHex(m.color);core.material.emissiveIntensity=m.glow;
-});
+    const traces = [
+      { from: 'U02', to: 'U01', bus: 'I2C' },
+      { from: 'U01', to: 'J01', bus: 'MQTT / Wi-Fi' },
+      { from: 'U01', to: 'J02', bus: 'PWM / MOTOR' },
+      { from: 'R01', to: 'U01', bus: 'GPIO' },
+      { from: 'C04', to: 'U01', bus: '3V3' }
+    ];
 
-const torus=new THREE.TorusGeometry(1.75,.024,10,140);
-[0,Math.PI/3,-Math.PI/3].forEach((r,i)=>{
- const ring=new THREE.Mesh(torus,new THREE.MeshBasicMaterial({color:i===1?0xc6884a:0x5fcba3,transparent:true,opacity:.84}));
- ring.rotation.set(r,i===2?Math.PI/2:Math.PI/3,0);group.add(ring);
-});
-const nodes=[];
-for(let i=0;i<42;i++){
- const a=i/42*Math.PI*2,r=2.15+(i%3)*.06;
- const n=new THREE.Mesh(new THREE.SphereGeometry(.045,12,12),new THREE.MeshBasicMaterial({color:i%5===0?0xc6884a:0x5fcba3}));
- n.position.set(Math.cos(a)*r,Math.sin(a*1.9)*.42,Math.sin(a)*r*.55);group.add(n);nodes.push(n);
-}
-const pgeo=new THREE.BufferGeometry(), pts=new Float32Array(700*3);
-for(let i=0;i<700;i++){const r=3+Math.random()*4.5,a=Math.random()*Math.PI*2;pts[i*3]=Math.cos(a)*r;pts[i*3+1]=(Math.random()-.5)*5;pts[i*3+2]=Math.sin(a)*r}
-pgeo.setAttribute('position',new THREE.BufferAttribute(pts,3));
-const particles=new THREE.Points(pgeo,new THREE.PointsMaterial({color:0x6fae94,size:.015,transparent:true,opacity:.55}));scene.add(particles);
+    const dataSignals = [
+      { fromIdx: 1, toIdx: 0, progress: 0, speed: 0.006 },
+      { fromIdx: 0, toIdx: 2, progress: 0.3, speed: 0.008 },
+      { fromIdx: 0, toIdx: 3, progress: 0.7, speed: 0.007 },
+      { fromIdx: 4, toIdx: 0, progress: 0.5, speed: 0.009 }
+    ];
 
-const mouse={x:0,y:0};
-mount.addEventListener('pointermove',e=>{const r=mount.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width-.5)*2;mouse.y=((e.clientY-r.top)/r.height-.5)*2});
-mount.addEventListener('pointerdown',()=>{core.scale.setScalar(1.16);setTimeout(()=>core.scale.setScalar(1),170)});
-const clock=new THREE.Clock();
-function resize(){camera.aspect=mount.clientWidth/mount.clientHeight;camera.updateProjectionMatrix();renderer.setSize(mount.clientWidth,mount.clientHeight)}
-window.addEventListener('resize',resize);
-function animate(){
- const t=clock.getElapsedTime();
- group.rotation.y+=.0025;
- group.rotation.x=THREE.MathUtils.lerp(group.rotation.x,mouse.y*.18,.03);
- group.rotation.z=THREE.MathUtils.lerp(group.rotation.z,mouse.x*.12,.03);
- core.rotation.x=t*.15;core.rotation.y=t*.22;
- nodes.forEach((n,i)=>n.scale.setScalar(1+Math.sin(t*2+i*.7)*.18));
- particles.rotation.y=t*.025;
- renderer.render(scene,camera);requestAnimationFrame(animate);
-}
-animate();
-</script>
+    function drawPcb() {
+      const W = pcbCanvas.width;
+      const H = pcbCanvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // 1. Draw Subtle PCB Silk Grid & Traces Pattern
+      ctx.strokeStyle = 'rgba(0, 229, 255, 0.08)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 30) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+      }
+      for (let y = 0; y < H; y += 30) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+
+      // 2. Draw Copper Circuit Traces
+      traces.forEach(t => {
+        const fromComp = pcbComponents.find(c => c.id === t.from);
+        const toComp = pcbComponents.find(c => c.id === t.to);
+        if (!fromComp || !toComp) return;
+
+        const fx = fromComp.x * W; const fy = fromComp.y * H;
+        const tx = toComp.x * W; const ty = toComp.y * H;
+
+        ctx.beginPath();
+        ctx.moveTo(fx, fy);
+        ctx.lineTo(fx, ty);
+        ctx.lineTo(tx, ty);
+        
+        // Proximity glow
+        const dist = Math.hypot(mouseX - (fx + tx) / 2, mouseY - (fy + ty) / 2);
+        if (dist < 100) {
+          ctx.strokeStyle = '#00e5ff';
+          ctx.lineWidth = 2.5;
+          ctx.shadowColor = '#00e5ff';
+          ctx.shadowBlur = 12;
+        } else {
+          ctx.strokeStyle = 'rgba(198, 136, 74, 0.45)';
+          ctx.lineWidth = 1.8;
+          ctx.shadowBlur = 0;
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Bus text label
+        ctx.font = '9px "IBM Plex Mono", monospace';
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.5)';
+        ctx.fillText(t.bus, (fx + tx) / 2 - 15, (fy + ty) / 2 - 6);
+      });
+
+      // 3. Draw Traveling Electrical Signals
+      dataSignals.forEach(s => {
+        s.progress += s.speed;
+        if (s.progress >= 1) s.progress = 0;
+
+        const from = pcbComponents[s.fromIdx];
+        const to = pcbComponents[s.toIdx];
+        const fx = from.x * W; const fy = from.y * H;
+        const tx = to.x * W; const ty = to.y * H;
+
+        const cx = fx + (tx - fx) * s.progress;
+        const cy = fy + (ty - fy) * s.progress;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#00e5ff';
+        ctx.shadowColor = '#00e5ff';
+        ctx.shadowBlur = 14;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      // 4. Draw PCB IC Components & Pins
+      pcbComponents.forEach(c => {
+        const cx = c.x * W;
+        const cy = c.y * H;
+        const hw = c.w / 2;
+        const hh = c.h / 2;
+
+        // Main IC Body
+        ctx.fillStyle = '#09150e';
+        ctx.strokeStyle = 'rgba(0, 229, 255, 0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(cx - hw, cy - hh, c.w, c.h);
+        ctx.strokeRect(cx - hw, cy - hh, c.w, c.h);
+
+        // IC Pin Headers
+        ctx.fillStyle = '#c6884a';
+        for (let px = cx - hw + 8; px <= cx + hw - 8; px += 12) {
+          ctx.fillRect(px - 2, cy - hh - 5, 4, 5);
+          ctx.fillRect(px - 2, cy + hh, 4, 5);
+        }
+
+        // Technical Designator Label
+        ctx.font = '10px "IBM Plex Mono", monospace';
+        ctx.fillStyle = '#00e5ff';
+        ctx.textAlign = 'center';
+        ctx.fillText(c.label, cx, cy + 3);
+        ctx.font = '8px "IBM Plex Mono", monospace';
+        ctx.fillStyle = 'rgba(198, 136, 74, 0.8)';
+        ctx.fillText(c.id, cx - hw + 14, cy - hh + 12);
+      });
+
+      requestAnimationFrame(drawPcb);
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion) {
+      drawPcb();
+    }
+  </script>
 </body>
 </html>
