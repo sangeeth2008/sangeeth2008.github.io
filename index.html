@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>SANGEETH SASIKUMAR K S | Mechatronics, Electronics & Edge AI</title>
   <meta name="description" content="Portfolio of SANGEETH SASIKUMAR K S — Mechatronics & Electronics Engineering Student specializing in Embedded Systems, IoT, Edge AI, Robotics & Cybersecurity.">
   <meta name="keywords" content="Sangeeth Sasikumar, Electronics, Mechatronics, Embedded Systems, IoT, Edge AI, TinyML, Robotics, ESP32, PCB Design">
@@ -20,17 +20,26 @@
 
   <style>
     :root {
-      --bg-dark: #040907;
-      --bg-pcb: #07120c;
-      --bg-panel: #0a1710;
-      --bg-card: rgba(12, 26, 18, 0.85);
-      --border-color: rgba(32, 64, 48, 0.7);
-      --border-glow: rgba(0, 229, 255, 0.35);
+      --bg-dark: #020503;
+      --bg-pcb: #030a05;
+      
+      /* INTENSIFIED LIQUID GLASS DESIGN SYSTEM */
+      --liquid-bg: rgba(4, 12, 8, 0.45);
+      --liquid-panel: rgba(6, 17, 11, 0.52);
+      --liquid-card: rgba(8, 22, 15, 0.58);
+      --liquid-card-hover: rgba(12, 32, 21, 0.85);
+      
+      --liquid-border: rgba(0, 229, 255, 0.38);
+      --liquid-border-glow: rgba(0, 229, 255, 0.65);
+      --liquid-highlight: inset 0 2px 4px rgba(255, 255, 255, 0.32), inset 0 -3px 6px rgba(0, 0, 0, 0.8), 0 25px 60px rgba(0, 0, 0, 0.85);
+      --liquid-glow: 0 0 35px rgba(0, 229, 255, 0.32);
+      --liquid-filter: blur(28px) saturate(220%) contrast(108%);
+      --liquid-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       
       --cyan: #00e5ff;
-      --cyan-glow: rgba(0, 229, 255, 0.25);
+      --cyan-glow: rgba(0, 229, 255, 0.4);
       --copper: #c6884a;
-      --copper-glow: rgba(198, 136, 74, 0.2);
+      --copper-glow: rgba(198, 136, 74, 0.32);
       --status-green: #00e676;
       
       --text-main: #f0f6f4;
@@ -45,6 +54,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html {
@@ -58,6 +68,7 @@
       font-family: var(--font-sans);
       line-height: 1.6;
       overflow-x: hidden;
+      touch-action: manipulation;
     }
 
     /* Scroll progress bar */
@@ -69,21 +80,21 @@
       width: 0%;
       background: linear-gradient(90deg, var(--cyan), var(--status-green), var(--copper));
       z-index: 1000;
-      box-shadow: 0 0 12px var(--cyan);
+      box-shadow: 0 0 18px var(--cyan);
       transition: width 0.1s linear;
     }
 
-    /* Technical PCB Background Grid & Marks */
+    /* Technical PCB Background Grid & Ambient Glows */
     .pcb-grid-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.15;
+      opacity: 0.2;
       background-image: 
-        linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.08) 1px, transparent 1px);
-      background-size: 40px 40px;
+        linear-gradient(rgba(0, 229, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.1) 1px, transparent 1px);
+      background-size: 44px 44px;
     }
 
     .radial-glow {
@@ -92,11 +103,11 @@
       pointer-events: none;
       z-index: 0;
       background: 
-        radial-gradient(circle at 75% 25%, rgba(0, 229, 255, 0.06), transparent 45%),
-        radial-gradient(circle at 20% 80%, rgba(198, 136, 74, 0.05), transparent 40%);
+        radial-gradient(circle at 75% 20%, rgba(0, 229, 255, 0.12), transparent 45%),
+        radial-gradient(circle at 18% 75%, rgba(198, 136, 74, 0.1), transparent 40%);
     }
 
-    /* Header Navigation */
+    /* INTENSIFIED LIQUID GLASS HEADER NAVIGATION */
     .header {
       position: fixed;
       top: 0;
@@ -107,18 +118,19 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px 6vw;
-      background: rgba(4, 9, 7, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(4, 11, 7, 0.45) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border-bottom: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
       transition: all 0.3s ease;
     }
 
     .header.scrolled {
       padding: 12px 6vw;
-      background: rgba(4, 9, 7, 0.94);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.85) 100%);
       border-bottom-color: var(--cyan);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), var(--liquid-highlight), var(--liquid-glow);
     }
 
     .brand {
@@ -138,9 +150,15 @@
       font-size: 0.8rem;
     }
 
+    .nav-right-tools {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     .nav-links {
       display: flex;
-      gap: 28px;
+      gap: 24px;
       list-style: none;
     }
 
@@ -177,14 +195,41 @@
       width: 100%;
     }
 
+    .cli-btn-header {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--cyan);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 229, 255, 0.12) 100%);
+      border: 1px solid var(--liquid-border);
+      border-radius: 6px;
+      padding: 8px 14px;
+      min-height: 40px;
+      cursor: pointer;
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      box-shadow: var(--liquid-highlight);
+      transition: all 0.3s var(--liquid-spring);
+    }
+
+    .cli-btn-header:hover {
+      background: var(--cyan);
+      color: #000;
+      box-shadow: 0 0 25px var(--cyan), var(--liquid-highlight);
+      transform: translateY(-2px);
+    }
+
     .menu-toggle {
       display: none;
-      background: none;
-      border: 1px solid var(--border-color);
+      background: rgba(5, 14, 9, 0.7);
+      border: 1px solid var(--liquid-border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       color: var(--text-main);
-      padding: 6px 12px;
-      border-radius: 4px;
+      padding: 8px 14px;
+      min-height: 40px;
+      border-radius: 6px;
       font-family: var(--font-mono);
+      font-size: 0.9rem;
       cursor: pointer;
     }
 
@@ -225,12 +270,10 @@
     .section-line {
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, var(--border-color), transparent);
+      background: linear-gradient(90deg, var(--liquid-border), transparent);
     }
 
-    /* ---------------------------------------------------- */
-    /* HARDWARE ACCELERATED SCROLL REVEAL ANIMATIONS       */
-    /* ---------------------------------------------------- */
+    /* HARDWARE ACCELERATED SCROLL REVEAL ANIMATIONS */
     .reveal {
       opacity: 0;
       transform: translateY(35px);
@@ -267,7 +310,31 @@
       transform: translateY(0) translateX(0) scale(1);
     }
 
-    /* HERO SECTION — PREMIUM ELECTRONICS LAB WORKSPACE */
+    /* INTENSIFIED LIQUID GLARE SWEEP EFFECT ON CARDS */
+    .liquid-glass-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .liquid-glass-card::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -70%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.18) 50%, transparent 65%);
+      transform: translateX(-100%) rotate(25deg);
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .liquid-glass-card:hover::after {
+      transform: translateX(100%) rotate(25deg);
+    }
+
+    /* HERO SECTION — LIQUID GLASS PCB WORKSPACE */
     .hero-container {
       min-height: 100vh;
       max-width: 1400px;
@@ -295,14 +362,17 @@
       text-transform: uppercase;
       margin-bottom: 18px;
       padding: 6px 14px;
-      background: rgba(0, 229, 255, 0.06);
-      border: 1px solid var(--border-glow);
-      border-radius: 4px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 229, 255, 0.12) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border-glow);
+      box-shadow: var(--liquid-highlight), var(--liquid-glow);
+      border-radius: 6px;
     }
 
     .hero-name {
       font-family: var(--font-mono);
-      font-size: clamp(2.3rem, 4.4vw, 3.8rem);
+      font-size: clamp(2.1rem, 4.4vw, 3.8rem);
       font-weight: 700;
       line-height: 1.1;
       letter-spacing: -1px;
@@ -312,7 +382,7 @@
 
     .hero-headline {
       font-family: var(--font-sans);
-      font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+      font-size: clamp(1.35rem, 2.6vw, 2.1rem);
       font-weight: 600;
       color: var(--text-main);
       line-height: 1.25;
@@ -321,11 +391,12 @@
 
     .hero-headline span {
       color: var(--cyan);
+      text-shadow: 0 0 16px var(--cyan);
     }
 
     .hero-subhead {
       font-family: var(--font-mono);
-      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      font-size: clamp(0.9rem, 1.4vw, 1.15rem);
       color: var(--copper);
       font-weight: 500;
       margin-bottom: 18px;
@@ -350,44 +421,48 @@
       align-items: center;
       gap: 8px;
       padding: 13px 26px;
-      border-radius: 4px;
+      min-height: 48px;
+      border-radius: 6px;
       font-family: var(--font-mono);
       font-size: 0.85rem;
       font-weight: 600;
       letter-spacing: 0.5px;
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.25s ease;
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      box-shadow: var(--liquid-highlight);
+      transition: all 0.35s var(--liquid-spring);
     }
 
     .btn-primary {
-      background: rgba(0, 229, 255, 0.12);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(0, 229, 255, 0.25) 100%);
       border: 1px solid var(--cyan);
       color: var(--cyan);
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.4), var(--liquid-highlight);
     }
 
     .btn-primary:hover {
       background: var(--cyan);
       color: #000;
-      box-shadow: 0 0 30px var(--cyan);
-      transform: translateY(-2px);
+      box-shadow: 0 0 40px var(--cyan);
+      transform: translateY(-3px) scale(1.02);
     }
 
     .btn-secondary {
-      background: rgba(12, 26, 18, 0.8);
-      border: 1px solid var(--border-color);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(12, 26, 18, 0.7) 100%);
+      border: 1px solid var(--liquid-border);
       color: var(--text-main);
     }
 
     .btn-secondary:hover {
       border-color: var(--copper);
       color: var(--copper);
-      box-shadow: 0 0 20px var(--copper-glow);
-      transform: translateY(-2px);
+      box-shadow: 0 0 25px var(--copper-glow), var(--liquid-highlight);
+      transform: translateY(-3px) scale(1.02);
     }
 
-    /* RIGHT SIDE — ADVANCED 3D PCB CANVAS WORKSPACE */
+    /* RIGHT SIDE — LIQUID PCB STAGE WITH DIAGNOSTICS & OSCILLOSCOPE */
     .hero-pcb-stage {
       position: relative;
       height: 560px;
@@ -401,17 +476,20 @@
     .pcb-board {
       width: 100%;
       height: 100%;
-      background: #060e0a;
-      border: 1px solid var(--border-glow);
-      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(4, 13, 8, 0.75) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border-glow);
+      box-shadow: 
+        var(--liquid-highlight),
+        0 25px 65px rgba(0, 0, 0, 0.85),
+        0 0 45px rgba(0, 229, 255, 0.28);
+      border-radius: 16px;
       position: relative;
       overflow: hidden;
-      box-shadow: 
-        inset 0 0 50px rgba(0, 0, 0, 0.9),
-        0 25px 60px rgba(0, 0, 0, 0.7),
-        0 0 30px rgba(0, 229, 255, 0.15);
       transform: rotateY(-7deg) rotateX(5deg);
-      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform 0.45s var(--liquid-spring);
+      cursor: crosshair;
     }
 
     .hero-pcb-stage:hover .pcb-board {
@@ -422,6 +500,89 @@
       width: 100%;
       height: 100%;
       display: block;
+    }
+
+    /* Diagnostic Component Tooltip */
+    .component-tooltip {
+      position: absolute;
+      background: rgba(3, 10, 6, 0.94);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 25px var(--cyan-glow), var(--liquid-highlight);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-main);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 100;
+    }
+
+    .component-tooltip.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* INTERACTIVE OSCILLOSCOPE CONTROL WIDGET */
+    .oscilloscope-box {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(4, 11, 7, 0.8) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .scope-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+    }
+
+    .scope-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .scope-btn {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 6px 12px;
+      min-height: 34px;
+      border-radius: 4px;
+      background: rgba(6, 16, 11, 0.8);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .scope-btn.active, .scope-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.15);
+    }
+
+    #scopeCanvas {
+      width: 100%;
+      height: 50px;
+      background: rgba(2, 6, 4, 0.92);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 6px;
     }
 
     /* Electronic HUD Overlays */
@@ -447,11 +608,14 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(4, 9, 7, 0.85);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.8) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
       padding: 6px 12px;
-      border-radius: 4px;
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(4px);
+      border-radius: 6px;
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      pointer-events: auto;
     }
 
     .status-dot-green {
@@ -469,9 +633,12 @@
     }
 
     .hud-stat-box {
-      background: rgba(4, 9, 7, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.8) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      border-radius: 6px;
       padding: 6px 10px;
       display: flex;
       flex-direction: column;
@@ -504,22 +671,25 @@
       width: 100%;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--cyan), var(--copper), transparent);
-      box-shadow: 0 0 10px var(--cyan);
+      box-shadow: 0 0 14px var(--cyan);
     }
 
     .bus-trace-label {
       position: absolute;
-      background: var(--bg-dark);
-      padding: 4px 16px;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.9) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      padding: 5px 18px;
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      border-radius: 14px;
       font-family: var(--font-mono);
       font-size: 0.72rem;
       color: var(--cyan);
       letter-spacing: 1px;
     }
 
-    /* About Section */
+    /* LIQUID GLASS ABOUT SECTION */
     .about-grid {
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
@@ -527,12 +697,13 @@
     }
 
     .about-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-card) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight), 0 20px 45px rgba(0, 0, 0, 0.6);
+      border-radius: 16px;
       padding: 36px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     .about-card h3 {
@@ -563,10 +734,13 @@
       font-family: var(--font-mono);
       font-size: 0.82rem;
       color: var(--text-main);
-      background: rgba(4, 9, 7, 0.7);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.7) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       padding: 10px 14px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
     }
 
     .focus-item::before {
@@ -575,9 +749,12 @@
     }
 
     .learning-card {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-panel) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight), 0 20px 45px rgba(0, 0, 0, 0.6);
+      border-radius: 16px;
       padding: 32px;
     }
 
@@ -600,34 +777,42 @@
       font-family: var(--font-mono);
       font-size: 0.8rem;
       padding: 6px 14px;
-      border-radius: 4px;
-      background: rgba(12, 26, 18, 0.9);
-      border: 1px solid var(--border-color);
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(4, 11, 7, 0.75) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
       color: var(--text-muted);
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .tech-pill.active {
       border-color: var(--cyan);
       color: var(--cyan);
-      background: rgba(0, 229, 255, 0.08);
+      background: rgba(0, 229, 255, 0.15);
     }
 
-    /* Skills Grid */
+    /* LIQUID GLASS SKILLS GRID */
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 24px;
     }
 
     .skill-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-card) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight), 0 20px 45px rgba(0, 0, 0, 0.6);
+      border-radius: 16px;
       padding: 28px;
-      transition: all 0.3s ease;
+      transition: all 0.4s var(--liquid-spring);
       position: relative;
-      overflow: hidden;
     }
 
     .skill-card::before {
@@ -643,15 +828,16 @@
     }
 
     .skill-card:hover {
-      transform: translateY(-4px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, var(--liquid-card-hover) 100%);
+      transform: translateY(-5px) scale(1.01);
       border-color: var(--cyan);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px var(--cyan-glow);
+      box-shadow: var(--liquid-highlight), 0 25px 55px rgba(0, 0, 0, 0.75), var(--liquid-glow);
     }
 
     .skill-card:hover::before {
       background: var(--cyan);
       opacity: 1;
-      box-shadow: 0 0 10px var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
     }
 
     .skill-category {
@@ -680,41 +866,45 @@
       font-family: var(--font-mono);
       font-size: 0.78rem;
       padding: 6px 12px;
-      background: rgba(4, 9, 7, 0.75);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(4, 11, 7, 0.72) 100%);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      border-radius: 6px;
       color: var(--text-muted);
       transition: all 0.2s ease;
     }
 
     .skill-card:hover .skill-tag {
-      border-color: rgba(0, 229, 255, 0.3);
+      border-color: rgba(0, 229, 255, 0.45);
       color: var(--text-main);
     }
 
-    /* Projects Section */
+    /* LIQUID GLASS PROJECTS GRID */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 28px;
     }
 
     .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-card) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight), 0 20px 45px rgba(0, 0, 0, 0.6);
+      border-radius: 18px;
       overflow: hidden;
       cursor: pointer;
-      transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
-      position: relative;
+      transition: all 0.4s var(--liquid-spring);
       display: flex;
       flex-direction: column;
     }
 
     .project-card:hover {
-      transform: translateY(-6px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, var(--liquid-card-hover) 100%);
+      transform: translateY(-7px) scale(1.015);
       border-color: var(--cyan);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--cyan-glow);
+      box-shadow: var(--liquid-highlight), 0 30px 65px rgba(0, 0, 0, 0.9), var(--liquid-glow);
     }
 
     .project-card.featured-card {
@@ -726,19 +916,19 @@
     .project-img-wrapper {
       position: relative;
       height: 220px;
-      background: #060e0a;
+      background: rgba(3, 10, 6, 0.85);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--liquid-border);
     }
 
     .project-card.featured-card .project-img-wrapper {
       height: 100%;
       min-height: 280px;
       border-bottom: none;
-      border-right: 1px solid var(--border-color);
+      border-right: 1px solid var(--liquid-border);
     }
 
     .project-blueprint {
@@ -763,11 +953,11 @@
       font-size: 3.5rem;
       color: var(--copper);
       z-index: 1;
-      transition: transform 0.3s ease, color 0.3s ease;
+      transition: transform 0.35s ease, color 0.35s ease;
     }
 
     .project-card:hover .project-icon-large {
-      transform: scale(1.1);
+      transform: scale(1.12);
       color: var(--cyan);
     }
 
@@ -816,8 +1006,9 @@
       font-size: 0.72rem;
       padding: 4px 10px;
       border-radius: 4px;
-      background: rgba(4, 9, 7, 0.85);
-      border: 1px solid var(--border-color);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.85) 100%);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
       color: var(--cyan);
     }
 
@@ -840,20 +1031,21 @@
       gap: 6px;
     }
 
-    /* Modal Inspector Panel */
+    /* LIQUID GLASS MODAL INSPECTOR PANEL */
     .modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: rgba(3, 8, 5, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(1, 4, 3, 0.85);
+      backdrop-filter: blur(32px) saturate(220%);
+      -webkit-backdrop-filter: blur(32px) saturate(220%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.35s ease;
     }
 
     .modal-backdrop.active {
@@ -862,15 +1054,18 @@
     }
 
     .modal-panel {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-glow);
-      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(6, 16, 11, 0.92) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border-glow);
+      box-shadow: var(--liquid-highlight), 0 45px 110px rgba(0, 0, 0, 0.98), var(--liquid-glow);
+      border-radius: 20px;
       width: min(840px, 95vw);
       max-height: 88vh;
       overflow-y: auto;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 30px var(--cyan-glow);
+      -webkit-overflow-scrolling: touch;
       transform: translateY(20px) scale(0.97);
-      transition: transform 0.3s ease;
+      transition: transform 0.35s var(--liquid-spring);
       position: relative;
     }
 
@@ -882,11 +1077,12 @@
       position: absolute;
       top: 20px;
       right: 24px;
-      background: rgba(12, 26, 18, 0.9);
-      border: 1px solid var(--border-color);
+      background: rgba(4, 11, 7, 0.8);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
       color: var(--text-muted);
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       font-size: 1.2rem;
       display: grid;
@@ -903,7 +1099,7 @@
 
     .modal-header {
       padding: 32px 36px 20px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--liquid-border);
     }
 
     .modal-title {
@@ -939,17 +1135,21 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
-      background: rgba(4, 9, 7, 0.6);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(4, 11, 7, 0.75) 100%);
       padding: 20px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
     }
 
-    /* System Architecture Pipeline Section */
+    /* INTERACTIVE PIPELINE STEPPER CONTAINER */
     .pipeline-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-card) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight), 0 20px 45px rgba(0, 0, 0, 0.6);
+      border-radius: 18px;
       padding: 40px;
       position: relative;
       overflow: hidden;
@@ -961,24 +1161,34 @@
       justify-content: space-between;
       gap: 12px;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       padding: 20px 0;
     }
 
     .pipeline-node {
-      background: rgba(4, 9, 7, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.85) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      border-radius: 10px;
       padding: 16px 20px;
       min-width: 140px;
       text-align: center;
       position: relative;
-      transition: all 0.3s ease;
+      cursor: pointer;
+      transition: all 0.35s var(--liquid-spring);
     }
 
-    .pipeline-node:hover {
+    .pipeline-node:hover, .pipeline-node.active-step {
       border-color: var(--cyan);
-      transform: translateY(-3px);
-      box-shadow: 0 0 15px var(--cyan-glow);
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 0 25px var(--cyan-glow), var(--liquid-highlight);
+    }
+
+    .pipeline-node.active-step .node-title {
+      color: #fff;
+      text-shadow: 0 0 10px var(--cyan);
     }
 
     .node-title {
@@ -1007,7 +1217,95 @@
       50% { opacity: 1; transform: translateX(4px); }
     }
 
-    /* Journey Timeline Section */
+    /* INTERACTIVE COMMAND LINE (CLI) TERMINAL DRAWER */
+    .cli-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: rgba(1, 4, 3, 0.88);
+      backdrop-filter: blur(28px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .cli-modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cli-window {
+      width: min(760px, 94vw);
+      height: 480px;
+      max-height: 85vh;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(4, 11, 7, 0.96) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 40px var(--cyan-glow), var(--liquid-highlight);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: var(--font-mono);
+    }
+
+    .cli-header {
+      background: rgba(2, 6, 4, 0.95);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--liquid-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--cyan);
+    }
+
+    .cli-output {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cli-line {
+      line-height: 1.5;
+    }
+
+    .cli-input-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(2, 6, 4, 0.95);
+      border-top: 1px solid var(--liquid-border);
+    }
+
+    .cli-prompt {
+      color: var(--cyan);
+      margin-right: 8px;
+      font-size: 0.85rem;
+    }
+
+    .cli-input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    /* LIQUID GLASS TIMELINE */
     .timeline {
       position: relative;
       max-width: 900px;
@@ -1043,9 +1341,12 @@
     }
 
     .timeline-content {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-card) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight), 0 20px 45px rgba(0, 0, 0, 0.6);
+      border-radius: 14px;
       padding: 20px 24px;
     }
 
@@ -1061,7 +1362,7 @@
       font-size: 0.92rem;
     }
 
-    /* Contact Section */
+    /* LIQUID GLASS CONTACT SECTION */
     .contact-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1075,22 +1376,27 @@
     }
 
     .contact-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-card) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      border-radius: 14px;
       padding: 20px 24px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       gap: 16px;
       text-decoration: none;
       color: var(--text-main);
-      transition: all 0.25s ease;
+      transition: all 0.35s var(--liquid-spring);
     }
 
     .contact-card:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, var(--liquid-card-hover) 100%);
       border-color: var(--cyan);
-      transform: translateX(6px);
-      box-shadow: 0 0 20px var(--cyan-glow);
+      transform: translateX(6px) scale(1.01);
+      box-shadow: 0 0 28px var(--cyan-glow), var(--liquid-highlight);
     }
 
     .contact-icon {
@@ -1110,12 +1416,16 @@
       font-family: var(--font-mono);
       font-size: 0.95rem;
       color: var(--cyan);
+      word-break: break-all;
     }
 
     .contact-form {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, var(--liquid-card) 100%);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight), 0 25px 60px rgba(0, 0, 0, 0.7);
+      border-radius: 18px;
       padding: 32px;
       display: flex;
       flex-direction: column;
@@ -1133,9 +1443,12 @@
     .form-control {
       width: 100%;
       padding: 12px 16px;
-      background: rgba(4, 9, 7, 0.75);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(4, 11, 7, 0.85) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--liquid-border);
+      box-shadow: var(--liquid-highlight);
+      border-radius: 8px;
       color: var(--text-main);
       font-family: var(--font-sans);
       font-size: 0.95rem;
@@ -1154,7 +1467,7 @@
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid var(--liquid-border);
       padding: 30px 6vw;
       display: flex;
       justify-content: space-between;
@@ -1164,17 +1477,20 @@
       font-family: var(--font-mono);
       font-size: 0.8rem;
       color: var(--text-muted);
-      background: rgba(4, 9, 7, 0.95);
+      background: rgba(2, 6, 4, 0.95);
+      backdrop-filter: var(--liquid-filter);
+      -webkit-backdrop-filter: var(--liquid-filter);
     }
 
-    /* Responsive Queries */
+    /* OPTIMIZED RESPONSIVE BREAKPOINTS FOR MOBILE USERS */
     @media (max-width: 960px) {
       .hero-container {
         grid-template-columns: 1fr;
         padding-top: 100px;
+        gap: 30px;
       }
       .hero-pcb-stage {
-        height: 400px;
+        height: 380px;
       }
       .pcb-board {
         transform: rotateY(0deg) rotateX(0deg);
@@ -1184,7 +1500,8 @@
       }
       .project-card.featured-card .project-img-wrapper {
         border-right: none;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--liquid-border);
+        height: 220px;
       }
       .nav-links {
         display: none;
@@ -1192,17 +1509,68 @@
       .nav-links.active {
         display: flex;
         flex-direction: column;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 62px;
         left: 0;
         right: 0;
-        background: rgba(4, 9, 7, 0.96);
-        border-bottom: 1px solid var(--border-color);
-        padding: 24px 6vw;
-        gap: 18px;
+        bottom: 0;
+        background: rgba(2, 6, 4, 0.97);
+        backdrop-filter: blur(28px);
+        -webkit-backdrop-filter: blur(28px);
+        border-bottom: 1px solid var(--liquid-border);
+        padding: 32px 8vw;
+        gap: 20px;
+        z-index: 490;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .nav-links a {
+        font-size: 1.1rem;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 229, 255, 0.1);
       }
       .menu-toggle {
         display: block;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        padding: 14px 4vw;
+      }
+      .section {
+        padding: 70px 4vw;
+      }
+      .about-card, .learning-card, .contact-form, .skill-card, .project-content {
+        padding: 22px 18px;
+      }
+      .hero-pcb-stage {
+        height: 330px;
+      }
+      .modal-specs-grid {
+        grid-template-columns: 1fr;
+      }
+      .modal-header, .modal-body {
+        padding: 20px 18px;
+      }
+      .scope-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .brand-tag {
+        display: none;
+      }
+      .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      .btn {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -1212,7 +1580,7 @@
   <!-- Top Progress Bar -->
   <div class="progress-bar" id="progressBar"></div>
 
-  <!-- PCB Grid & Glow Overlays -->
+  <!-- PCB Grid & Ambient Glow Overlays -->
   <div class="pcb-grid-overlay"></div>
   <div class="radial-glow"></div>
 
@@ -1221,19 +1589,22 @@
     <a href="#top" class="brand">
       SANGEETH SASIKUMAR K S <span class="brand-tag">// ELECTRONICS-LAB</span>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">MENU ☰</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#about" class="nav-item">About</a></li>
-      <li><a href="#skills" class="nav-item">Skills</a></li>
-      <li><a href="#projects" class="nav-item">Projects</a></li>
-      <li><a href="#pipeline" class="nav-item">Pipeline</a></li>
-      <li><a href="#journey" class="nav-item">Journey</a></li>
-      <li><a href="#contact" class="nav-item">Contact</a></li>
-    </ul>
+    <div class="nav-right-tools">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about" class="nav-item">About</a></li>
+        <li><a href="#skills" class="nav-item">Skills</a></li>
+        <li><a href="#projects" class="nav-item">Projects</a></li>
+        <li><a href="#pipeline" class="nav-item">Pipeline</a></li>
+        <li><a href="#journey" class="nav-item">Journey</a></li>
+        <li><a href="#contact" class="nav-item">Contact</a></li>
+      </ul>
+      <button class="cli-btn-header" onclick="openCliModal()">&gt;_ CLI TERMINAL</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">MENU ☰</button>
+    </div>
   </header>
 
   <main id="top">
-    <!-- HERO SECTION — PREMIUM ELECTRONICS LAB WORKSPACE -->
+    <!-- HERO SECTION — LIQUID GLASS PCB WORKSPACE -->
     <section class="hero-container">
       <div class="hero-left reveal-left">
         <div class="tech-pill-header">
@@ -1251,10 +1622,11 @@
         </div>
       </div>
 
-      <!-- RIGHT SIDE: ADVANCED PCB EMBEDDED SYSTEM CANVAS -->
+      <!-- RIGHT SIDE: ADVANCED PCB EMBEDDED SYSTEM CANVAS WITH DIAGNOSTICS & OSCILLOSCOPE -->
       <div class="hero-pcb-stage reveal-right">
         <div class="pcb-board" id="pcbBoard">
           <canvas id="pcbCanvas"></canvas>
+          <div class="component-tooltip" id="pcbTooltip">COMPONENT DIAGNOSTIC TOOLTIP</div>
           
           <!-- Electronic HUD Overlays -->
           <div class="hud-panel">
@@ -1264,6 +1636,21 @@
               </div>
               <div class="hud-item">
                 CPU: 240 MHz
+              </div>
+            </div>
+
+            <!-- INTERACTIVE OSCILLOSCOPE CONTROL WIDGET -->
+            <div class="oscilloscope-box">
+              <div class="scope-top">
+                <span>DIGITAL OSCILLOSCOPE // REAL-TIME BUS TELEMETRY</span>
+                <span id="scopeBusLabel">MODE: I2C BUS</span>
+              </div>
+              <canvas id="scopeCanvas"></canvas>
+              <div class="scope-controls">
+                <button class="scope-btn active" onclick="setOscilloscopeMode('I2C', this)">I2C SENSOR</button>
+                <button class="scope-btn" onclick="setOscilloscopeMode('SPI', this)">SPI DISPLAY</button>
+                <button class="scope-btn" onclick="setOscilloscopeMode('PWM', this)">PWM MOTOR</button>
+                <button class="scope-btn" onclick="setOscilloscopeMode('MQTT', this)">MQTT STREAM</button>
               </div>
             </div>
             
@@ -1306,7 +1693,7 @@
       </div>
 
       <div class="about-grid">
-        <div class="about-card reveal-left">
+        <div class="about-card liquid-glass-card reveal-left">
           <h3>Pioneering Cyber-Physical Hardware</h3>
           <p>I am pursuing my B.Tech in <strong>Mechatronics Engineering</strong> at Jyothi Engineering College, Kerala. My focus lies at the intersection of mechanical dynamics, embedded microcontrollers, connected IoT infrastructure, and local machine intelligence (Edge AI).</p>
           <p>My goal is to design real-world autonomous systems that sense environmental parameters, process decisions on edge hardware, communicate securely over networks, and take precise physical action.</p>
@@ -1323,7 +1710,7 @@
           </div>
         </div>
 
-        <div class="learning-card reveal-right">
+        <div class="learning-card liquid-glass-card reveal-right">
           <div class="badge-heading">Hands-on vs. Currently Learning</div>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
             A transparent view of my active build stack versus skills currently being refined.
@@ -1358,7 +1745,7 @@
       </div>
 
       <div class="skills-grid">
-        <div class="skill-card reveal">
+        <div class="skill-card liquid-glass-card reveal">
           <h3 class="skill-category"><span class="skill-icon">⚡</span> Embedded & Electronics</h3>
           <div class="skill-tags">
             <span class="skill-tag">ESP32</span>
@@ -1371,7 +1758,7 @@
           </div>
         </div>
 
-        <div class="skill-card reveal">
+        <div class="skill-card liquid-glass-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🌐</span> Internet of Things (IoT)</h3>
           <div class="skill-tags">
             <span class="skill-tag">Blynk IoT</span>
@@ -1383,7 +1770,7 @@
           </div>
         </div>
 
-        <div class="skill-card reveal">
+        <div class="skill-card liquid-glass-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🧠</span> Edge AI & TinyML</h3>
           <div class="skill-tags">
             <span class="skill-tag">TinyML</span>
@@ -1394,7 +1781,7 @@
           </div>
         </div>
 
-        <div class="skill-card reveal">
+        <div class="skill-card liquid-glass-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🤖</span> Robotics & Automation</h3>
           <div class="skill-tags">
             <span class="skill-tag">Differential Robotics</span>
@@ -1406,7 +1793,7 @@
           </div>
         </div>
 
-        <div class="skill-card reveal">
+        <div class="skill-card liquid-glass-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🛡️</span> Cybersecurity</h3>
           <div class="skill-tags">
             <span class="skill-tag">Network Security Fundamentals</span>
@@ -1416,7 +1803,7 @@
           </div>
         </div>
 
-        <div class="skill-card reveal">
+        <div class="skill-card liquid-glass-card reveal">
           <h3 class="skill-category"><span class="skill-icon">💻</span> Programming Languages</h3>
           <div class="skill-tags">
             <span class="skill-tag">C / C++</span>
@@ -1439,7 +1826,7 @@
 
       <div class="projects-grid">
         <!-- Project 1: Smart Security Patrol Robot (Featured) -->
-        <div class="project-card featured-card reveal-scale" onclick="openProjectModal('patrol-robot')">
+        <div class="project-card featured-card liquid-glass-card reveal-scale" onclick="openProjectModal('patrol-robot')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🤖</div>
@@ -1464,7 +1851,7 @@
         </div>
 
         <!-- Project 2: Search & Rescue Robot -->
-        <div class="project-card reveal" onclick="openProjectModal('search-rescue')">
+        <div class="project-card liquid-glass-card reveal" onclick="openProjectModal('search-rescue')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🛰️</div>
@@ -1487,7 +1874,7 @@
         </div>
 
         <!-- Project 3: Smart Agriculture / AI Crop Monitoring -->
-        <div class="project-card reveal" onclick="openProjectModal('smart-agri')">
+        <div class="project-card liquid-glass-card reveal" onclick="openProjectModal('smart-agri')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🌱</div>
@@ -1510,7 +1897,7 @@
         </div>
 
         <!-- Project 4: Smart Classroom Management -->
-        <div class="project-card reveal" onclick="openProjectModal('smart-classroom')">
+        <div class="project-card liquid-glass-card reveal" onclick="openProjectModal('smart-classroom')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🏫</div>
@@ -1534,7 +1921,7 @@
         </div>
 
         <!-- Project 5: Smart LPG Safety System -->
-        <div class="project-card reveal" onclick="openProjectModal('lpg-safety')">
+        <div class="project-card liquid-glass-card reveal" onclick="openProjectModal('lpg-safety')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🔥</div>
@@ -1558,47 +1945,47 @@
       </div>
     </section>
 
-    <!-- Engineering System Visualization -->
+    <!-- Engineering System Visualization (Interactive Stepper) -->
     <section class="section" id="pipeline">
       <div class="section-header reveal">
         <span class="section-num">// 04</span>
-        <h2 class="section-title">How I Build Intelligent Systems</h2>
+        <h2 class="section-title">How I Build Intelligent Systems (Click to simulate)</h2>
         <div class="section-line"></div>
       </div>
 
-      <div class="pipeline-container reveal-scale">
-        <div class="pipeline-flow">
-          <div class="pipeline-node">
+      <div class="pipeline-container liquid-glass-card reveal-scale">
+        <div class="pipeline-flow" id="pipelineFlow">
+          <div class="pipeline-node" onclick="triggerPipelineStep(0)">
             <div class="node-title">SENSORS</div>
             <div class="node-sub">IMU, Ultrasonic, PIR, Camera</div>
           </div>
           <div class="pipeline-arrow">→</div>
-          <div class="pipeline-node">
+          <div class="pipeline-node" onclick="triggerPipelineStep(1)">
             <div class="node-title">MICROCONTROLLER</div>
             <div class="node-sub">ESP32 / Dual Buck</div>
           </div>
           <div class="pipeline-arrow">→</div>
-          <div class="pipeline-node">
+          <div class="pipeline-node" onclick="triggerPipelineStep(2)">
             <div class="node-title">EDGE PROCESSING</div>
             <div class="node-sub">FSM & Filtering</div>
           </div>
           <div class="pipeline-arrow">→</div>
-          <div class="pipeline-node">
+          <div class="pipeline-node" onclick="triggerPipelineStep(3)">
             <div class="node-title">AI / DECISION</div>
             <div class="node-sub">TinyML / Impulse</div>
           </div>
           <div class="pipeline-arrow">→</div>
-          <div class="pipeline-node">
+          <div class="pipeline-node" onclick="triggerPipelineStep(4)">
             <div class="node-title">IoT CONNECTIVITY</div>
             <div class="node-sub">MQTT / Wi-Fi</div>
           </div>
           <div class="pipeline-arrow">→</div>
-          <div class="pipeline-node">
+          <div class="pipeline-node" onclick="triggerPipelineStep(5)">
             <div class="node-title">CLOUD DASHBOARD</div>
             <div class="node-sub">Blynk / Web Interface</div>
           </div>
           <div class="pipeline-arrow">→</div>
-          <div class="pipeline-node">
+          <div class="pipeline-node" onclick="triggerPipelineStep(6)">
             <div class="node-title">PHYSICAL ACTION</div>
             <div class="node-sub">Motors, Servos, Relays</div>
           </div>
@@ -1617,7 +2004,7 @@
       <div class="timeline">
         <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
-          <div class="timeline-content">
+          <div class="timeline-content liquid-glass-card">
             <h3 class="timeline-title">01. Mechatronics Foundation</h3>
             <p class="timeline-desc">Mastering mechanical dynamics, circuit analysis, CAD fundamentals, and physical electronics control at Jyothi Engineering College.</p>
           </div>
@@ -1625,7 +2012,7 @@
 
         <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
-          <div class="timeline-content">
+          <div class="timeline-content liquid-glass-card">
             <h3 class="timeline-title">02. Embedded Programming & Microcontrollers</h3>
             <p class="timeline-desc">Building non-blocking C/C++ finite state machines for ESP32, Arduino, and multi-sensor interfacing.</p>
           </div>
@@ -1633,7 +2020,7 @@
 
         <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
-          <div class="timeline-content">
+          <div class="timeline-content liquid-glass-card">
             <h3 class="timeline-title">03. Internet of Things (IoT) Systems</h3>
             <p class="timeline-desc">Connecting hardware nodes to wireless networks via Blynk, MQTT protocols, and telemetry dashboards.</p>
           </div>
@@ -1641,7 +2028,7 @@
 
         <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
-          <div class="timeline-content">
+          <div class="timeline-content liquid-glass-card">
             <h3 class="timeline-title">04. Edge AI & TinyML Integration</h3>
             <p class="timeline-desc">Deploying lightweight machine learning models onto embedded hardware using Edge Impulse and computer vision.</p>
           </div>
@@ -1649,7 +2036,7 @@
 
         <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
-          <div class="timeline-content">
+          <div class="timeline-content liquid-glass-card">
             <h3 class="timeline-title">05. Cybersecurity Specialization</h3>
             <p class="timeline-desc">Complementary focus area ensuring hardware nodes, wireless protocols, and connected cyber-physical systems remain resilient against unauthorized access.</p>
           </div>
@@ -1657,7 +2044,7 @@
 
         <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
-          <div class="timeline-content">
+          <div class="timeline-content liquid-glass-card">
             <h3 class="timeline-title">06. Autonomous Intelligent Systems</h3>
             <p class="timeline-desc">Long-term vision: Designing fully autonomous, self-monitoring industrial robotic platforms.</p>
           </div>
@@ -1675,7 +2062,7 @@
 
       <div class="contact-container">
         <div class="contact-info reveal-left">
-          <a href="mailto:sangeethcherur@gmail.com" class="contact-card">
+          <a href="mailto:sangeethcherur@gmail.com" class="contact-card liquid-glass-card">
             <div class="contact-icon">✉️</div>
             <div class="contact-details">
               <label>Direct Email</label>
@@ -1683,7 +2070,7 @@
             </div>
           </a>
 
-          <a href="https://github.com/sangeeth2008" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <a href="https://github.com/sangeeth2008" target="_blank" rel="noopener noreferrer" class="contact-card liquid-glass-card">
             <div class="contact-icon">💻</div>
             <div class="contact-details">
               <label>GitHub Code Repositories</label>
@@ -1691,7 +2078,7 @@
             </div>
           </a>
 
-          <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noopener noreferrer" class="contact-card liquid-glass-card">
             <div class="contact-icon">🔗</div>
             <div class="contact-details">
               <label>LinkedIn Network</label>
@@ -1700,7 +2087,7 @@
           </a>
         </div>
 
-        <form class="contact-form reveal-right" onsubmit="handleFormSubmit(event)">
+        <form class="contact-form liquid-glass-card reveal-right" onsubmit="handleFormSubmit(event)">
           <div class="form-group">
             <label for="name">Your Name</label>
             <input type="text" id="name" class="form-control" required placeholder="Recruiter / Engineer Name">
@@ -1760,15 +2147,31 @@
     </div>
   </div>
 
+  <!-- INTERACTIVE CLI TERMINAL DRAWER -->
+  <div class="cli-modal-backdrop" id="cliBackdrop" onclick="closeCliModalOnBackdrop(event)">
+    <div class="cli-window">
+      <div class="cli-header">
+        <span>&gt;_ SANGEETH_SASIKUMAR_OS // SYSTEM COMMAND INTERFACE</span>
+        <button onclick="closeCliModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">✕</button>
+      </div>
+      <div class="cli-output" id="cliOutput">
+        <div class="cli-line">Type <span style="color:var(--cyan);">help</span> to list available commands (skills, projects, status, contact, clear).</div>
+      </div>
+      <div class="cli-input-row">
+        <span class="cli-prompt">visitor@sangeeth-lab:~$</span>
+        <input type="text" id="cliInput" class="cli-input" placeholder="Type a command..." onkeydown="handleCliKey(event)">
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer>
     <div>© 2026 SANGEETH SASIKUMAR K S — Mechatronics × Electronics × Edge AI</div>
     <div>Jyothi Engineering College, Kerala, India</div>
   </footer>
 
-  <!-- Script for PCB Canvas Animation, Interactions & Scroll Reveal -->
+  <!-- Script for Liquid PCB Canvas Animation, Oscilloscope & Interactive Tools -->
   <script>
-    // Project Data Dictionary
     const projectData = {
       'patrol-robot': {
         title: 'Smart Security Patrol Robot V1',
@@ -1848,8 +2251,63 @@
       if (e.target === document.getElementById('modalBackdrop')) closeModal();
     }
 
+    // CLI TERMINAL CONTROLLER
+    function openCliModal() {
+      const backdrop = document.getElementById('cliBackdrop');
+      backdrop.classList.add('active');
+      document.getElementById('cliInput').focus();
+    }
+
+    function closeCliModal() {
+      document.getElementById('cliBackdrop').classList.remove('active');
+    }
+
+    function closeCliModalOnBackdrop(e) {
+      if (e.target === document.getElementById('cliBackdrop')) closeCliModal();
+    }
+
+    function handleCliKey(e) {
+      if (e.key === 'Enter') {
+        const val = e.target.value.trim().toLowerCase();
+        e.target.value = '';
+        if (!val) return;
+        
+        const out = document.getElementById('cliOutput');
+        const userLine = document.createElement('div');
+        userLine.className = 'cli-line';
+        userLine.innerHTML = `<span style="color:var(--cyan);">visitor@sangeeth-lab:~$</span> ${val}`;
+        out.appendChild(userLine);
+
+        const respLine = document.createElement('div');
+        respLine.className = 'cli-line';
+
+        if (val === 'help') {
+          respLine.innerHTML = `Available Commands:<br>- <span style="color:var(--cyan);">projects</span>: List engineered hardware projects<br>- <span style="color:var(--cyan);">skills</span>: View technical stack<br>- <span style="color:var(--cyan);">status</span>: View active system status<br>- <span style="color:var(--cyan);">contact</span>: Display email & github links<br>- <span style="color:var(--cyan);">clear</span>: Clear terminal console`;
+        } else if (val === 'projects') {
+          respLine.innerHTML = `1. Smart Security Patrol Robot V1 (ESP32 / CAM / FSM)<br>2. Search & Rescue Mobile Platform<br>3. Smart Agriculture AI Crop Monitoring<br>4. Smart Classroom Automation System<br>5. Smart LPG Safety Shutoff System`;
+        } else if (val === 'skills') {
+          respLine.innerHTML = `Embedded C/C++, ESP32, Python, Blynk IoT, MQTT, Edge Impulse, TinyML, Robotics FSM, Cybersecurity.`;
+        } else if (val === 'status') {
+          respLine.innerHTML = `CORE: ESP32 @ 240MHz | IoT: ONLINE | EDGE AI: READY | SENSORS: 06 OK`;
+        } else if (val === 'contact') {
+          respLine.innerHTML = `Email: sangeethcherur@gmail.com<br>GitHub: https://github.com/sangeeth2008<br>LinkedIn: https://linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422`;
+        } else if (val === 'clear') {
+          out.innerHTML = '';
+          return;
+        } else {
+          respLine.innerHTML = `Command not recognized '${val}'. Type <span style="color:var(--cyan);">help</span>.`;
+        }
+
+        out.appendChild(respLine);
+        out.scrollTop = out.scrollHeight;
+      }
+    }
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        closeModal();
+        closeCliModal();
+      }
     });
 
     function handleFormSubmit(e) {
@@ -1874,15 +2332,8 @@
     const navLinks = document.getElementById('navLinks');
     menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
 
-    // -----------------------------------------------------------------
-    // HARDWARE ACCELERATED SCROLL REVEAL & SCROLLSPY (MOBILE & LAPTOP)
-    // -----------------------------------------------------------------
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -60px 0px',
-      threshold: 0.15
-    };
-
+    // HARDWARE ACCELERATED SCROLL REVEAL & SCROLLSPY
+    const observerOptions = { root: null, rootMargin: '0px 0px -60px 0px', threshold: 0.15 };
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1897,7 +2348,6 @@
 
     if (!prefersReducedMotion) {
       revealElements.forEach((el, idx) => {
-        // Stagger grid item delays slightly for smooth cascading reveals
         if (el.classList.contains('skill-card') || el.classList.contains('project-card')) {
           const delay = (idx % 3) * 0.12;
           el.style.transitionDelay = `${delay}s`;
@@ -1906,6 +2356,18 @@
       });
     } else {
       revealElements.forEach(el => el.classList.add('active'));
+    }
+
+    // INTERACTIVE PIPELINE STEPPER FUNCTION
+    function triggerPipelineStep(stepIdx) {
+      const nodes = document.querySelectorAll('.pipeline-node');
+      nodes.forEach((n, idx) => {
+        if (idx <= stepIdx) {
+          setTimeout(() => n.classList.add('active-step'), idx * 140);
+        } else {
+          n.classList.remove('active-step');
+        }
+      });
     }
 
     // ScrollSpy Navigation Active Highlight
@@ -1930,11 +2392,12 @@
       });
     });
 
-    // REALISTIC EMBEDDED ELECTRONICS PCB CANVAS RENDERER
+    // REALISTIC EMBEDDED ELECTRONICS LIQUID PCB CANVAS & COMPONENT HIT TESTING
     const pcbCanvas = document.getElementById('pcbCanvas');
     const ctx = pcbCanvas.getContext('2d');
     const stage = document.querySelector('.hero-pcb-stage');
     const board = document.getElementById('pcbBoard');
+    const pcbTooltip = document.getElementById('pcbTooltip');
 
     function resizePcbCanvas() {
       pcbCanvas.width = pcbBoard.offsetWidth;
@@ -1943,8 +2406,7 @@
     window.addEventListener('resize', resizePcbCanvas);
     resizePcbCanvas();
 
-    // Mouse Parallax Micro-interaction (Desktop/Laptop)
-    let mouseX = 0, mouseY = 0;
+    let mouseX = -100, mouseY = -100;
     stage.addEventListener('mousemove', (e) => {
       const rect = stage.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
@@ -1952,17 +2414,32 @@
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;
       
-      const rotY = (x / rect.width) * 14;
-      const rotX = -(y / rect.height) * 14;
+      const rotY = (x / rect.width) * 16;
+      const rotX = -(y / rect.height) * 16;
       board.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+
+      // PCB Component Hit Testing for Interactive Tooltip
+      const W = pcbCanvas.width; const H = pcbCanvas.height;
+      let hovered = false;
+      pcbComponents.forEach(c => {
+        const cx = c.x * W; const cy = c.y * H;
+        if (Math.abs(mouseX - cx) < c.w / 2 && Math.abs(mouseY - cy) < c.h / 2) {
+          pcbTooltip.style.left = `${mouseX + 15}px`;
+          pcbTooltip.style.top = `${mouseY + 15}px`;
+          pcbTooltip.innerHTML = `<strong>${c.label} (${c.id})</strong><br>Type: ${c.type} | Status: ACTIVE<br>Bus: 3.3V Logic OK`;
+          pcbTooltip.classList.add('active');
+          hovered = true;
+        }
+      });
+      if (!hovered) pcbTooltip.classList.remove('active');
     });
 
     stage.addEventListener('mouseleave', () => {
       board.style.transform = `rotateY(-7deg) rotateX(5deg)`;
       mouseX = -100; mouseY = -100;
+      pcbTooltip.classList.remove('active');
     });
 
-    // Electronics Circuit Components & Bus Definitions
     const pcbComponents = [
       { id: 'U01', label: 'ESP32 / EDGE AI', type: 'MCU', x: 0.5, y: 0.5, w: 120, h: 120 },
       { id: 'U02', label: 'SENSORS BUS', type: 'IC', x: 0.5, y: 0.2, w: 90, h: 48 },
@@ -1980,29 +2457,21 @@
       { from: 'C04', to: 'U01', bus: '3V3' }
     ];
 
-    const dataSignals = [
-      { fromIdx: 1, toIdx: 0, progress: 0, speed: 0.006 },
-      { fromIdx: 0, toIdx: 2, progress: 0.3, speed: 0.008 },
-      { fromIdx: 0, toIdx: 3, progress: 0.7, speed: 0.007 },
-      { fromIdx: 4, toIdx: 0, progress: 0.5, speed: 0.009 }
+    const liquidDroplets = [
+      { fromIdx: 1, toIdx: 0, progress: 0, speed: 0.005, size: 5 },
+      { fromIdx: 0, toIdx: 2, progress: 0.35, speed: 0.007, size: 6 },
+      { fromIdx: 0, toIdx: 3, progress: 0.7, speed: 0.006, size: 5 },
+      { fromIdx: 4, toIdx: 0, progress: 0.45, speed: 0.008, size: 4 }
     ];
 
     function drawPcb() {
-      const W = pcbCanvas.width;
-      const H = pcbCanvas.height;
+      const W = pcbCanvas.width; const H = pcbCanvas.height;
       ctx.clearRect(0, 0, W, H);
 
-      // 1. Draw Subtle PCB Silk Grid & Traces Pattern
-      ctx.strokeStyle = 'rgba(0, 229, 255, 0.08)';
-      ctx.lineWidth = 1;
-      for (let x = 0; x < W; x += 30) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-      }
-      for (let y = 0; y < H; y += 30) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-      }
+      ctx.strokeStyle = 'rgba(0, 229, 255, 0.09)'; ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 30) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 30) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 
-      // 2. Draw Copper Circuit Traces
       traces.forEach(t => {
         const fromComp = pcbComponents.find(c => c.id === t.from);
         const toComp = pcbComponents.find(c => c.id === t.to);
@@ -2011,91 +2480,118 @@
         const fx = fromComp.x * W; const fy = fromComp.y * H;
         const tx = toComp.x * W; const ty = toComp.y * H;
 
-        ctx.beginPath();
-        ctx.moveTo(fx, fy);
-        ctx.lineTo(fx, ty);
-        ctx.lineTo(tx, ty);
-        
-        // Proximity glow
+        ctx.beginPath(); ctx.moveTo(fx, fy); ctx.lineTo(fx, ty); ctx.lineTo(tx, ty);
         const dist = Math.hypot(mouseX - (fx + tx) / 2, mouseY - (fy + ty) / 2);
         if (dist < 100) {
-          ctx.strokeStyle = '#00e5ff';
-          ctx.lineWidth = 2.5;
-          ctx.shadowColor = '#00e5ff';
-          ctx.shadowBlur = 12;
+          ctx.strokeStyle = '#00e5ff'; ctx.lineWidth = 2.8; ctx.shadowColor = '#00e5ff'; ctx.shadowBlur = 16;
         } else {
-          ctx.strokeStyle = 'rgba(198, 136, 74, 0.45)';
-          ctx.lineWidth = 1.8;
-          ctx.shadowBlur = 0;
+          ctx.strokeStyle = 'rgba(198, 136, 74, 0.48)'; ctx.lineWidth = 1.8; ctx.shadowBlur = 0;
         }
-        ctx.stroke();
-        ctx.shadowBlur = 0;
+        ctx.stroke(); ctx.shadowBlur = 0;
 
-        // Bus text label
         ctx.font = '9px "IBM Plex Mono", monospace';
-        ctx.fillStyle = 'rgba(0, 229, 255, 0.5)';
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.55)';
         ctx.fillText(t.bus, (fx + tx) / 2 - 15, (fy + ty) / 2 - 6);
       });
 
-      // 3. Draw Traveling Electrical Signals
-      dataSignals.forEach(s => {
-        s.progress += s.speed;
-        if (s.progress >= 1) s.progress = 0;
+      liquidDroplets.forEach(d => {
+        d.progress += d.speed;
+        if (d.progress >= 1) d.progress = 0;
 
-        const from = pcbComponents[s.fromIdx];
-        const to = pcbComponents[s.toIdx];
+        const from = pcbComponents[d.fromIdx]; const to = pcbComponents[d.toIdx];
         const fx = from.x * W; const fy = from.y * H;
         const tx = to.x * W; const ty = to.y * H;
 
-        const cx = fx + (tx - fx) * s.progress;
-        const cy = fy + (ty - fy) * s.progress;
+        const cx = fx + (tx - fx) * d.progress;
+        const cy = fy + (ty - fy) * d.progress;
 
-        ctx.beginPath();
-        ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#00e5ff';
-        ctx.shadowColor = '#00e5ff';
-        ctx.shadowBlur = 14;
-        ctx.fill();
-        ctx.shadowBlur = 0;
+        ctx.beginPath(); ctx.arc(cx, cy, d.size, 0, Math.PI * 2);
+        ctx.fillStyle = '#00e5ff'; ctx.shadowColor = '#00e5ff'; ctx.shadowBlur = 18;
+        ctx.fill(); ctx.shadowBlur = 0;
       });
 
-      // 4. Draw PCB IC Components & Pins
       pcbComponents.forEach(c => {
-        const cx = c.x * W;
-        const cy = c.y * H;
-        const hw = c.w / 2;
-        const hh = c.h / 2;
+        const cx = c.x * W; const cy = c.y * H;
+        const hw = c.w / 2; const hh = c.h / 2;
 
-        // Main IC Body
-        ctx.fillStyle = '#09150e';
-        ctx.strokeStyle = 'rgba(0, 229, 255, 0.4)';
+        ctx.fillStyle = 'rgba(7, 20, 13, 0.85)';
+        ctx.strokeStyle = 'rgba(0, 229, 255, 0.5)';
         ctx.lineWidth = 1.5;
         ctx.fillRect(cx - hw, cy - hh, c.w, c.h);
         ctx.strokeRect(cx - hw, cy - hh, c.w, c.h);
 
-        // IC Pin Headers
         ctx.fillStyle = '#c6884a';
         for (let px = cx - hw + 8; px <= cx + hw - 8; px += 12) {
           ctx.fillRect(px - 2, cy - hh - 5, 4, 5);
           ctx.fillRect(px - 2, cy + hh, 4, 5);
         }
 
-        // Technical Designator Label
         ctx.font = '10px "IBM Plex Mono", monospace';
-        ctx.fillStyle = '#00e5ff';
-        ctx.textAlign = 'center';
+        ctx.fillStyle = '#00e5ff'; ctx.textAlign = 'center';
         ctx.fillText(c.label, cx, cy + 3);
         ctx.font = '8px "IBM Plex Mono", monospace';
-        ctx.fillStyle = 'rgba(198, 136, 74, 0.8)';
+        ctx.fillStyle = 'rgba(198, 136, 74, 0.85)';
         ctx.fillText(c.id, cx - hw + 14, cy - hh + 12);
       });
 
       requestAnimationFrame(drawPcb);
     }
 
-    if (!prefersReducedMotion) {
-      drawPcb();
+    if (!prefersReducedMotion) drawPcb();
+
+    // INTERACTIVE DIGITAL OSCILLOSCOPE WAVEFORM CANVAS
+    const scopeCanvas = document.getElementById('scopeCanvas');
+    const sCtx = scopeCanvas.getContext('2d');
+    let oscMode = 'I2C';
+    let oscPhase = 0;
+
+    function resizeScope() {
+      scopeCanvas.width = scopeCanvas.offsetWidth;
+      scopeCanvas.height = scopeCanvas.offsetHeight;
     }
+    window.addEventListener('resize', resizeScope);
+    resizeScope();
+
+    function setOscilloscopeMode(mode, btn) {
+      oscMode = mode;
+      document.querySelectorAll('.scope-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('scopeBusLabel').textContent = `MODE: ${mode} BUS`;
+    }
+
+    function animateOscilloscope() {
+      sCtx.clearRect(0, 0, scopeCanvas.width, scopeCanvas.height);
+      const W = scopeCanvas.width; const H = scopeCanvas.height;
+      const mid = H / 2;
+
+      sCtx.beginPath();
+      sCtx.moveTo(0, mid);
+      oscPhase += 0.08;
+
+      for (let x = 0; x < W; x++) {
+        let y = mid;
+        if (oscMode === 'I2C') {
+          y = mid + Math.sin(x * 0.08 + oscPhase) * 14 * (Math.sin(x * 0.02) > 0 ? 1 : 0.2);
+        } else if (oscMode === 'SPI') {
+          y = mid + Math.sin(x * 0.15 + oscPhase) * 16;
+        } else if (oscMode === 'PWM') {
+          y = mid + (Math.sin(x * 0.06 + oscPhase) > 0 ? -16 : 16);
+        } else if (oscMode === 'MQTT') {
+          y = mid + (Math.random() - 0.5) * 22;
+        }
+        sCtx.lineTo(x, y);
+      }
+
+      sCtx.strokeStyle = '#00e5ff';
+      sCtx.lineWidth = 1.8;
+      sCtx.shadowColor = '#00e5ff';
+      sCtx.shadowBlur = 10;
+      sCtx.stroke();
+      sCtx.shadowBlur = 0;
+
+      requestAnimationFrame(animateOscilloscope);
+    }
+    if (!prefersReducedMotion) animateOscilloscope();
   </script>
 </body>
 </html>
