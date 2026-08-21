@@ -228,6 +228,45 @@
       background: linear-gradient(90deg, var(--border-color), transparent);
     }
 
+    /* ---------------------------------------------------- */
+    /* HARDWARE ACCELERATED SCROLL REVEAL ANIMATIONS       */
+    /* ---------------------------------------------------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.active,
+    .reveal-left.active,
+    .reveal-right.active,
+    .reveal-scale.active {
+      opacity: 1;
+      transform: translateY(0) translateX(0) scale(1);
+    }
+
     /* HERO SECTION — PREMIUM ELECTRONICS LAB WORKSPACE */
     .hero-container {
       min-height: 100vh;
@@ -1184,19 +1223,19 @@
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">MENU ☰</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#pipeline">Pipeline</a></li>
-      <li><a href="#journey">Journey</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about" class="nav-item">About</a></li>
+      <li><a href="#skills" class="nav-item">Skills</a></li>
+      <li><a href="#projects" class="nav-item">Projects</a></li>
+      <li><a href="#pipeline" class="nav-item">Pipeline</a></li>
+      <li><a href="#journey" class="nav-item">Journey</a></li>
+      <li><a href="#contact" class="nav-item">Contact</a></li>
     </ul>
   </header>
 
   <main id="top">
     <!-- HERO SECTION — PREMIUM ELECTRONICS LAB WORKSPACE -->
     <section class="hero-container">
-      <div class="hero-left">
+      <div class="hero-left reveal-left">
         <div class="tech-pill-header">
           ENGINEERING • ELECTRONICS • INTELLIGENT SYSTEMS
         </div>
@@ -1213,7 +1252,7 @@
       </div>
 
       <!-- RIGHT SIDE: ADVANCED PCB EMBEDDED SYSTEM CANVAS -->
-      <div class="hero-pcb-stage">
+      <div class="hero-pcb-stage reveal-right">
         <div class="pcb-board" id="pcbBoard">
           <canvas id="pcbCanvas"></canvas>
           
@@ -1253,21 +1292,21 @@
     </section>
 
     <!-- Transition Bus Trace connecting Hero to Projects -->
-    <div class="hero-transition-bus">
+    <div class="hero-transition-bus reveal">
       <div class="bus-trace-line"></div>
       <div class="bus-trace-label">// EMBEDDED SYSTEM BUS → MY ENGINEERING PROJECTS</div>
     </div>
 
     <!-- About Section -->
     <section class="section" id="about">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-num">// 01</span>
         <h2 class="section-title">Engineering Intelligent Systems</h2>
         <div class="section-line"></div>
       </div>
 
       <div class="about-grid">
-        <div class="about-card">
+        <div class="about-card reveal-left">
           <h3>Pioneering Cyber-Physical Hardware</h3>
           <p>I am pursuing my B.Tech in <strong>Mechatronics Engineering</strong> at Jyothi Engineering College, Kerala. My focus lies at the intersection of mechanical dynamics, embedded microcontrollers, connected IoT infrastructure, and local machine intelligence (Edge AI).</p>
           <p>My goal is to design real-world autonomous systems that sense environmental parameters, process decisions on edge hardware, communicate securely over networks, and take precise physical action.</p>
@@ -1284,7 +1323,7 @@
           </div>
         </div>
 
-        <div class="learning-card">
+        <div class="learning-card reveal-right">
           <div class="badge-heading">Hands-on vs. Currently Learning</div>
           <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
             A transparent view of my active build stack versus skills currently being refined.
@@ -1312,14 +1351,14 @@
 
     <!-- Technical Skills Section -->
     <section class="section" id="skills">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-num">// 02</span>
         <h2 class="section-title">Technical Domains</h2>
         <div class="section-line"></div>
       </div>
 
       <div class="skills-grid">
-        <div class="skill-card">
+        <div class="skill-card reveal">
           <h3 class="skill-category"><span class="skill-icon">⚡</span> Embedded & Electronics</h3>
           <div class="skill-tags">
             <span class="skill-tag">ESP32</span>
@@ -1332,7 +1371,7 @@
           </div>
         </div>
 
-        <div class="skill-card">
+        <div class="skill-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🌐</span> Internet of Things (IoT)</h3>
           <div class="skill-tags">
             <span class="skill-tag">Blynk IoT</span>
@@ -1344,7 +1383,7 @@
           </div>
         </div>
 
-        <div class="skill-card">
+        <div class="skill-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🧠</span> Edge AI & TinyML</h3>
           <div class="skill-tags">
             <span class="skill-tag">TinyML</span>
@@ -1355,7 +1394,7 @@
           </div>
         </div>
 
-        <div class="skill-card">
+        <div class="skill-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🤖</span> Robotics & Automation</h3>
           <div class="skill-tags">
             <span class="skill-tag">Differential Robotics</span>
@@ -1367,7 +1406,7 @@
           </div>
         </div>
 
-        <div class="skill-card">
+        <div class="skill-card reveal">
           <h3 class="skill-category"><span class="skill-icon">🛡️</span> Cybersecurity</h3>
           <div class="skill-tags">
             <span class="skill-tag">Network Security Fundamentals</span>
@@ -1377,7 +1416,7 @@
           </div>
         </div>
 
-        <div class="skill-card">
+        <div class="skill-card reveal">
           <h3 class="skill-category"><span class="skill-icon">💻</span> Programming Languages</h3>
           <div class="skill-tags">
             <span class="skill-tag">C / C++</span>
@@ -1392,7 +1431,7 @@
 
     <!-- Projects Section -->
     <section class="section" id="projects">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-num">// 03</span>
         <h2 class="section-title">Engineered Projects</h2>
         <div class="section-line"></div>
@@ -1400,7 +1439,7 @@
 
       <div class="projects-grid">
         <!-- Project 1: Smart Security Patrol Robot (Featured) -->
-        <div class="project-card featured-card" onclick="openProjectModal('patrol-robot')">
+        <div class="project-card featured-card reveal-scale" onclick="openProjectModal('patrol-robot')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🤖</div>
@@ -1425,7 +1464,7 @@
         </div>
 
         <!-- Project 2: Search & Rescue Robot -->
-        <div class="project-card" onclick="openProjectModal('search-rescue')">
+        <div class="project-card reveal" onclick="openProjectModal('search-rescue')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🛰️</div>
@@ -1448,7 +1487,7 @@
         </div>
 
         <!-- Project 3: Smart Agriculture / AI Crop Monitoring -->
-        <div class="project-card" onclick="openProjectModal('smart-agri')">
+        <div class="project-card reveal" onclick="openProjectModal('smart-agri')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🌱</div>
@@ -1471,7 +1510,7 @@
         </div>
 
         <!-- Project 4: Smart Classroom Management -->
-        <div class="project-card" onclick="openProjectModal('smart-classroom')">
+        <div class="project-card reveal" onclick="openProjectModal('smart-classroom')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🏫</div>
@@ -1495,7 +1534,7 @@
         </div>
 
         <!-- Project 5: Smart LPG Safety System -->
-        <div class="project-card" onclick="openProjectModal('lpg-safety')">
+        <div class="project-card reveal" onclick="openProjectModal('lpg-safety')">
           <div class="project-img-wrapper">
             <div class="project-blueprint"></div>
             <div class="project-icon-large">🔥</div>
@@ -1521,13 +1560,13 @@
 
     <!-- Engineering System Visualization -->
     <section class="section" id="pipeline">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-num">// 04</span>
         <h2 class="section-title">How I Build Intelligent Systems</h2>
         <div class="section-line"></div>
       </div>
 
-      <div class="pipeline-container">
+      <div class="pipeline-container reveal-scale">
         <div class="pipeline-flow">
           <div class="pipeline-node">
             <div class="node-title">SENSORS</div>
@@ -1569,14 +1608,14 @@
 
     <!-- Career Path / Journey -->
     <section class="section" id="journey">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-num">// 05</span>
         <h2 class="section-title">My Engineering Journey</h2>
         <div class="section-line"></div>
       </div>
 
       <div class="timeline">
-        <div class="timeline-item">
+        <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <h3 class="timeline-title">01. Mechatronics Foundation</h3>
@@ -1584,7 +1623,7 @@
           </div>
         </div>
 
-        <div class="timeline-item">
+        <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <h3 class="timeline-title">02. Embedded Programming & Microcontrollers</h3>
@@ -1592,7 +1631,7 @@
           </div>
         </div>
 
-        <div class="timeline-item">
+        <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <h3 class="timeline-title">03. Internet of Things (IoT) Systems</h3>
@@ -1600,7 +1639,7 @@
           </div>
         </div>
 
-        <div class="timeline-item">
+        <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <h3 class="timeline-title">04. Edge AI & TinyML Integration</h3>
@@ -1608,7 +1647,7 @@
           </div>
         </div>
 
-        <div class="timeline-item">
+        <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <h3 class="timeline-title">05. Cybersecurity Specialization</h3>
@@ -1616,7 +1655,7 @@
           </div>
         </div>
 
-        <div class="timeline-item">
+        <div class="timeline-item reveal-left">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <h3 class="timeline-title">06. Autonomous Intelligent Systems</h3>
@@ -1628,14 +1667,14 @@
 
     <!-- Contact Section -->
     <section class="section" id="contact">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-num">// 06</span>
         <h2 class="section-title">Let's Build Something Intelligent</h2>
         <div class="section-line"></div>
       </div>
 
       <div class="contact-container">
-        <div class="contact-info">
+        <div class="contact-info reveal-left">
           <a href="mailto:sangeethcherur@gmail.com" class="contact-card">
             <div class="contact-icon">✉️</div>
             <div class="contact-details">
@@ -1661,7 +1700,7 @@
           </a>
         </div>
 
-        <form class="contact-form" onsubmit="handleFormSubmit(event)">
+        <form class="contact-form reveal-right" onsubmit="handleFormSubmit(event)">
           <div class="form-group">
             <label for="name">Your Name</label>
             <input type="text" id="name" class="form-control" required placeholder="Recruiter / Engineer Name">
@@ -1727,7 +1766,7 @@
     <div>Jyothi Engineering College, Kerala, India</div>
   </footer>
 
-  <!-- Script for PCB Canvas Animation & Interactions -->
+  <!-- Script for PCB Canvas Animation, Interactions & Scroll Reveal -->
   <script>
     // Project Data Dictionary
     const projectData = {
@@ -1819,6 +1858,7 @@
       e.target.reset();
     }
 
+    // Scroll Progress Bar & Header Glass Effect
     window.addEventListener('scroll', () => {
       const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -1829,9 +1869,66 @@
       else header.classList.remove('scrolled');
     });
 
+    // Mobile Nav Drawer Toggle
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
     menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+
+    // -----------------------------------------------------------------
+    // HARDWARE ACCELERATED SCROLL REVEAL & SCROLLSPY (MOBILE & LAPTOP)
+    // -----------------------------------------------------------------
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60px 0px',
+      threshold: 0.15
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      revealElements.forEach((el, idx) => {
+        // Stagger grid item delays slightly for smooth cascading reveals
+        if (el.classList.contains('skill-card') || el.classList.contains('project-card')) {
+          const delay = (idx % 3) * 0.12;
+          el.style.transitionDelay = `${delay}s`;
+        }
+        revealObserver.observe(el);
+      });
+    } else {
+      revealElements.forEach(el => el.classList.add('active'));
+    }
+
+    // ScrollSpy Navigation Active Highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let currentSectionId = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        const sectionHeight = section.offsetHeight;
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === `#${currentSectionId}`) {
+          item.classList.add('active');
+        }
+      });
+    });
 
     // REALISTIC EMBEDDED ELECTRONICS PCB CANVAS RENDERER
     const pcbCanvas = document.getElementById('pcbCanvas');
@@ -1846,7 +1943,7 @@
     window.addEventListener('resize', resizePcbCanvas);
     resizePcbCanvas();
 
-    // Mouse Parallax Micro-interaction
+    // Mouse Parallax Micro-interaction (Desktop/Laptop)
     let mouseX = 0, mouseY = 0;
     stage.addEventListener('mousemove', (e) => {
       const rect = stage.getBoundingClientRect();
@@ -1996,7 +2093,6 @@
       requestAnimationFrame(drawPcb);
     }
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReducedMotion) {
       drawPcb();
     }
