@@ -33,11 +33,14 @@
       --liquid-border-glow: rgba(0, 229, 255, 0.65);
       --liquid-highlight: inset 0 2px 4px rgba(255, 255, 255, 0.32), inset 0 -3px 6px rgba(0, 0, 0, 0.8), 0 25px 60px rgba(0, 0, 0, 0.85);
       --liquid-glow: 0 0 35px rgba(0, 229, 255, 0.32);
-      --liquid-filter: blur(12px);
+      --liquid-filter: blur(28px) saturate(220%) contrast(108%);
       --liquid-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       
-      --cyan: #00e5ff;
+      --cyan: #00E0FF;
       --cyan-glow: rgba(0, 229, 255, 0.4);
+      --neon-green: #00FF88;
+      --neon-light: #00FFA3;
+      --teal-dark: #001a12;
       --copper: #c6884a;
       --copper-glow: rgba(198, 136, 74, 0.32);
       --status-green: #00e676;
@@ -78,7 +81,7 @@
       left: 0;
       height: 3px;
       width: 0%;
-      background: linear-gradient(90deg, var(--cyan), var(--status-green), var(--copper));
+      background: linear-gradient(90deg, var(--cyan), var(--status-green), var(--neon-green));
       z-index: 1000;
       box-shadow: 0 0 18px var(--cyan);
       transition: width 0.1s linear;
@@ -277,7 +280,7 @@
     .section-num {
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      color: var(--copper);
+      color: var(--neon-green);
       letter-spacing: 1px;
     }
 
@@ -419,7 +422,7 @@
     .hero-subhead {
       font-family: var(--font-mono);
       font-size: clamp(0.9rem, 1.4vw, 1.15rem);
-      color: var(--copper);
+      color: var(--neon-green);
       font-weight: 500;
       margin-bottom: 18px;
     }
@@ -478,8 +481,8 @@
     }
 
     .btn-secondary:hover {
-      border-color: var(--copper);
-      color: var(--copper);
+      border-color: var(--neon-green);
+      color: var(--neon-green);
       box-shadow: 0 0 25px var(--copper-glow), var(--liquid-highlight);
       transform: translateY(-3px) scale(1.02);
     }
@@ -692,7 +695,7 @@
     .bus-trace-line {
       width: 100%;
       height: 2px;
-      background: linear-gradient(90deg, transparent, var(--cyan), var(--copper), transparent);
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--neon-green), transparent);
       box-shadow: 0 0 14px var(--cyan);
     }
 
@@ -767,7 +770,7 @@
 
     .focus-item::before {
       content: '◈';
-      color: var(--copper);
+      color: var(--neon-green);
     }
 
     .learning-card {
@@ -783,7 +786,7 @@
     .badge-heading {
       font-family: var(--font-mono);
       font-size: 0.8rem;
-      color: var(--copper);
+      color: var(--neon-green);
       letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-bottom: 16px;
@@ -844,7 +847,7 @@
       left: 0;
       width: 3px;
       height: 100%;
-      background: var(--copper);
+      background: var(--neon-green);
       opacity: 0.4;
       transition: all 0.3s ease;
     }
@@ -874,7 +877,7 @@
     }
 
     .skill-icon {
-      color: var(--copper);
+      color: var(--neon-green);
       font-size: 1.2rem;
     }
 
@@ -973,7 +976,7 @@
 
     .project-icon-large {
       font-size: 3.5rem;
-      color: var(--copper);
+      color: var(--neon-green);
       z-index: 1;
       transition: transform 0.35s ease, color 0.35s ease;
     }
@@ -993,7 +996,7 @@
     .project-badge {
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      color: var(--copper);
+      color: var(--neon-green);
       letter-spacing: 1px;
       text-transform: uppercase;
       margin-bottom: 8px;
@@ -1141,7 +1144,7 @@
     .modal-section-title {
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      color: var(--copper);
+      color: var(--neon-green);
       letter-spacing: 1px;
       text-transform: uppercase;
       margin-bottom: 8px;
@@ -1342,7 +1345,7 @@
       top: 0;
       bottom: 0;
       width: 2px;
-      background: linear-gradient(180deg, var(--cyan), var(--status-green), var(--copper));
+      background: linear-gradient(180deg, var(--cyan), var(--status-green), var(--neon-green));
     }
 
     .timeline-item {
@@ -1423,7 +1426,7 @@
 
     .contact-icon {
       font-size: 1.5rem;
-      color: var(--copper);
+      color: var(--neon-green);
     }
 
     .contact-details label {
@@ -1506,14 +1509,6 @@
 
     /* OPTIMIZED RESPONSIVE BREAKPOINTS FOR MOBILE USERS */
     @media (max-width: 960px) {
-      /* Kill expensive backdrop filters and complex shadows on mobile */
-      .liquid-glass-card, .header, .pcb-board, .hud-item, .oscilloscope-box, .terminal-box {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        background: rgba(8, 16, 12, 0.98) !important;
-        box-shadow: none !important;
-      }
-      
       .hero-container {
         grid-template-columns: 1fr;
         padding-top: 100px;
@@ -2204,7 +2199,11 @@
   </footer>
 
   <!-- NEW: Include Three.js for 3D Background -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
 
   <!-- Script for Web Audio SFX Synthesizer, PCB Canvas, Oscilloscope & Interactive Tools -->
   <script>
@@ -2532,10 +2531,8 @@
       entries.forEach(entry => {
         if (entry.target.id === 'pcbBoard') {
           window.isPcbVisible = entry.isIntersecting;
-          if (entry.isIntersecting && !window.pcbRafId) drawPcb();
         } else if (entry.target.id === 'scopeCanvas') {
           window.isScopeVisible = entry.isIntersecting;
-          if (entry.isIntersecting && !window.scopeRafId) animateOscilloscope();
         }
       });
     }, { threshold: 0.1 });
@@ -2634,7 +2631,7 @@
 
     function drawPcb() {
       if (!window.isPcbVisible) { 
-        window.pcbRafId = null;
+        requestAnimationFrame(drawPcb); 
         return; 
       }
       const W = pcbCanvas.width; const H = pcbCanvas.height;
@@ -2706,7 +2703,7 @@
         ctx.fillText(c.id, cx - hw + 14, cy - hh + 12);
       });
 
-      window.pcbRafId = requestAnimationFrame(drawPcb);
+      requestAnimationFrame(drawPcb);
     }
 
     if (!prefersReducedMotion) drawPcb();
@@ -2734,7 +2731,7 @@
 
     function animateOscilloscope() {
       if (!window.isScopeVisible) { 
-        window.scopeRafId = null;
+        requestAnimationFrame(animateOscilloscope); 
         return; 
       }
       sCtx.clearRect(0, 0, scopeCanvas.width, scopeCanvas.height);
@@ -2766,7 +2763,7 @@
       sCtx.stroke();
       sCtx.shadowBlur = 0;
 
-      window.scopeRafId = requestAnimationFrame(animateOscilloscope);
+      requestAnimationFrame(animateOscilloscope);
     }
     if (!prefersReducedMotion) animateOscilloscope();
     
@@ -2774,107 +2771,200 @@
     // 3D BACKGROUND SCROLL SYSTEM & CARD TILT
     // ==========================================
     
-    // 3D Tilt for Cards (Desktop Only)
-    if (window.innerWidth >= 960 && !prefersReducedMotion) {
-      document.querySelectorAll('.liquid-glass-card, .pipeline-node').forEach(card => {
+    
+    // ==========================================
+    // GSAP CINEMATIC SCROLL & ADVANCED 3D HOVER
+    // ==========================================
+    if (typeof gsap !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero Elements Staggered Fade
+      gsap.fromTo('.hero-container .reveal-left', 
+        { y: 50, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
+      );
+
+      // Project Cards Mask Reveal
+      gsap.utils.toArray('.project-card').forEach((card, i) => {
+        gsap.fromTo(card,
+          { y: 80, opacity: 0, scale: 0.95 },
+          {
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+            },
+            y: 0, opacity: 1, scale: 1, duration: 1, ease: 'power3.out', delay: i * 0.1
+          }
+        );
+      });
+
+      // Journey Timeline Nodes
+      gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+        gsap.fromTo(item,
+          { x: -50, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 85%',
+            },
+            x: 0, opacity: 1, duration: 0.8, ease: 'back.out(1.2)'
+          }
+        );
+      });
+    }
+
+    // Advanced 3D Glare Hover Effect
+    if (window.innerWidth >= 960) {
+      document.querySelectorAll('.liquid-glass-card').forEach(card => {
         card.addEventListener('mousemove', e => {
           const rect = card.getBoundingClientRect();
-          const dx = (e.clientX - rect.left - rect.width / 2) / rect.width;
-          const dy = (e.clientY - rect.top - rect.height / 2) / rect.height;
-          card.style.transform = `perspective(1000px) rotateX(${dy * -8}deg) rotateY(${dx * 12}deg) translateY(-4px) scale(1.02)`;
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          // Parallax for content inside
+          const dx = (x - rect.width / 2) / (rect.width / 2);
+          const dy = (y - rect.height / 2) / (rect.height / 2);
+          
+          card.style.transform = `perspective(1000px) rotateX(${dy * -6}deg) rotateY(${dx * 10}deg) scale3d(1.02, 1.02, 1.02)`;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+          card.style.boxShadow = `0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(0, 255, 136, 0.3)`;
         });
+        
         card.addEventListener('mouseleave', () => {
-          card.style.transform = '';
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+          card.style.boxShadow = '';
         });
       });
     }
 
-    // Three.js 3D Background with Parallax Scroll
-    (function initThreeBackground() {
-      if(typeof THREE === 'undefined') return;
-      if(prefersReducedMotion) return;
+    // (Legacy 3D Tilt Removed in favor of Advanced Glare Tilt)
 
+    // Three.js 3D Background with Parallax Scroll
+    
+    // ==========================================
+    // VERTICAL ENERGY STREAM THREE.JS BACKGROUND
+    // ==========================================
+    (function initEnergyStream() {
+      if(typeof THREE === 'undefined') return;
       const container = document.getElementById('bg-3d-scene');
       const isMobile = window.innerWidth < 768;
       
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-      camera.position.z = isMobile ? 14 : 9;
+      // Add subtle fog to blend into background
+      scene.fog = new THREE.FogExp2(0x001a12, 0.03);
+      
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.z = 15;
+      camera.position.y = 5;
+      camera.lookAt(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: 'high-performance' });
-      renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5));
       renderer.setSize(window.innerWidth, window.innerHeight);
       container.appendChild(renderer.domElement);
 
       const group = new THREE.Group();
       scene.add(group);
 
-      // Core icosahedron
-      const coreGeometry = new THREE.IcosahedronGeometry(2, 1);
-      const coreMaterial = new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.12 });
-      const core = new THREE.Mesh(coreGeometry, coreMaterial);
-      group.add(core);
+      // Create vertical glowing energy lines
+      const lineCount = isMobile ? 30 : 80;
+      const lines = [];
+      const lineMat = new THREE.LineBasicMaterial({ 
+        color: 0x00FF88, 
+        transparent: true, 
+        opacity: 0.4,
+        blending: THREE.AdditiveBlending 
+      });
+      
+      for(let i = 0; i < lineCount; i++) {
+        const points = [];
+        const x = (Math.random() - 0.5) * 20;
+        const z = (Math.random() - 0.5) * 10;
+        
+        // Wavy line points
+        for(let j = 0; j < 10; j++) {
+          points.push(new THREE.Vector3(x + (Math.random()-0.5)*1.5, 20 - (j * 4), z + (Math.random()-0.5)*1.5));
+        }
+        
+        const geo = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(geo, lineMat);
+        
+        // Random speed for each line
+        line.userData = { speed: 0.05 + Math.random() * 0.1 };
+        lines.push(line);
+        group.add(line);
+      }
 
-      // Orbital Rings
-      const ring1Geo = new THREE.TorusGeometry(3.5, 0.02, 4, 64);
-      const ringMat = new THREE.MeshBasicMaterial({ color: 0xc6884a, transparent: true, opacity: 0.3 });
-      const ring1 = new THREE.Mesh(ring1Geo, ringMat);
-      ring1.rotation.x = Math.PI / 2.5;
-      group.add(ring1);
-
-      const ring2Geo = new THREE.TorusGeometry(5, 0.02, 4, 64);
-      const ring2Mat = new THREE.MeshBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.2 });
-      const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-      ring2.rotation.y = Math.PI / 3;
-      group.add(ring2);
-
-      // Particles Field
-      const particleCount = isMobile ? 120 : 600;
+      // Energy particles
+      const particleCount = isMobile ? 150 : 400;
       const pGeo = new THREE.BufferGeometry();
-      const pMat = new THREE.PointsMaterial({ color: 0xc6884a, size: 0.04, transparent: true, opacity: 0.5 });
+      const pMat = new THREE.PointsMaterial({ 
+        color: 0x00E0FF, 
+        size: 0.1, 
+        transparent: true, 
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+      });
+      
       const pPos = new Float32Array(particleCount * 3);
-      for(let i=0; i<particleCount*3; i++) {
-        pPos[i] = (Math.random() - 0.5) * 25;
+      const pSpeeds = new Float32Array(particleCount);
+      for(let i=0; i<particleCount; i++) {
+        pPos[i*3] = (Math.random() - 0.5) * 30;
+        pPos[i*3+1] = (Math.random() - 0.5) * 40;
+        pPos[i*3+2] = (Math.random() - 0.5) * 15;
+        pSpeeds[i] = 0.02 + Math.random() * 0.08;
       }
       pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      pGeo.setAttribute('speed', new THREE.BufferAttribute(pSpeeds, 1));
       const particles = new THREE.Points(pGeo, pMat);
       group.add(particles);
 
-      // Resize Listener
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       }, {passive: true});
 
-      // Scroll Tracking
-      let scrollY = 0;
-      window.addEventListener('scroll', () => {
-        scrollY = window.scrollY;
-      }, {passive: true});
-
-      // Animation Loop
       const clock = new THREE.Clock();
-      function animateThree() {
-        requestAnimationFrame(animateThree);
+      
+      function animateEnergy() {
+        requestAnimationFrame(animateEnergy);
         const t = clock.getElapsedTime();
         
-        const scrollProgress = scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
+        // Scroll influence
+        let scrollY = window.scrollY;
+        let docHeight = document.body.scrollHeight - window.innerHeight;
+        let scrollProgress = docHeight > 0 ? scrollY / docHeight : 0;
         
-        // Continuous rotation + scroll driven rotation
-        group.rotation.y = t * 0.05 + scrollProgress * Math.PI * 2;
-        group.rotation.x = t * 0.03 + scrollProgress * Math.PI;
-        core.rotation.y = t * -0.1;
-        ring1.rotation.z = t * 0.2;
-        ring2.rotation.z = t * -0.15;
+        // Flowing animation for lines
+        lines.forEach(line => {
+          line.position.y -= line.userData.speed;
+          if (line.position.y < -20) line.position.y = 20;
+          line.rotation.y = Math.sin(t * 0.5 + line.userData.speed) * 0.1;
+        });
         
-        // Parallax depth based on scroll
-        camera.position.y = -(scrollProgress * 5);
+        // Particle flowing animation
+        const positions = particles.geometry.attributes.position.array;
+        const speeds = particles.geometry.attributes.speed.array;
+        for(let i=0; i<particleCount; i++) {
+          positions[i*3+1] -= speeds[i]; // move down
+          if (positions[i*3+1] < -20) {
+             positions[i*3+1] = 20;
+             positions[i*3] = (Math.random() - 0.5) * 30; // reset x
+          }
+        }
+        particles.geometry.attributes.position.needsUpdate = true;
+        
+        // Camera parallax based on scroll (cinematic depth)
+        camera.position.y = 5 - (scrollProgress * 15);
+        camera.position.z = 15 - (scrollProgress * 5);
         
         renderer.render(scene, camera);
       }
-      animateThree();
+      animateEnergy();
     })();
+
   </script>
 </body>
 </html>
