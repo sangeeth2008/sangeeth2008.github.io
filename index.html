@@ -84,6 +84,17 @@
       transition: width 0.1s linear;
     }
 
+    /* Scroll Inner Effect Vignette */
+    .scroll-inner-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 400;
+      box-shadow: inset 0 0 0px var(--cyan);
+      opacity: 0;
+      transition: opacity 0.1s linear, box-shadow 0.1s linear;
+    }
+
     /* Technical PCB Background Grid & Ambient Glows */
     .pcb-grid-overlay {
       position: fixed;
@@ -1605,6 +1616,10 @@
   <!-- PCB Grid & Ambient Glow Overlays -->
   <div class="pcb-grid-overlay"></div>
   <div class="radial-glow"></div>
+  <!-- NEW: Three.js 3D Background Container -->
+  <div id="bg-3d-scene" style="position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.65;"></div>
+  <!-- Scroll Inner Glow Vignette -->
+  <div class="scroll-inner-glow" id="scrollInnerGlow"></div>
 
   <!-- Header Navigation -->
   <header class="header" id="header">
@@ -2193,6 +2208,9 @@
     <div>Jyothi Engineering College, Kerala, India</div>
   </footer>
 
+  <!-- NEW: Include Three.js for 3D Background -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
   <!-- Script for Web Audio SFX Synthesizer, PCB Canvas, Oscilloscope & Interactive Tools -->
   <script>
     // WEB AUDIO API HIGH-TECH SOUND SYNTHESIZER
@@ -2379,8 +2397,8 @@
     }
 
     function handleCliKey(e) {
-      playSfx('terminal');
       if (e.key === 'Enter') {
+        playSfx('terminal');
         const val = e.target.value.trim().toLowerCase();
         e.target.value = '';
         if (!val) return;
@@ -2439,6 +2457,13 @@
       const header = document.getElementById('header');
       if (winScroll > 50) header.classList.add('scrolled');
       else header.classList.remove('scrolled');
+      
+      const glow = document.getElementById('scrollInnerGlow');
+      if (glow) {
+        const intensity = Math.min(scrolled / 100, 1);
+        glow.style.opacity = intensity;
+        glow.style.boxShadow = `inset 0 0 ${40 + (intensity * 120)}px rgba(0, 229, 255, ${0.02 + (intensity * 0.12)})`;
+      }
     });
 
     // Mobile Nav Drawer Toggle
@@ -2509,6 +2534,26 @@
         }
       });
     });
+    
+    // ==========================================
+    // OPTIMIZATIONS FOR MOBILE & OFF-SCREEN RAF
+    // ==========================================
+    window.isPcbVisible = true;
+    window.isScopeVisible = true;
+    const canvasObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.target.id === 'pcbBoard') {
+          window.isPcbVisible = entry.isIntersecting;
+        } else if (entry.target.id === 'scopeCanvas') {
+          window.isScopeVisible = entry.isIntersecting;
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    setTimeout(() => {
+      if(document.getElementById('pcbBoard')) canvasObserver.observe(document.getElementById('pcbBoard'));
+      if(document.getElementById('scopeCanvas')) canvasObserver.observe(document.getElementById('scopeCanvas'));
+    }, 100);
 
     // REALISTIC EMBEDDED ELECTRONICS LIQUID PCB CANVAS & COMPONENT HIT TESTING
     const pcbCanvas = document.getElementById('pcbCanvas');
@@ -2536,7 +2581,9 @@
       
       const rotY = (x / rect.width) * 16;
       const rotX = -(y / rect.height) * 16;
-      board.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+      if (window.innerWidth >= 960 && !prefersReducedMotion) {
+        board.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+      }
 
       // PCB Component Hit Testing for Interactive Tooltip & SFX
       const W = pcbCanvas.width; const H = pcbCanvas.height;
@@ -2563,7 +2610,9 @@
     });
 
     stage.addEventListener('mouseleave', () => {
-      board.style.transform = `rotateY(-7deg) rotateX(5deg)`;
+      if (window.innerWidth >= 960 && !prefersReducedMotion) {
+        board.style.transform = `rotateY(-7deg) rotateX(5deg)`;
+      }
       mouseX = -100; mouseY = -100;
       pcbTooltip.classList.remove('active');
       lastHoveredId = null;
@@ -2594,6 +2643,10 @@
     ];
 
     function drawPcb() {
+      if (!window.isPcbVisible) { 
+        requestAnimationFrame(drawPcb); 
+        return; 
+      }
       const W = pcbCanvas.width; const H = pcbCanvas.height;
       ctx.clearRect(0, 0, W, H);
 
@@ -2690,6 +2743,10 @@
     }
 
     function animateOscilloscope() {
+      if (!window.isScopeVisible) { 
+        requestAnimationFrame(animateOscilloscope); 
+        return; 
+      }
       sCtx.clearRect(0, 0, scopeCanvas.width, scopeCanvas.height);
       const W = scopeCanvas.width; const H = scopeCanvas.height;
       const mid = H / 2;
@@ -2722,6 +2779,114 @@
       requestAnimationFrame(animateOscilloscope);
     }
     if (!prefersReducedMotion) animateOscilloscope();
+    
+    // ==========================================
+    // 3D BACKGROUND SCROLL SYSTEM & CARD TILT
+    // ==========================================
+    
+    // 3D Tilt for Cards (Desktop Only)
+    if (window.innerWidth >= 960 && !prefersReducedMotion) {
+      document.querySelectorAll('.liquid-glass-card, .pipeline-node').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const dx = (e.clientX - rect.left - rect.width / 2) / rect.width;
+          const dy = (e.clientY - rect.top - rect.height / 2) / rect.height;
+          card.style.transform = `perspective(1000px) rotateX(${dy * -8}deg) rotateY(${dx * 12}deg) translateY(-4px) scale(1.02)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    }
+
+    // Three.js 3D Background with Parallax Scroll
+    (function initThreeBackground() {
+      if(typeof THREE === 'undefined') return;
+      if(prefersReducedMotion) return;
+
+      const container = document.getElementById('bg-3d-scene');
+      const isMobile = window.innerWidth < 768;
+      
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.z = isMobile ? 14 : 9;
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isMobile, powerPreference: 'low-power' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+
+      const group = new THREE.Group();
+      scene.add(group);
+
+      // Core icosahedron
+      const coreGeometry = new THREE.IcosahedronGeometry(2, 1);
+      const coreMaterial = new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.12 });
+      const core = new THREE.Mesh(coreGeometry, coreMaterial);
+      group.add(core);
+
+      // Orbital Rings
+      const ring1Geo = new THREE.TorusGeometry(3.5, 0.02, 4, 64);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0xc6884a, transparent: true, opacity: 0.3 });
+      const ring1 = new THREE.Mesh(ring1Geo, ringMat);
+      ring1.rotation.x = Math.PI / 2.5;
+      group.add(ring1);
+
+      const ring2Geo = new THREE.TorusGeometry(5, 0.02, 4, 64);
+      const ring2Mat = new THREE.MeshBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.2 });
+      const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+      ring2.rotation.y = Math.PI / 3;
+      group.add(ring2);
+
+      // Particles Field
+      const particleCount = isMobile ? 250 : 800;
+      const pGeo = new THREE.BufferGeometry();
+      const pMat = new THREE.PointsMaterial({ color: 0xc6884a, size: 0.04, transparent: true, opacity: 0.5 });
+      const pPos = new Float32Array(particleCount * 3);
+      for(let i=0; i<particleCount*3; i++) {
+        pPos[i] = (Math.random() - 0.5) * 25;
+      }
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      const particles = new THREE.Points(pGeo, pMat);
+      group.add(particles);
+
+      // Resize Listener
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, {passive: true});
+
+      // Scroll Tracking
+      let scrollY = 0;
+      window.addEventListener('scroll', () => {
+        scrollY = window.scrollY;
+      }, {passive: true});
+
+      // Animation Loop
+      const clock = new THREE.Clock();
+      function animateThree() {
+        requestAnimationFrame(animateThree);
+        const t = clock.getElapsedTime();
+        
+        const scrollProgress = scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
+        
+        // Continuous rotation + scroll driven rotation
+        group.rotation.y = t * 0.05 + scrollProgress * Math.PI * 2;
+        group.rotation.x = t * 0.03 + scrollProgress * Math.PI;
+        core.rotation.y = t * -0.1;
+        ring1.rotation.z = t * 0.2;
+        ring2.rotation.z = t * -0.15;
+        
+        // Parallax depth and inward zoom based on scroll
+        camera.position.y = -(scrollProgress * 5);
+        const baseZ = isMobile ? 14 : 9;
+        camera.position.z = baseZ - (scrollProgress * 6); // Moves inward through the particles
+        
+        renderer.render(scene, camera);
+      }
+      animateThree();
+    })();
   </script>
 </body>
 </html>
