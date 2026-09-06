@@ -351,6 +351,41 @@
       transform: translateY(0) translateX(0) scale(1);
     }
 
+    /* HERO-ONLY ENTRANCE ANIMATION
+       The hero is the very first thing on the page, and on many phones it's
+       taller than the viewport once the name wraps to multiple lines. That
+       meant it was sharing the same scroll-triggered reveal as lower-page
+       content, whose "become visible" trigger depends on the element
+       crossing an intersection threshold - a threshold the hero could fail
+       to cross on load, leaving the name/details stuck faded and
+       offset (not fully visible) until the page was scrolled and back.
+       These start fully visible by default and only get the fade/slide
+       treatment once JS confirms it can run, so there's no dependency on
+       viewport height, scroll position, or the animation library loading. */
+    .hero-reveal-left,
+    .hero-reveal-right {
+      opacity: 1;
+      transform: none;
+    }
+
+    .js-hero-animate .hero-reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .js-hero-animate .hero-reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-reveal-left.active,
+    .hero-reveal-right.active {
+      opacity: 1;
+      transform: none;
+    }
+
     /* INTENSIFIED LIQUID GLARE SWEEP EFFECT ON CARDS */
     .liquid-glass-card {
       position: relative;
@@ -1661,6 +1696,7 @@
   </style>
 </head>
 <body onclick="initAudioOnFirstClick()">
+  <script>document.documentElement.classList.add('js-hero-animate');</script>
 
   <!-- Top Progress Bar -->
   <div class="progress-bar" id="progressBar"></div>
@@ -1698,7 +1734,7 @@
   <main id="top">
     <!-- HERO SECTION — LIQUID GLASS PCB WORKSPACE -->
     <section class="hero-container">
-      <div class="hero-left reveal-left">
+      <div class="hero-left hero-reveal-left">
         <div class="tech-pill-header">
           ENGINEERING • ELECTRONICS • INTELLIGENT SYSTEMS
         </div>
@@ -1715,7 +1751,7 @@
       </div>
 
       <!-- RIGHT SIDE: ADVANCED PCB EMBEDDED SYSTEM CANVAS WITH DIAGNOSTICS & OSCILLOSCOPE -->
-      <div class="hero-pcb-stage reveal-right">
+      <div class="hero-pcb-stage hero-reveal-right">
         <div class="pcb-board" id="pcbBoard">
           <canvas id="pcbCanvas"></canvas>
           <div class="component-tooltip" id="pcbTooltip">COMPONENT DIAGNOSTIC TOOLTIP</div>
@@ -2563,6 +2599,21 @@
       revealElements.forEach(el => el.classList.add('active'));
     }
 
+    // Hero entrance - activated immediately and unconditionally (not via
+    // IntersectionObserver), since the hero is above the fold and must
+    // never depend on scroll position or viewport height to become visible.
+    if (!prefersReducedMotion) {
+      setTimeout(() => {
+        document.querySelectorAll('.hero-reveal-left, .hero-reveal-right').forEach(el => {
+          el.classList.add('active');
+        });
+      }, 150);
+    } else {
+      document.querySelectorAll('.hero-reveal-left, .hero-reveal-right').forEach(el => {
+        el.classList.add('active');
+      });
+    }
+
     // INTERACTIVE PIPELINE STEPPER FUNCTION
     function triggerPipelineStep(stepIdx) {
       playSfx('pipeline');
@@ -2907,11 +2958,9 @@
     if (typeof gsap !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
 
-      // Hero Elements Staggered Fade
-      gsap.fromTo('.hero-container .reveal-left', 
-        { y: 50, opacity: 0 }, 
-        { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
-      );
+      // Note: the hero's entrance animation is handled separately (see
+      // "Hero entrance" below) so it's guaranteed to run regardless of
+      // whether GSAP loads, the viewport height, or scroll position.
 
       // Project Cards Mask Reveal
       gsap.utils.toArray('.project-card').forEach((card, i) => {
