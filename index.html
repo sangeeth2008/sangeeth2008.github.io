@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#020503">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
   <title>SANGEETH SASIKUMAR K S | Mechatronics, Electronics & Edge AI</title>
   <meta name="description" content="Portfolio of SANGEETH SASIKUMAR K S — Mechatronics & Electronics Engineering Student specializing in Embedded Systems, IoT, Edge AI, Robotics & Cybersecurity.">
   <meta name="keywords" content="Sangeeth Sasikumar, Electronics, Mechatronics, Embedded Systems, IoT, Edge AI, TinyML, Robotics, ESP32, PCB Design">
@@ -146,6 +151,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      flex-shrink: 1;
     }
 
     .brand-tag {
@@ -256,6 +266,12 @@
       font-family: var(--font-mono);
       font-size: 0.9rem;
       cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Mobile drawer copies of the SFX/CLI controls - hidden on desktop */
+    .nav-drawer-tools {
+      display: none;
     }
 
     /* Layout Containers */
@@ -1557,11 +1573,52 @@
       .menu-toggle {
         display: block;
       }
+      /* Keep the header down to brand + hamburger on mobile; SFX/CLI move into the drawer */
+      .header-only-tool {
+        display: none;
+      }
+      .nav-drawer-tools {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 8px;
+      }
+      .nav-drawer-tools .sfx-toggle-btn,
+      .nav-drawer-tools .cli-btn-header {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+      /* Backdrop-filter forces every visible glass panel to re-sample and
+         re-blur the content behind it on every scroll frame. With this many
+         translucent panels on screen at once, that's the single biggest
+         drag on phone GPUs — so on mobile we drop it entirely rather than
+         just shrinking the radius. Panel backgrounds already have enough
+         opacity to stay readable without it. */
+      :root {
+        --liquid-filter: none;
+      }
+      /* A few elements hardcode their own blur value instead of using the
+         shared variable above (small pills/nodes that can repeat many times
+         per section) - flatten those too so nothing slips through. Modals
+         are left alone since they open with page scroll locked, so they
+         don't cost anything during scrolling. */
+      .focus-item,
+      .tech-pill,
+      .pipeline-node,
+      .form-control,
+      .menu-toggle {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
     }
 
     @media (max-width: 600px) {
       .header {
         padding: 14px 4vw;
+      }
+      .nav-right-tools {
+        gap: 8px;
       }
       .section {
         padding: 70px 4vw;
@@ -1588,6 +1645,9 @@
     @media (max-width: 420px) {
       .brand-tag {
         display: none;
+      }
+      .brand {
+        font-size: 0.86rem;
       }
       .hero-buttons {
         flex-direction: column;
@@ -1624,9 +1684,13 @@
         <li><a href="#pipeline" class="nav-item" onclick="playSfx('click')">Pipeline</a></li>
         <li><a href="#journey" class="nav-item" onclick="playSfx('click')">Journey</a></li>
         <li><a href="#contact" class="nav-item" onclick="playSfx('click')">Contact</a></li>
+        <li class="nav-drawer-tools">
+          <button class="sfx-toggle-btn" onclick="toggleSfx()">🔊 SFX: ON</button>
+          <button class="cli-btn-header" onclick="openCliModal()">&gt;_ CLI TERMINAL</button>
+        </li>
       </ul>
-      <button class="sfx-toggle-btn" id="sfxToggleBtn" onclick="toggleSfx()">🔊 SFX: ON</button>
-      <button class="cli-btn-header" onclick="openCliModal()">&gt;_ CLI TERMINAL</button>
+      <button class="sfx-toggle-btn header-only-tool" id="sfxToggleBtn" onclick="toggleSfx()">🔊 SFX: ON</button>
+      <button class="cli-btn-header header-only-tool" onclick="openCliModal()">&gt;_ CLI TERMINAL</button>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">MENU ☰</button>
     </div>
   </header>
@@ -2223,15 +2287,17 @@
     function toggleSfx() {
       initAudioOnFirstClick();
       sfxEnabled = !sfxEnabled;
-      const btn = document.getElementById('sfxToggleBtn');
-      if (sfxEnabled) {
-        btn.textContent = '🔊 SFX: ON';
-        btn.classList.remove('muted');
-        playSfx('click');
-      } else {
-        btn.textContent = '🔇 SFX: OFF';
-        btn.classList.add('muted');
-      }
+      const btns = document.querySelectorAll('.sfx-toggle-btn');
+      btns.forEach(btn => {
+        if (sfxEnabled) {
+          btn.textContent = '🔊 SFX: ON';
+          btn.classList.remove('muted');
+        } else {
+          btn.textContent = '🔇 SFX: OFF';
+          btn.classList.add('muted');
+        }
+      });
+      if (sfxEnabled) playSfx('click');
     }
 
     function playSfx(type) {
@@ -2442,23 +2508,33 @@
       e.target.reset();
     }
 
-    // Scroll Progress Bar & Header Glass Effect
-    window.addEventListener('scroll', () => {
-      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      document.getElementById('progressBar').style.width = scrolled + '%';
-      const header = document.getElementById('header');
-      if (winScroll > 50) header.classList.add('scrolled');
-      else header.classList.remove('scrolled');
-    });
+    // Scroll Progress Bar & Header Glass Effect + ScrollSpy — combined into a
+    // single, rAF-throttled, passive listener. Previously these were two
+    // separate un-throttled scroll listeners, and the second one read
+    // offsetTop/offsetHeight right after the first one wrote styles, which
+    // forces a synchronous layout recalculation on every scroll tick
+    // (layout thrashing) — the main cause of scroll jank on phones.
 
     // Mobile Nav Drawer Toggle
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
+
+    function closeMobileDrawer() {
+      navLinks.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
     menuToggle.addEventListener('click', () => {
       playSfx('click');
+      const isOpening = !navLinks.classList.contains('active');
       navLinks.classList.toggle('active');
+      document.body.style.overflow = isOpening ? 'hidden' : 'auto';
+    });
+
+    // Close the drawer once a section link is tapped, so mobile users
+    // actually see the section they navigated to.
+    document.querySelectorAll('.nav-item').forEach(link => {
+      link.addEventListener('click', closeMobileDrawer);
     });
 
     // HARDWARE ACCELERATED SCROLL REVEAL & SCROLLSPY
@@ -2503,24 +2579,52 @@
     // ScrollSpy Navigation Active Highlight
     const sections = document.querySelectorAll('section[id]');
     const navItems = document.querySelectorAll('.nav-links a');
+    const progressBarEl = document.getElementById('progressBar');
+    const headerEl = document.getElementById('header');
+
+    // Cache section boundaries up front and only recompute on resize, so the
+    // scroll handler never has to force a layout read mid-scroll.
+    let sectionOffsets = [];
+    function computeSectionOffsets() {
+      sectionOffsets = Array.from(sections).map(section => ({
+        id: section.getAttribute('id'),
+        top: section.offsetTop - 120,
+        bottom: section.offsetTop - 120 + section.offsetHeight
+      }));
+    }
+    computeSectionOffsets();
+    window.addEventListener('resize', computeSectionOffsets, { passive: true });
+
+    let scrollTicking = false;
+    function handleScroll() {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      progressBarEl.style.width = scrolled + '%';
+
+      if (winScroll > 50) headerEl.classList.add('scrolled');
+      else headerEl.classList.remove('scrolled');
+
+      let currentSectionId = '';
+      for (const s of sectionOffsets) {
+        if (winScroll >= s.top && winScroll < s.bottom) {
+          currentSectionId = s.id;
+          break;
+        }
+      }
+      navItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('href') === `#${currentSectionId}`);
+      });
+
+      scrollTicking = false;
+    }
 
     window.addEventListener('scroll', () => {
-      let currentSectionId = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
-        const sectionHeight = section.offsetHeight;
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-          currentSectionId = section.getAttribute('id');
-        }
-      });
-
-      navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('href') === `#${currentSectionId}`) {
-          item.classList.add('active');
-        }
-      });
-    });
+      if (!scrollTicking) {
+        requestAnimationFrame(handleScroll);
+        scrollTicking = true;
+      }
+    }, { passive: true });
     
     // ==========================================
     // OPTIMIZATIONS FOR MOBILE & OFF-SCREEN RAF
@@ -2559,26 +2663,19 @@
     let mouseX = -100, mouseY = -100;
     let lastHoveredId = null;
 
-    stage.addEventListener('mousemove', (e) => {
-      const rect = stage.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-      
-      const rotY = (x / rect.width) * 16;
-      const rotX = -(y / rect.height) * 16;
-      if (window.innerWidth >= 960 && !prefersReducedMotion) {
-        board.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
-      }
+    // Shared hit-testing logic so both mouse (desktop) and touch (mobile) can
+    // reveal the component tooltip - this feature was previously mouse-only
+    // and completely invisible on phones.
+    function updatePcbHit(clientX, clientY, rect) {
+      mouseX = clientX - rect.left;
+      mouseY = clientY - rect.top;
 
-      // PCB Component Hit Testing for Interactive Tooltip & SFX
       const W = pcbCanvas.width; const H = pcbCanvas.height;
       let hovered = false;
       pcbComponents.forEach(c => {
         const cx = c.x * W; const cy = c.y * H;
         if (Math.abs(mouseX - cx) < c.w / 2 && Math.abs(mouseY - cy) < c.h / 2) {
-          pcbTooltip.style.left = `${mouseX + 15}px`;
+          pcbTooltip.style.left = `${Math.min(mouseX + 15, rect.width - 180)}px`;
           pcbTooltip.style.top = `${mouseY + 15}px`;
           pcbTooltip.innerHTML = `<strong>${c.label} (${c.id})</strong><br>Type: ${c.type} | Status: ACTIVE<br>Bus: 3.3V Logic OK`;
           pcbTooltip.classList.add('active');
@@ -2594,6 +2691,21 @@
         pcbTooltip.classList.remove('active');
         lastHoveredId = null;
       }
+      return hovered;
+    }
+
+    stage.addEventListener('mousemove', (e) => {
+      const rect = stage.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      const rotY = (x / rect.width) * 16;
+      const rotX = -(y / rect.height) * 16;
+      if (window.innerWidth >= 960 && !prefersReducedMotion) {
+        board.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+      }
+
+      updatePcbHit(e.clientX, e.clientY, rect);
     });
 
     stage.addEventListener('mouseleave', () => {
@@ -2604,6 +2716,23 @@
       pcbTooltip.classList.remove('active');
       lastHoveredId = null;
     });
+
+    // Tap-to-reveal on touch devices, so mobile visitors can still see
+    // component diagnostics even without hover.
+    stage.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      const rect = stage.getBoundingClientRect();
+      const hit = updatePcbHit(touch.clientX, touch.clientY, rect);
+      if (hit) e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchstart', (e) => {
+      if (!stage.contains(e.target)) {
+        pcbTooltip.classList.remove('active');
+        lastHoveredId = null;
+      }
+    }, { passive: true });
 
     const pcbComponents = [
       { id: 'U01', label: 'ESP32 / EDGE AI', type: 'MCU', x: 0.5, y: 0.5, w: 120, h: 120 },
@@ -2846,7 +2975,12 @@
     // VERTICAL ENERGY STREAM THREE.JS BACKGROUND
     // ==========================================
     (function initEnergyStream() {
-      if(typeof THREE === 'undefined') return;
+      // Skip entirely on phones: a continuously-animating WebGL layer sitting
+      // behind translucent, blurred panels forces those panels to
+      // recomposite every frame (not just while scrolling), which is the
+      // biggest single drag on phone GPUs. The static CSS grid/glow overlays
+      // still provide ambiance without that cost.
+      if (typeof THREE === 'undefined' || prefersReducedMotion || window.innerWidth < 768) return;
       const container = document.getElementById('bg-3d-scene');
       const isMobile = window.innerWidth < 768;
       
@@ -2930,6 +3064,8 @@
       
       function animateEnergy() {
         requestAnimationFrame(animateEnergy);
+        // Skip rendering while the tab/screen is backgrounded to save battery on phones
+        if (document.hidden) return;
         const t = clock.getElapsedTime();
         
         // Scroll influence
