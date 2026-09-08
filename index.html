@@ -8,15 +8,95 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
-  <title>SANGEETH SASIKUMAR K S | Mechatronics, Electronics & Edge AI</title>
-  <meta name="description" content="Portfolio of SANGEETH SASIKUMAR K S — Mechatronics & Electronics Engineering Student specializing in Embedded Systems, IoT, Edge AI, Robotics & Cybersecurity.">
-  <meta name="keywords" content="Sangeeth Sasikumar, Electronics, Mechatronics, Embedded Systems, IoT, Edge AI, TinyML, Robotics, ESP32, PCB Design">
-  <meta name="author" content="SANGEETH SASIKUMAR K S">
+  <title>Sangeeth Sasikumar K S | Embedded Systems, Robotics, IoT &amp; Edge AI</title>
+  <meta name="description" content="Official portfolio of Sangeeth Sasikumar K S — Mechatronics Engineering student focused on Embedded Systems, ESP32, Robotics, IoT, Automation and Edge AI.">
+  <meta name="keywords" content="Sangeeth Sasikumar K S, Sangeeth Sasikumar, Mechatronics, Embedded Systems, Robotics, IoT, Edge AI, TinyML, ESP32, Automation">
+  <meta name="author" content="Sangeeth Sasikumar K S">
   
-  <!-- Open Graph -->
+  <!-- Canonical & Robots -->
+  <link rel="canonical" href="https://sangeeth2008-github-io.vercel.app/">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Social -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SANGEETH SASIKUMAR K S | Mechatronics, Electronics & Edge AI">
-  <meta property="og:description" content="Building Electronics That Sense, Think & Act.">
+  <meta property="og:site_name" content="Sangeeth Sasikumar K S Portfolio">
+  <meta property="og:url" content="https://sangeeth2008-github-io.vercel.app/">
+  <meta property="og:title" content="Sangeeth Sasikumar K S | Embedded Systems, Robotics, IoT &amp; Edge AI">
+  <meta property="og:description" content="Official portfolio of Sangeeth Sasikumar K S — Mechatronics Engineering student focused on Embedded Systems, ESP32, Robotics, IoT, Automation and Edge AI.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://sangeeth2008-github-io.vercel.app/favicon.svg">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Sangeeth Sasikumar K S | Embedded Systems, Robotics, IoT &amp; Edge AI">
+  <meta name="twitter:description" content="Official portfolio of Sangeeth Sasikumar K S — Mechatronics Engineering student focused on Embedded Systems, ESP32, Robotics, IoT, Automation and Edge AI.">
+  <meta name="twitter:image" content="https://sangeeth2008-github-io.vercel.app/favicon.svg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Structured Data: Schema.org Person, WebSite & ProfilePage JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://sangeeth2008-github-io.vercel.app/#person",
+        "name": "Sangeeth Sasikumar K S",
+        "alternateName": "Sangeeth Sasikumar",
+        "url": "https://sangeeth2008-github-io.vercel.app/",
+        "jobTitle": "Mechatronics Engineering Student",
+        "affiliation": {
+          "@type": "EducationalOrganization",
+          "name": "Jyothi Engineering College",
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "Kerala",
+            "addressCountry": "India"
+          }
+        },
+        "sameAs": [
+          "https://github.com/sangeeth2008",
+          "https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/"
+        ],
+        "knowsAbout": [
+          "Embedded Systems",
+          "Mechatronics",
+          "Robotics",
+          "Internet of Things (IoT)",
+          "Edge AI",
+          "Automation",
+          "ESP32",
+          "ESP32-CAM",
+          "TinyML",
+          "Edge Impulse",
+          "Arduino",
+          "C++",
+          "Python"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://sangeeth2008-github-io.vercel.app/#website",
+        "url": "https://sangeeth2008-github-io.vercel.app/",
+        "name": "Sangeeth Sasikumar K S Portfolio",
+        "author": {
+          "@id": "https://sangeeth2008-github-io.vercel.app/#person"
+        }
+      },
+      {
+        "@type": "ProfilePage",
+        "@id": "https://sangeeth2008-github-io.vercel.app/#profilepage",
+        "url": "https://sangeeth2008-github-io.vercel.app/",
+        "name": "Sangeeth Sasikumar K S | Embedded Systems, Robotics, IoT & Edge AI",
+        "mainEntity": {
+          "@id": "https://sangeeth2008-github-io.vercel.app/#person"
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1729,12 +1809,12 @@
         <li><a href="#journey" class="nav-item" onclick="playSfx('click')">Journey</a></li>
         <li><a href="#contact" class="nav-item" onclick="playSfx('click')">Contact</a></li>
         <li class="nav-drawer-tools">
-          <button class="sfx-toggle-btn" onclick="toggleSfx()">🔊 SFX: ON</button>
-          <button class="cli-btn-header" onclick="openCliModal()">&gt;_ CLI TERMINAL</button>
+          <button class="sfx-toggle-btn" onclick="toggleSfx()" aria-label="Toggle sound effects">🔊 SFX: ON</button>
+          <button class="cli-btn-header" onclick="openCliModal()" aria-label="Open CLI terminal">&gt;_ CLI TERMINAL</button>
         </li>
       </ul>
-      <button class="sfx-toggle-btn header-only-tool" id="sfxToggleBtn" onclick="toggleSfx()">🔊 SFX: ON</button>
-      <button class="cli-btn-header header-only-tool" onclick="openCliModal()">&gt;_ CLI TERMINAL</button>
+      <button class="sfx-toggle-btn header-only-tool" id="sfxToggleBtn" onclick="toggleSfx()" aria-label="Toggle sound effects">🔊 SFX: ON</button>
+      <button class="cli-btn-header header-only-tool" onclick="openCliModal()" aria-label="Open CLI terminal">&gt;_ CLI TERMINAL</button>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">MENU ☰</button>
     </div>
   </header>
@@ -1783,10 +1863,10 @@
               </div>
               <canvas id="scopeCanvas"></canvas>
               <div class="scope-controls">
-                <button class="scope-btn active" onclick="setOscilloscopeMode('I2C', this)">I2C SENSOR</button>
-                <button class="scope-btn" onclick="setOscilloscopeMode('SPI', this)">SPI DISPLAY</button>
-                <button class="scope-btn" onclick="setOscilloscopeMode('PWM', this)">PWM MOTOR</button>
-                <button class="scope-btn" onclick="setOscilloscopeMode('MQTT', this)">MQTT STREAM</button>
+                <button class="scope-btn active" onclick="setOscilloscopeMode('I2C', this)" aria-label="Switch oscilloscope mode to I2C sensor">I2C SENSOR</button>
+                <button class="scope-btn" onclick="setOscilloscopeMode('SPI', this)" aria-label="Switch oscilloscope mode to SPI display">SPI DISPLAY</button>
+                <button class="scope-btn" onclick="setOscilloscopeMode('PWM', this)" aria-label="Switch oscilloscope mode to PWM motor">PWM MOTOR</button>
+                <button class="scope-btn" onclick="setOscilloscopeMode('MQTT', this)" aria-label="Switch oscilloscope mode to MQTT stream">MQTT STREAM</button>
               </div>
             </div>
             
@@ -1824,14 +1904,14 @@
     <section class="section" id="about">
       <div class="section-header reveal">
         <span class="section-num">// 01</span>
-        <h2 class="section-title">Engineering Intelligent Systems</h2>
+        <h2 class="section-title">About — Engineering Intelligent Systems</h2>
         <div class="section-line"></div>
       </div>
 
       <div class="about-grid">
         <div class="about-card liquid-glass-card reveal-left">
           <h3>Pioneering Cyber-Physical Hardware</h3>
-          <p>I am pursuing my B.Tech in <strong>Mechatronics Engineering</strong> at Jyothi Engineering College, Kerala. My focus lies at the intersection of mechanical dynamics, embedded microcontrollers, connected IoT infrastructure, and local machine intelligence (Edge AI).</p>
+          <p>I am Sangeeth Sasikumar K S, pursuing my B.Tech in <strong>Mechatronics Engineering</strong> at Jyothi Engineering College, Kerala. My focus lies at the intersection of mechanical dynamics, embedded microcontrollers, connected IoT infrastructure, and local machine intelligence (Edge AI).</p>
           <p>My goal is to design real-world autonomous systems that sense environmental parameters, process decisions on edge hardware, communicate securely over networks, and take precise physical action.</p>
           
           <div class="about-focus-list">
@@ -1876,7 +1956,7 @@
     <section class="section" id="skills">
       <div class="section-header reveal">
         <span class="section-num">// 02</span>
-        <h2 class="section-title">Technical Domains</h2>
+        <h2 class="section-title">Skills &amp; Technical Domains</h2>
         <div class="section-line"></div>
       </div>
 
@@ -1956,7 +2036,7 @@
     <section class="section" id="projects">
       <div class="section-header reveal">
         <span class="section-num">// 03</span>
-        <h2 class="section-title">Engineered Projects</h2>
+        <h2 class="section-title">Projects — Embedded Systems, Robotics &amp; Edge AI</h2>
         <div class="section-line"></div>
       </div>
 
@@ -1970,7 +2050,7 @@
           <div class="project-content">
             <span class="project-badge">FEATURED HARDWARE & EMBEDDED SYSTEM</span>
             <h3 class="project-title">Smart Security Patrol Robot V1</h3>
-            <p class="project-desc">Autonomous differential security rover with non-blocking FSM patrol, ultrasonic safety barrier detection, PIR motion intrusion alert, IMU pitch/roll tilt alarms, and standalone ESP32-CAM live MJPEG video streaming.</p>
+            <p class="project-desc">Autonomous differential security robot and embedded system engineered with non-blocking FSM patrol, ultrasonic safety barrier detection, PIR motion intrusion alerts, IMU tilt sensing, and ESP32-CAM live MJPEG video streaming.</p>
             <div class="project-tech">
               <span class="project-tech-tag">ESP32</span>
               <span class="project-tech-tag">ESP32-CAM</span>
@@ -1995,7 +2075,7 @@
           <div class="project-content">
             <span class="project-badge">ROBOTICS & SENSING</span>
             <h3 class="project-title">Search & Rescue Mobile Platform</h3>
-            <p class="project-desc">Rugged remote mobile sensing unit equipped with real-time video feed and sensor monitoring to assist physical exploration in restricted zones.</p>
+            <p class="project-desc">Rugged remote mobile robotics platform equipped with real-time video streaming and multi-sensor telemetry to assist physical exploration in hazardous zones.</p>
             <div class="project-tech">
               <span class="project-tech-tag">ESP32</span>
               <span class="project-tech-tag">Camera Stream</span>
@@ -2192,7 +2272,7 @@
     <section class="section" id="contact">
       <div class="section-header reveal">
         <span class="section-num">// 06</span>
-        <h2 class="section-title">Let's Build Something Intelligent</h2>
+        <h2 class="section-title">Contact Sangeeth Sasikumar K S</h2>
         <div class="section-line"></div>
       </div>
 
@@ -2247,7 +2327,7 @@
   <!-- Modal Inspector Window -->
   <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOnBackdrop(event)">
     <div class="modal-panel" id="modalPanel">
-      <button class="modal-close" onclick="closeModal()" aria-label="Close modal">×</button>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close project modal">×</button>
       <div class="modal-header">
         <div id="modalCategory" class="project-badge">SPECIFICATION SHEET</div>
         <h3 id="modalTitle" class="modal-title">Project Title</h3>
@@ -2288,7 +2368,7 @@
     <div class="cli-window">
       <div class="cli-header">
         <span>&gt;_ SANGEETH_SASIKUMAR_OS // SYSTEM COMMAND INTERFACE</span>
-        <button onclick="closeCliModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">✕</button>
+        <button onclick="closeCliModal()" aria-label="Close CLI terminal" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">✕</button>
       </div>
       <div class="cli-output" id="cliOutput">
         <div class="cli-line">Type <span style="color:var(--cyan);">help</span> to list available commands (skills, projects, status, contact, clear).</div>
@@ -2459,6 +2539,7 @@
       playSfx('modal');
       const data = projectData[key];
       if (!data) return;
+      trackGaEvent('project_click', { project_id: key, project_title: data.title });
       document.getElementById('modalCategory').textContent = data.category;
       document.getElementById('modalTitle').textContent = data.title;
       document.getElementById('modalProblem').textContent = data.problem;
@@ -2551,6 +2632,26 @@
       alert('Signal Sent! Sangeeth Sasikumar will review your message shortly.');
       e.target.reset();
     }
+
+    // GA4 Custom Interaction Event Tracking
+    function trackGaEvent(eventName, params) {
+      if (typeof gtag === 'function') {
+        gtag('event', eventName, params || {});
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const anchor = e.target.closest('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href') || '';
+      if (href.includes('github.com')) {
+        trackGaEvent('github_click', { destination_url: href });
+      } else if (href.includes('linkedin.com')) {
+        trackGaEvent('linkedin_click', { destination_url: href });
+      } else if (href.startsWith('mailto:')) {
+        trackGaEvent('email_click', { email_address: href.replace('mailto:', '') });
+      }
+    }, { passive: true });
 
     // Scroll Progress Bar & Header Glass Effect + ScrollSpy — combined into a
     // single, rAF-throttled, passive listener. Previously these were two
