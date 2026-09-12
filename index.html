@@ -188,10 +188,12 @@
     }
     .progress-bar {
       height: 100%;
-      width: 0%;
+      width: 100%;
+      transform-origin: left center;
+      transform: scaleX(0);
       background: linear-gradient(90deg, var(--cyan), var(--neon-mint), var(--electric-purple));
       box-shadow: 0 0 16px var(--cyan), 0 0 32px var(--neon-mint);
-      transition: width 0.05s ease-out;
+      will-change: transform;
     }
 
     /* 3D WebGL Canvas Layer */
@@ -308,7 +310,8 @@
       border-radius: 50%;
       background: var(--cyan);
       box-shadow: 0 0 10px var(--cyan);
-      transition: top 0.05s linear;
+      transform: translateY(0);
+      will-change: transform;
     }
 
     /* Header Navigation */
@@ -1494,10 +1497,45 @@
       }
     }
 
-    @media (max-width: 600px) {
+    /* High-Performance Mobile & Android GPU Optimizations */
+    @media (max-width: 820px), (pointer: coarse) {
       :root {
-        --glass-filter: blur(8px);
+        --glass-filter: none;
+        --border-glass: rgba(0, 180, 255, 0.28);
       }
+      .vibe-card, .telemetry-card, .header, .nav-btn, .hud-3d-status, .scope-box, .btn-secondary, .modal-container {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+      .vibe-card {
+        background: rgba(9, 15, 34, 0.94) !important;
+        animation: none !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+        transform: none !important;
+      }
+      .vibe-card:hover {
+        transform: none !important;
+      }
+      .telemetry-card {
+        background: rgba(9, 15, 34, 0.94) !important;
+      }
+      .telemetry-card::before {
+        display: none !important;
+        animation: none !important;
+      }
+      .pipeline-step::after {
+        animation: none !important;
+      }
+      .cursor-glow {
+        display: none !important;
+      }
+      .header {
+        background: rgba(5, 8, 18, 0.96) !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      /* Android Mobile Viewport Optimization */
       body {
         -webkit-overflow-scrolling: touch;
         touch-action: pan-y;
@@ -2298,14 +2336,13 @@
     window.addEventListener('click', () => initAudio(), { once: true });
 
     /* ==========================================================================
-       2. THREE.JS 3D SCROLL-DRIVEN ANIMATION SYSTEM
-       OBJECT COMING TOWARDS THE USER AS WE SCROLL
+       2. THREE.JS 3D SCROLL-DRIVEN ANIMATION SYSTEM (HIGH PERFORMANCE / ZERO LAG)
        ========================================================================== */
     (function init3DScene() {
       const container = document.getElementById('webgl-canvas-container');
       if (!container || typeof THREE === 'undefined') return;
 
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 820;
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -2313,7 +2350,10 @@
       const renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: !isMobile,
-        powerPreference: 'high-performance'
+        powerPreference: isMobile ? 'default' : 'high-performance',
+        precision: isMobile ? 'mediump' : 'highp',
+        stencil: false,
+        depth: true
       });
       renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -2336,7 +2376,7 @@
       scene.add(masterCoreGroup);
 
       // 1. Dual-Tone Cyber Core (Wireframe + Shaded Solid)
-      const coreGeo = new THREE.IcosahedronGeometry(2.4, isMobile ? 1 : 2);
+      const coreGeo = new THREE.IcosahedronGeometry(2.4, isMobile ? 0 : 1);
       
       const coreWireMat = new THREE.MeshBasicMaterial({
         color: 0x00b4ff,
@@ -2347,7 +2387,11 @@
       const coreWire = new THREE.Mesh(coreGeo, coreWireMat);
       masterCoreGroup.add(coreWire);
 
-      const coreSolidMat = new THREE.MeshStandardMaterial({
+      const coreSolidMat = isMobile ? new THREE.MeshBasicMaterial({
+        color: 0x060c24,
+        transparent: true,
+        opacity: 0.8
+      }) : new THREE.MeshStandardMaterial({
         color: 0x060c24,
         roughness: 0.2,
         metalness: 0.95,
@@ -2357,9 +2401,11 @@
       const coreSolid = new THREE.Mesh(coreGeo, coreSolidMat);
       masterCoreGroup.add(coreSolid);
 
-      // 2. Inner Gimbal Ring - Laser Red
-      const ring1Geo = new THREE.TorusGeometry(3.6, 0.08, 16, isMobile ? 60 : 100);
-      const ring1Mat = new THREE.MeshStandardMaterial({
+      // 2. Inner Gimbal Ring - Laser Red (Low poly on mobile)
+      const ring1Geo = new THREE.TorusGeometry(3.6, 0.08, isMobile ? 8 : 16, isMobile ? 32 : 100);
+      const ring1Mat = isMobile ? new THREE.MeshBasicMaterial({
+        color: 0xff1744
+      }) : new THREE.MeshStandardMaterial({
         color: 0xff1744,
         emissive: 0xff1744,
         emissiveIntensity: 0.8,
@@ -2369,9 +2415,11 @@
       const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
       masterCoreGroup.add(ring1);
 
-      // 3. Outer Gimbal Ring - Electric Blue
-      const ring2Geo = new THREE.TorusGeometry(4.4, 0.06, 16, isMobile ? 60 : 100);
-      const ring2Mat = new THREE.MeshStandardMaterial({
+      // 3. Outer Gimbal Ring - Electric Blue (Low poly on mobile)
+      const ring2Geo = new THREE.TorusGeometry(4.4, 0.06, isMobile ? 8 : 16, isMobile ? 32 : 100);
+      const ring2Mat = isMobile ? new THREE.MeshBasicMaterial({
+        color: 0x0088ff
+      }) : new THREE.MeshStandardMaterial({
         color: 0x0088ff,
         emissive: 0x0088ff,
         emissiveIntensity: 0.75,
@@ -2385,14 +2433,14 @@
       const satelliteGroup = new THREE.Group();
       masterCoreGroup.add(satelliteGroup);
 
-      const satCount = 6;
+      const satCount = isMobile ? 4 : 6;
       const satGeo = new THREE.BoxGeometry(0.35, 0.35, 0.35);
-      const satMatRed = new THREE.MeshStandardMaterial({
+      const satMatRed = isMobile ? new THREE.MeshBasicMaterial({ color: 0xff1744 }) : new THREE.MeshStandardMaterial({
         color: 0xff1744,
         emissive: 0xff1744,
         emissiveIntensity: 0.9
       });
-      const satMatBlue = new THREE.MeshStandardMaterial({
+      const satMatBlue = isMobile ? new THREE.MeshBasicMaterial({ color: 0x00b4ff }) : new THREE.MeshStandardMaterial({
         color: 0x00b4ff,
         emissive: 0x00b4ff,
         emissiveIntensity: 0.9
@@ -2405,8 +2453,8 @@
         satelliteGroup.add(sat);
       }
 
-      // 5. Warp Particle Field
-      const particleCount = isMobile ? 450 : 1400;
+      // 5. Warp Particle Field (Low count on mobile: 120 vs Desktop 1400)
+      const particleCount = isMobile ? 120 : 1400;
       const pGeometry = new THREE.BufferGeometry();
       const pPositions = new Float32Array(particleCount * 3);
       const pColors = new Float32Array(particleCount * 3);
@@ -2430,7 +2478,7 @@
       pGeometry.setAttribute('color', new THREE.BufferAttribute(pColors, 3));
 
       const pMaterial = new THREE.PointsMaterial({
-        size: isMobile ? 0.22 : 0.16,
+        size: isMobile ? 0.25 : 0.16,
         vertexColors: true,
         transparent: true,
         opacity: 0.8,
@@ -2441,65 +2489,45 @@
 
       camera.position.set(0, 0, 16);
 
-      /* Touch & Mouse Parallax Dragging */
+      /* Touch & Mouse Handling (No scrolling conflicts on mobile) */
       let mouseX = 0, mouseY = 0;
       let isDragging = false;
       let prevMouseX = 0, prevMouseY = 0;
 
-      window.addEventListener('mousemove', (e) => {
-        const normX = (e.clientX / window.innerWidth) * 2 - 1;
-        const normY = -(e.clientY / window.innerHeight) * 2 + 1;
-        mouseX = normX;
-        mouseY = normY;
+      if (!isMobile) {
+        window.addEventListener('mousemove', (e) => {
+          const normX = (e.clientX / window.innerWidth) * 2 - 1;
+          const normY = -(e.clientY / window.innerHeight) * 2 + 1;
+          mouseX = normX;
+          mouseY = normY;
 
-        const glow = document.getElementById('cursorGlow');
-        if (glow) {
-          glow.style.opacity = '1';
-          glow.style.left = e.clientX + 'px';
-          glow.style.top = e.clientY + 'px';
-        }
+          const glow = document.getElementById('cursorGlow');
+          if (glow) {
+            glow.style.opacity = '1';
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+          }
 
-        if (isDragging) {
-          const deltaX = e.clientX - prevMouseX;
-          const deltaY = e.clientY - prevMouseY;
-          masterCoreGroup.rotation.y += deltaX * 0.008;
-          masterCoreGroup.rotation.x += deltaY * 0.008;
+          if (isDragging) {
+            const deltaX = e.clientX - prevMouseX;
+            const deltaY = e.clientY - prevMouseY;
+            masterCoreGroup.rotation.y += deltaX * 0.008;
+            masterCoreGroup.rotation.x += deltaY * 0.008;
+            prevMouseX = e.clientX;
+            prevMouseY = e.clientY;
+          }
+        }, { passive: true });
+
+        window.addEventListener('mousedown', (e) => {
+          isDragging = true;
           prevMouseX = e.clientX;
           prevMouseY = e.clientY;
-        }
-      });
+        });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('mouseleave', () => { isDragging = false; });
+      }
 
-      window.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        prevMouseX = e.clientX;
-        prevMouseY = e.clientY;
-      });
-      window.addEventListener('mouseup', () => { isDragging = false; });
-      window.addEventListener('mouseleave', () => { isDragging = false; });
-
-      // Mobile Touch Swipe Drag Rotation
-      window.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) {
-          isDragging = true;
-          prevMouseX = e.touches[0].clientX;
-          prevMouseY = e.touches[0].clientY;
-        }
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (e) => {
-        if (isDragging && e.touches.length === 1) {
-          const deltaX = e.touches[0].clientX - prevMouseX;
-          const deltaY = e.touches[0].clientY - prevMouseY;
-          masterCoreGroup.rotation.y += deltaX * 0.009;
-          masterCoreGroup.rotation.x += deltaY * 0.009;
-          prevMouseX = e.touches[0].clientX;
-          prevMouseY = e.touches[0].clientY;
-        }
-      }, { passive: true });
-
-      window.addEventListener('touchend', () => { isDragging = false; });
-
-      // Mobile Gyroscope / Device Orientation Tilt
+      // Gentle Mobile Gyroscope Tilt
       if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', (e) => {
           if (e.gamma !== null && e.beta !== null) {
@@ -2509,54 +2537,56 @@
         }, { passive: true });
       }
 
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
       /* ========================================================================
-         SCROLL-DRIVEN 3D CORE ACCELERATION TOWARDS USER
+         SCROLL-DRIVEN 3D CORE ACCELERATION (PASSIVE / ZERO LAYOUT REFLOW)
          ======================================================================== */
       let targetZ = -26;
       let targetX = isMobile ? 0 : 7;
       let targetY = isMobile ? -3 : 0;
       let targetScale = 1.0;
+      let maxScroll = 1;
+      let progress = 0;
+
+      const bar = document.getElementById('progressBar');
+      const thumb = document.getElementById('meterThumb');
+      const header = document.getElementById('header');
+      let isHeaderScrolled = false;
+
+      function updateDimensions() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      }
+      window.addEventListener('resize', updateDimensions, { passive: true });
+      updateDimensions();
 
       function updateScroll3D() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = maxScroll > 0 ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) : 0;
+        const scrollTop = window.scrollY || window.pageYOffset || 0;
+        progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
 
-        // Progress bar width
-        const bar = document.getElementById('progressBar');
-        if (bar) bar.style.width = (progress * 100) + '%';
+        // Hardware-accelerated transforms
+        if (bar) bar.style.transform = `scaleX(${progress})`;
+        if (thumb) thumb.style.transform = `translateY(${progress * 112}px)`;
 
-        // Telemetry Depth Thumb
-        const thumb = document.getElementById('meterThumb');
-        if (thumb) thumb.style.top = (progress * 112) + 'px';
-
-        // Header Background
-        const header = document.getElementById('header');
-        if (header) {
-          if (scrollTop > 50) header.classList.add('scrolled');
-          else header.classList.remove('scrolled');
+        const shouldBeScrolled = scrollTop > 40;
+        if (shouldBeScrolled !== isHeaderScrolled) {
+          isHeaderScrolled = shouldBeScrolled;
+          if (header) {
+            if (isHeaderScrolled) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+          }
         }
 
-        // DYNAMIC 3D OBJECT SCROLL STAGES (Completes earlier like original code)
-        // Stage 1 (0-20%): Fast swoop forward towards the viewer
-        // Stage 2 (20-48%): Peak near-field presence across About & Skills
-        // Stage 3 (48-75%): Transition across Projects
-        // Stage 4 (75-100%): Final dock in front of user for Contact
+        // DYNAMIC 3D OBJECT SCROLL STAGES
         if (isMobile) {
-          // Mobile & Android: Centered, rapidly zooms forward in initial scroll
           targetX = 0;
           targetY = 0.5;
           const t = Math.sin(Math.min(progress / 0.35, 1.0) * Math.PI * 0.5);
           targetZ = THREE.MathUtils.lerp(-2.5, 6.0, t);
           targetScale = THREE.MathUtils.lerp(0.85, 1.25, t);
         } else if (progress < 0.20) {
-          // Hero to About: Fast forward swoop towards camera
           const isWide = window.innerWidth > 900;
           targetX = isWide ? 4.5 : 0;
           targetY = 0;
@@ -2564,21 +2594,18 @@
           targetZ = THREE.MathUtils.lerp(-4.0, 4.8, t);
           targetScale = THREE.MathUtils.lerp(0.9, 1.35, t);
         } else if (progress < 0.48) {
-          // Peak near-field presence: reaches max forward depth (Z: 7.5)
           const t = (progress - 0.20) / 0.28;
           targetZ = THREE.MathUtils.lerp(4.8, 7.5, Math.sin(t * Math.PI));
           targetX = THREE.MathUtils.lerp(4.5, -4.5, t);
           targetY = THREE.MathUtils.lerp(0, -1.2, t);
           targetScale = THREE.MathUtils.lerp(1.35, 1.55, Math.sin(t * Math.PI));
         } else if (progress < 0.75) {
-          // Swings gracefully across Projects section
           const t = (progress - 0.48) / 0.27;
           targetX = THREE.MathUtils.lerp(-4.5, 4.0, t);
           targetY = THREE.MathUtils.lerp(-1.2, 0.8, t);
           targetZ = THREE.MathUtils.lerp(3.5, 1.8, t);
           targetScale = 1.15;
         } else {
-          // Final docking at Contact
           const t = (progress - 0.75) / 0.25;
           targetX = THREE.MathUtils.lerp(4.0, 0, t);
           targetY = THREE.MathUtils.lerp(0.8, -0.5, t);
@@ -2634,7 +2661,7 @@
           masterCoreGroup.rotation.x += (targetRotX - masterCoreGroup.rotation.x * 0.1) * smoothTilt;
         }
 
-        // Subtle Warp Particle Stream
+        // Subtle Warp Particle Stream: Zero buffer re-uploads
         starParticles.rotation.y = time * 0.035;
         starParticles.rotation.x = Math.sin(time * 0.05) * 0.04;
 
@@ -2644,21 +2671,26 @@
     })();
 
     /* ==========================================================================
-       3. INTERACTIVE SIGNAL OSCILLOSCOPE (500kS/s SIMULATED BUS SIGNALS)
+       3. INTERACTIVE SIGNAL OSCILLOSCOPE (INTERSECTION OBSERVED / HIGH EFFICIENCY)
        ========================================================================== */
     (function initScope() {
       const canvas = document.getElementById('scopeCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 820;
+
       let currentMode = 'I2C';
       let offset = 0;
+      let isVisible = false;
+      let animId = null;
 
       function resizeScope() {
         const rect = canvas.getBoundingClientRect();
-        canvas.width = rect.width * (window.devicePixelRatio || 1);
-        canvas.height = rect.height * (window.devicePixelRatio || 1);
+        const dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5);
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
       }
-      window.addEventListener('resize', resizeScope);
+      window.addEventListener('resize', resizeScope, { passive: true });
       resizeScope();
 
       window.switchScopeMode = function(mode, btn) {
@@ -2679,8 +2711,11 @@
       };
 
       function renderWave() {
-        requestAnimationFrame(renderWave);
-        if (document.hidden) return;
+        if (!isVisible || document.hidden) {
+          animId = null;
+          return;
+        }
+        animId = requestAnimationFrame(renderWave);
 
         const w = canvas.width;
         const h = canvas.height;
@@ -2692,7 +2727,7 @@
         // Cyber Grid Lines
         ctx.strokeStyle = 'rgba(0, 180, 255, 0.08)';
         ctx.lineWidth = 1;
-        const gridGap = 28 * (window.devicePixelRatio || 1);
+        const gridGap = isMobile ? 24 : 28;
         for (let x = 0; x < w; x += gridGap) {
           ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
         }
@@ -2702,13 +2737,13 @@
 
         // Protocol Waveform Drawing
         ctx.beginPath();
-        ctx.lineWidth = 2.5 * (window.devicePixelRatio || 1);
+        ctx.lineWidth = isMobile ? 2 : 2.5;
+        const step = isMobile ? 2 : 1;
 
         if (currentMode === 'I2C') {
-          ctx.strokeStyle = '#ff1744'; // Red I2C SDA/SCL transitions
-          ctx.shadowColor = '#ff1744';
-          ctx.shadowBlur = 12;
-          for (let x = 0; x < w; x++) {
+          ctx.strokeStyle = '#ff1744';
+          if (!isMobile) { ctx.shadowColor = '#ff1744'; ctx.shadowBlur = 10; }
+          for (let x = 0; x < w; x += step) {
             const t = (x * 0.025) - offset;
             const sq1 = Math.sin(t) > 0 ? 1 : -1;
             const sq2 = Math.sin(t * 2.2 + 1) > 0 ? 0.4 : -0.4;
@@ -2717,10 +2752,9 @@
             else ctx.lineTo(x, y);
           }
         } else if (currentMode === 'SPI') {
-          ctx.strokeStyle = '#00b4ff'; // Blue SPI high-speed clock
-          ctx.shadowColor = '#00b4ff';
-          ctx.shadowBlur = 12;
-          for (let x = 0; x < w; x++) {
+          ctx.strokeStyle = '#00b4ff';
+          if (!isMobile) { ctx.shadowColor = '#00b4ff'; ctx.shadowBlur = 10; }
+          for (let x = 0; x < w; x += step) {
             const t = (x * 0.08) - (offset * 2.5);
             const sq = Math.sign(Math.sin(t));
             const y = cy + (sq * 38) + (Math.random() * 2 - 1);
@@ -2728,11 +2762,10 @@
             else ctx.lineTo(x, y);
           }
         } else if (currentMode === 'PWM') {
-          ctx.strokeStyle = '#3d5afe'; // Royal Cobalt Blue PWM modulation
-          ctx.shadowColor = '#3d5afe';
-          ctx.shadowBlur = 12;
+          ctx.strokeStyle = '#3d5afe';
+          if (!isMobile) { ctx.shadowColor = '#3d5afe'; ctx.shadowBlur = 10; }
           const duty = 0.65;
-          for (let x = 0; x < w; x++) {
+          for (let x = 0; x < w; x += step) {
             const phase = ((x * 0.02) - (offset * 1.2)) % 1;
             const p = phase < 0 ? phase + 1 : phase;
             const val = p < duty ? 1 : -1;
@@ -2741,10 +2774,9 @@
             else ctx.lineTo(x, y);
           }
         } else if (currentMode === 'MQTT') {
-          ctx.strokeStyle = '#ff2a5f'; // Vivid Neon Red Telemetry Packets
-          ctx.shadowColor = '#ff2a5f';
-          ctx.shadowBlur = 12;
-          for (let x = 0; x < w; x++) {
+          ctx.strokeStyle = '#ff2a5f';
+          if (!isMobile) { ctx.shadowColor = '#ff2a5f'; ctx.shadowBlur = 10; }
+          for (let x = 0; x < w; x += step) {
             const envelope = Math.sin((x * 0.01) - (offset * 0.8));
             const carrier = Math.sin((x * 0.1) - (offset * 3));
             const y = cy + (envelope * carrier * 42);
@@ -2754,9 +2786,25 @@
         }
 
         ctx.stroke();
-        ctx.shadowBlur = 0;
+        if (!isMobile) ctx.shadowBlur = 0;
       }
-      renderWave();
+
+      // IntersectionObserver: Pause 2D scope rendering when offscreen
+      const scopeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !animId) {
+            renderWave();
+          } else if (!isVisible && animId) {
+            cancelAnimationFrame(animId);
+            animId = null;
+          }
+        });
+      }, { threshold: 0.05 });
+
+      const telemetryEl = document.getElementById('telemetry');
+      if (telemetryEl) scopeObserver.observe(telemetryEl);
+      else renderWave();
     })();
 
     /* ==========================================================================
