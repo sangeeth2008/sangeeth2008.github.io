@@ -2398,15 +2398,7 @@
         window.addEventListener('mouseleave', () => { isDragging = false; });
       }
 
-      // Smooth Orientation Tilt for mobile without dragging interference
-      if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', (e) => {
-          if (e.gamma !== null && e.beta !== null) {
-            mouseX = Math.min(Math.max(e.gamma / 25, -1), 1);
-            mouseY = Math.min(Math.max((e.beta - 40) / 25, -1), 1);
-          }
-        }, { passive: true });
-      }
+      // Gyroscope listener omitted to guarantee zero micro-jitter & vibration on mobile
 
       /* ===================================================
          PASSIVE SCROLL & RESIZE HANDLING (ZERO LAYOUT REFLOW IN RENDER LOOP)
@@ -2467,11 +2459,32 @@
         let targetScale = 1;
 
         if (isMobile) {
-          targetX = 0;
-          targetY = 0.5;
-          const t = Math.sin(scrollProgress * Math.PI);
-          targetZ = THREE.MathUtils.lerp(-2.5, 6.0, t);
-          targetScale = THREE.MathUtils.lerp(0.85, 1.25, t);
+          if (scrollProgress < 0.18) {
+            const t = scrollProgress / 0.18;
+            targetX = 0;
+            targetY = THREE.MathUtils.lerp(0.0, 0.35, t);
+            targetZ = THREE.MathUtils.lerp(-3.0, 3.6, t);
+            targetScale = THREE.MathUtils.lerp(0.85, 1.12, t);
+          } else if (scrollProgress < 0.48) {
+            const t = (scrollProgress - 0.18) / 0.30;
+            targetX = THREE.MathUtils.lerp(0.0, 1.1, Math.sin(t * Math.PI));
+            targetY = THREE.MathUtils.lerp(0.35, 1.15, t);
+            targetZ = THREE.MathUtils.lerp(3.6, 2.2, t);
+            targetScale = THREE.MathUtils.lerp(1.12, 0.96, t);
+          } else if (scrollProgress < 0.75) {
+            const t = (scrollProgress - 0.48) / 0.27;
+            targetX = THREE.MathUtils.lerp(0.9, -0.9, t);
+            targetY = THREE.MathUtils.lerp(1.15, -0.5, t);
+            targetZ = THREE.MathUtils.lerp(2.2, 4.0, Math.sin(t * Math.PI));
+            targetScale = THREE.MathUtils.lerp(0.96, 1.18, t);
+          } else {
+            // Stage 4 (AT LAST): Journey, Terminal & Contact docking finale
+            const t = (scrollProgress - 0.75) / 0.25;
+            targetX = THREE.MathUtils.lerp(-0.9, 0.0, t);
+            targetY = THREE.MathUtils.lerp(-0.5, 0.3, t);
+            targetZ = THREE.MathUtils.lerp(4.0, 6.4, t);
+            targetScale = THREE.MathUtils.lerp(1.18, 1.45, t);
+          }
         } else if (scrollProgress < 0.20) {
           const isWide = window.innerWidth > 900;
           targetX = isWide ? 4.5 : 0;
@@ -2865,24 +2878,25 @@
     });
 
     /* ==========================================================================
-       6. 3D CARD TILT EFFECT ON MOUSE MOVE
+       6. 3D CARD TILT EFFECT (VIBRATION-FREE / MOBILE-OPTIMIZED)
        ========================================================================== */
-    document.querySelectorAll('.vibe-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -6;
-        const rotateY = ((x - centerX) / centerX) * 6;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-      });
+    // Only apply subtle tilt on desktop with fine mouse pointer; disabled on touch/mobile to prevent any vibration
+    if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      document.querySelectorAll('.vibe-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = Math.max(Math.min(((e.clientY - rect.top - centerY) / centerY) * -4, 4), -4);
+          const rotateY = Math.max(Math.min(((e.clientX - rect.left - centerX) / centerX) * 4, 4), -4);
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
 
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
       });
-    });
+    }
 
     /* ==========================================================================
        7. MOBILE NAVIGATION DRAWER & TOUCH INTERACTION

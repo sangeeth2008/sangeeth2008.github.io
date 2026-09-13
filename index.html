@@ -1659,8 +1659,8 @@
 
   <!-- 3D Core Interaction HUD Status -->
   <div class="hud-3d-status">
-    <div class="hud-status-indicator"></div>
-    <span>3D CYBER-CORE // SCROLL TO DOCK // DRAG TO ROTATE</span>
+    <div class="hud-status-indicator" id="hudStatusIndicator"></div>
+    <span id="hudStatusText">3D CYBER-CORE // SCROLL TO DOCK // DRAG TO ROTATE</span>
   </div>
 
   <!-- Scroll Depth Telemetry Meter -->
@@ -2527,15 +2527,7 @@
         window.addEventListener('mouseleave', () => { isDragging = false; });
       }
 
-      // Gentle Mobile Gyroscope Tilt
-      if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', (e) => {
-          if (e.gamma !== null && e.beta !== null) {
-            mouseX = Math.min(Math.max(e.gamma / 25, -1), 1);
-            mouseY = Math.min(Math.max((e.beta - 40) / 25, -1), 1);
-          }
-        }, { passive: true });
-      }
+      // Omit raw mobile gyro and touch delta listeners to guarantee zero micro-jitter & vibration
 
       /* ========================================================================
          SCROLL-DRIVEN 3D CORE ACCELERATION (PASSIVE / ZERO LAYOUT REFLOW)
@@ -2550,6 +2542,8 @@
       const bar = document.getElementById('progressBar');
       const thumb = document.getElementById('meterThumb');
       const header = document.getElementById('header');
+      const hudText = document.getElementById('hudStatusText');
+      const hudIndicator = document.getElementById('hudStatusIndicator');
       let isHeaderScrolled = false;
 
       function updateDimensions() {
@@ -2579,13 +2573,45 @@
           }
         }
 
-        // DYNAMIC 3D OBJECT SCROLL STAGES
+        // DYNAMIC 3D OBJECT SCROLL STAGES (FULL CONTINUOUS CHOREOGRAPHY / ZERO JITTER)
         if (isMobile) {
-          targetX = 0;
-          targetY = 0.5;
-          const t = Math.sin(Math.min(progress / 0.35, 1.0) * Math.PI * 0.5);
-          targetZ = THREE.MathUtils.lerp(-2.5, 6.0, t);
-          targetScale = THREE.MathUtils.lerp(0.85, 1.25, t);
+          if (progress < 0.18) {
+            // Stage 1 (0-18%): Hero Entry & Forward Leap
+            const t = progress / 0.18;
+            targetX = 0;
+            targetY = THREE.MathUtils.lerp(0.0, 0.35, t);
+            targetZ = THREE.MathUtils.lerp(-3.0, 3.6, t);
+            targetScale = THREE.MathUtils.lerp(0.85, 1.12, t);
+            if (hudText) hudText.textContent = '3D CYBER-CORE // STAGE 01 // SCROLL ACTIVE';
+            if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
+          } else if (progress < 0.48) {
+            // Stage 2 (18-48%): About & Oscilloscope - Dynamic Lateral Drift
+            const t = (progress - 0.18) / 0.30;
+            targetX = THREE.MathUtils.lerp(0.0, 1.0, Math.sin(t * Math.PI));
+            targetY = THREE.MathUtils.lerp(0.35, 1.1, t);
+            targetZ = THREE.MathUtils.lerp(3.6, 2.2, t);
+            targetScale = THREE.MathUtils.lerp(1.12, 0.96, t);
+            if (hudText) hudText.textContent = '3D CYBER-CORE // STAGE 02 // SENSOR TELEMETRY';
+            if (hudIndicator) hudIndicator.style.background = 'var(--neon-mint)';
+          } else if (progress < 0.75) {
+            // Stage 3 (48-75%): Skills, Projects & Hardware Pipeline Traverse
+            const t = (progress - 0.48) / 0.27;
+            targetX = THREE.MathUtils.lerp(0.9, -0.9, t);
+            targetY = THREE.MathUtils.lerp(1.1, -0.4, t);
+            targetZ = THREE.MathUtils.lerp(2.2, 4.0, Math.sin(t * Math.PI));
+            targetScale = THREE.MathUtils.lerp(0.96, 1.18, t);
+            if (hudText) hudText.textContent = '3D CYBER-CORE // STAGE 03 // HARDWARE PIPELINE';
+            if (hudIndicator) hudIndicator.style.background = 'var(--electric-purple)';
+          } else {
+            // Stage 4 (75-100%): AT LAST! Journey, Contact Terminal & Finale 3D Docking
+            const t = (progress - 0.75) / 0.25;
+            targetX = THREE.MathUtils.lerp(-0.9, 0.0, t);
+            targetY = THREE.MathUtils.lerp(-0.4, 0.3, t);
+            targetZ = THREE.MathUtils.lerp(4.0, 6.4, t);
+            targetScale = THREE.MathUtils.lerp(1.18, 1.45, t);
+            if (hudText) hudText.textContent = '3D CYBER-CORE // STAGE 04 // FINAL DOCK [ONLINE]';
+            if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
+          }
         } else if (progress < 0.20) {
           const isWide = window.innerWidth > 900;
           targetX = isWide ? 4.5 : 0;
@@ -2593,24 +2619,29 @@
           const t = progress / 0.20;
           targetZ = THREE.MathUtils.lerp(-4.0, 4.8, t);
           targetScale = THREE.MathUtils.lerp(0.9, 1.35, t);
+          if (hudText) hudText.textContent = '3D CYBER-CORE // SCROLL TO DOCK // DRAG TO ROTATE';
         } else if (progress < 0.48) {
           const t = (progress - 0.20) / 0.28;
           targetZ = THREE.MathUtils.lerp(4.8, 7.5, Math.sin(t * Math.PI));
           targetX = THREE.MathUtils.lerp(4.5, -4.5, t);
           targetY = THREE.MathUtils.lerp(0, -1.2, t);
           targetScale = THREE.MathUtils.lerp(1.35, 1.55, Math.sin(t * Math.PI));
+          if (hudText) hudText.textContent = '3D CYBER-CORE // SENSORY LAB ACTIVE';
         } else if (progress < 0.75) {
           const t = (progress - 0.48) / 0.27;
           targetX = THREE.MathUtils.lerp(-4.5, 4.0, t);
           targetY = THREE.MathUtils.lerp(-1.2, 0.8, t);
           targetZ = THREE.MathUtils.lerp(3.5, 1.8, t);
           targetScale = 1.15;
+          if (hudText) hudText.textContent = '3D CYBER-CORE // HARDWARE MATRIX TRAVERSE';
         } else {
+          // Final docking at Contact & Terminal (Desktop)
           const t = (progress - 0.75) / 0.25;
           targetX = THREE.MathUtils.lerp(4.0, 0, t);
           targetY = THREE.MathUtils.lerp(0.8, -0.5, t);
           targetZ = THREE.MathUtils.lerp(1.8, 5.5, t);
           targetScale = 1.25;
+          if (hudText) hudText.textContent = '3D CYBER-CORE // DOCKED AT TERMINAL [ONLINE]';
         }
       }
 
@@ -2634,13 +2665,21 @@
         coreWire.rotation.x += delta * 0.35;
         coreSolid.rotation.y -= delta * 0.45;
 
-        ring1.rotation.x = time * 0.75;
-        ring1.rotation.y = time * 0.50;
+        // Stage 4 "At Last" enhanced rotation surge
+        const isAtLast = progress >= 0.75;
+        const speedBoost = isAtLast ? 1.3 : 1.0;
 
-        ring2.rotation.y = -time * 0.60;
-        ring2.rotation.z = time * 0.40;
+        ring1.rotation.x = time * 0.75 * speedBoost;
+        ring1.rotation.y = time * 0.50 * speedBoost;
 
-        satelliteGroup.rotation.z = time * 0.85;
+        ring2.rotation.y = -time * 0.60 * speedBoost;
+        ring2.rotation.z = time * 0.40 * speedBoost;
+
+        satelliteGroup.rotation.z = time * 0.85 * speedBoost;
+
+        // Rock-solid continuous scroll-linked orientation (ZERO jitter / ZERO vibration)
+        masterCoreGroup.rotation.y += delta * (0.35 + progress * 0.45);
+        masterCoreGroup.rotation.x = Math.sin(time * 0.4) * 0.05;
 
         // Silky-Smooth Exponential Damping for Position & Scale
         const smoothPos = 1.0 - Math.exp(-delta * 7.5);
@@ -2652,8 +2691,8 @@
         const newScale = currentScale + (targetScale - currentScale) * smoothPos;
         masterCoreGroup.scale.set(newScale, newScale, newScale);
 
-        // Responsive & Fluid Mouse / Gyro Parallax Tilt
-        if (!isDragging) {
+        // Desktop Mouse Parallax Tilt (Smoothly damped)
+        if (!isMobile && !isDragging) {
           const smoothTilt = 1.0 - Math.exp(-delta * 5.0);
           const targetRotY = mouseX * 0.35;
           const targetRotX = -mouseY * 0.35;
@@ -2662,7 +2701,8 @@
         }
 
         // Subtle Warp Particle Stream: Zero buffer re-uploads
-        starParticles.rotation.y = time * 0.035;
+        const warpRate = isAtLast ? 0.06 : 0.035;
+        starParticles.rotation.y = time * warpRate;
         starParticles.rotation.x = Math.sin(time * 0.05) * 0.04;
 
         renderer.render(scene, camera);
@@ -2990,24 +3030,25 @@
     });
 
     /* ==========================================================================
-       6. 3D CARD TILT EFFECT ON MOUSE MOVE
+       6. 3D CARD TILT EFFECT (VIBRATION-FREE / MOBILE-OPTIMIZED)
        ========================================================================== */
-    document.querySelectorAll('.vibe-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -6;
-        const rotateY = ((x - centerX) / centerX) * 6;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-      });
+    // Only apply subtle tilt on desktop with fine mouse pointer; disabled on touch/mobile to prevent any vibration
+    if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      document.querySelectorAll('.vibe-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = Math.max(Math.min(((e.clientY - rect.top - centerY) / centerY) * -4, 4), -4);
+          const rotateY = Math.max(Math.min(((e.clientX - rect.left - centerX) / centerX) * 4, 4), -4);
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
 
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
       });
-    });
+    }
 
     /* ==========================================================================
        7. MOBILE NAVIGATION DRAWER & TOUCH INTERACTION
