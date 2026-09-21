@@ -7,6 +7,9 @@
   <title>Sangeeth Sasikumar K S | Vibe-Coded 3D Lab</title>
   <meta name="description" content="Next-gen 3D Vibecoded Portfolio of Sangeeth Sasikumar K S &mdash; Mechatronics Engineering, Embedded Systems, Robotics, IoT & Edge AI.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta property="og:image" content="https://sangeeth2008-github-io.vercel.app/sangeeth.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://sangeeth2008-github-io.vercel.app/sangeeth.jpg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -646,12 +649,17 @@
       opacity: 1;
     }
 
-    /* ABOUT SECTION */
+    /* About Section & Cyber Profile Showcase */
     .about-layout {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 420px 1fr;
       gap: 32px;
-      align-items: start;
+      align-items: stretch;
+    }
+    .about-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
     }
     .about-text p {
       margin-bottom: 18px;
@@ -683,6 +691,195 @@
       border-color: var(--neon-mint);
       color: var(--neon-mint);
       box-shadow: 0 0 15px var(--neon-mint-glow);
+    }
+
+    /* Interactive Cyber Profile Card */
+    .about-profile-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      padding: 22px;
+    }
+    .profile-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+    .profile-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      letter-spacing: 0.5px;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+      animation: statusPulse 2s infinite ease-in-out;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .profile-id-tag {
+      color: var(--text-faint);
+      font-size: 0.7rem;
+    }
+    .profile-img-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-glass);
+      background: rgba(4, 8, 20, 0.9);
+      cursor: pointer;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 15px 35px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .profile-img-container:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 20px rgba(0, 180, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    .profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .profile-img-container:hover .profile-img {
+      transform: scale(1.035);
+    }
+    .profile-img-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(4, 7, 18, 0.95) 0%, rgba(4, 7, 18, 0.4) 30%, transparent 60%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      gap: 10px;
+    }
+    .profile-overlay-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(8, 14, 32, 0.88);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+    .profile-overlay-tag .tag-icon {
+      font-size: 1.1rem;
+      color: var(--neon-mint);
+    }
+    .profile-overlay-tag .tag-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
+    }
+    .profile-overlay-tag .tag-sub {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+    .profile-inspect-btn {
+      align-self: flex-start;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--cyan);
+      background: rgba(0, 180, 255, 0.12);
+      border: 1px solid rgba(0, 180, 255, 0.35);
+      padding: 5px 12px;
+      border-radius: 6px;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .profile-img-container:hover .profile-inspect-btn {
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 0 14px var(--cyan);
+    }
+    .profile-meta-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .profile-meta-item {
+      background: rgba(6, 12, 28, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    .profile-meta-item .meta-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      margin-bottom: 2px;
+      letter-spacing: 0.5px;
+    }
+    .profile-meta-item .meta-val {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .profile-creed {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      font-style: italic;
+    }
+    .profile-creed span {
+      color: var(--neon-mint);
+      font-weight: 600;
+    }
+
+    /* Hero Avatar Mini Pill */
+    .hero-avatar-mini {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--cyan);
+      box-shadow: 0 0 8px var(--cyan-glow);
+      flex-shrink: 0;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .hero-profile-pill:hover .hero-avatar-mini {
+      transform: scale(1.12);
+      border-color: var(--neon-mint);
+      box-shadow: 0 0 12px var(--neon-mint-glow);
     }
 
     /* OSCILLOSCOPE WIDGET */
@@ -1384,9 +1581,14 @@
     /* ===================================================
        RESPONSIVE & ANDROID OPTIMIZATIONS
        =================================================== */
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
       .about-layout, .contact-layout, .project-card.featured {
         grid-template-columns: 1fr;
+      }
+      .about-profile-card {
+        max-width: 480px;
+        margin: 0 auto;
+        width: 100%;
       }
       .nav-links {
         display: none;
@@ -1643,6 +1845,11 @@
     <section class="hero-section">
       <div class="hero-content reveal in-view">
         <div class="hero-badge-row">
+          <a href="#about" class="vibe-tag hero-profile-pill" style="text-decoration: none; display: inline-flex; align-items: center; gap: 9px; padding: 4px 14px 4px 6px;" onclick="playBeep(520, 0.06)">
+            <img src="sangeeth.jpg" alt="Sangeeth Sasikumar" class="hero-avatar-mini" width="26" height="26" />
+            <span style="color: var(--text-main); font-weight: 500;">SANGEETH SASIKUMAR K S</span>
+            <div class="vibe-pulse" style="margin-left: 2px;"></div>
+          </a>
           <div class="vibe-tag">
             <div class="vibe-pulse"></div>
             <span>AUTONOMOUS SYSTEMS // EDGE AI // MECHATRONICS</span>
@@ -1707,45 +1914,101 @@
       </p>
 
       <div class="about-layout">
-        <div class="vibe-card reveal-left">
-          <div class="about-text">
-            <p>
-              I am <strong>Sangeeth Sasikumar K S</strong>, pursuing my B.Tech in <strong>Mechatronics Engineering</strong> at Jyothi Engineering College, Kerala. My engineering ethos revolves around constructing deterministic, autonomous embedded systems capable of continuous real-world operation.
-            </p>
-            <p>
-              From designing differential security patrol robots with ultrasonic multi-zone safety cones to deploying TinyML visual classifiers on low-power microcontrollers, I focus on systems that run independently of high-latency cloud dependencies.
-            </p>
+        <!-- Interactive Cyber Profile Card -->
+        <div class="vibe-card about-profile-card reveal-left">
+          <div class="profile-card-header">
+            <div class="profile-status-badge">
+              <span class="pulse-dot"></span>
+              <span>HARDWARE LAB // LIVE WORKBENCH</span>
+            </div>
+            <span class="profile-id-tag">ID: SS-MECHATRONICS</span>
           </div>
 
-          <div class="about-pills">
-            <span class="about-pill">Differential Drive Kinematics</span>
-            <span class="about-pill">C / C++ Embedded Systems</span>
-            <span class="about-pill">ESP32 FreeRTOS</span>
-            <span class="about-pill">TinyML & Edge AI</span>
-            <span class="about-pill">Blynk & MQTT IoT</span>
-            <span class="about-pill">Hardware Security</span>
+          <div class="profile-img-container" onclick="openProjectModal('workbench')" title="Click to inspect hardware workspace">
+            <img 
+              src="sangeeth.jpg" 
+              alt="Sangeeth Sasikumar K S - Mechatronics &amp; Embedded Systems Engineer assembling Robot V2 at his hardware workbench" 
+              class="profile-img"
+              width="768"
+              height="1024"
+              loading="lazy"
+            />
+            <div class="profile-img-overlay">
+              <div class="profile-overlay-tag">
+                <span class="tag-icon">&#9889;</span>
+                <div>
+                  <div class="tag-title">ROBOT V2 IN PROTOTYPING</div>
+                  <div class="tag-sub">ESP32 &bull; Ultrasonic Clearance &bull; Diff Kinematics</div>
+                </div>
+              </div>
+              <button class="profile-inspect-btn" onclick="event.stopPropagation(); openProjectModal('workbench')" aria-label="Inspect workbench">
+                <span>&#128269; INSPECT BENCH ARCHITECTURE</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="profile-meta-strip">
+            <div class="profile-meta-item">
+              <span class="meta-label">DISCIPLINE</span>
+              <span class="meta-val">B.Tech Mechatronics</span>
+            </div>
+            <div class="profile-meta-item">
+              <span class="meta-label">ACTIVE BUILD</span>
+              <span class="meta-val" style="color: var(--neon-mint);">ESP32 Rover V2</span>
+            </div>
+            <div class="profile-meta-item">
+              <span class="meta-label">CORE VALUES</span>
+              <span class="meta-val" style="color: var(--cyan);">Think &bull; Build &bull; Solve</span>
+            </div>
+          </div>
+
+          <div class="profile-creed">
+            &ldquo;Good Code. Cool Robots. <span>Better Me.</span>&rdquo;
           </div>
         </div>
 
-        <div class="vibe-card reveal-right">
-          <h3 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 16px; color: var(--neon-mint);">
-            Active Build vs. Exploring
-          </h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
-            Deterministic, validated stack components alongside current research frontiers.
-          </p>
-          <div style="display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);">ACTIVE HARDWARE STACK</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              <span class="about-pill" style="border-color: var(--cyan); color: var(--cyan);">ESP32 / ESP32-CAM</span>
-              <span class="about-pill" style="border-color: var(--cyan); color: var(--cyan);">TB6612FNG Driver</span>
-              <span class="about-pill" style="border-color: var(--cyan); color: var(--cyan);">I2C / SPI / UART</span>
+        <!-- Right: Bio & Stack Column -->
+        <div class="about-info-col reveal-right">
+          <div class="vibe-card">
+            <div class="about-text">
+              <p>
+                I am <strong>Sangeeth Sasikumar K S</strong>, pursuing my B.Tech in <strong>Mechatronics Engineering</strong> at Jyothi Engineering College, Kerala. My engineering ethos revolves around constructing deterministic, autonomous embedded systems capable of continuous real-world operation.
+              </p>
+              <p>
+                From designing differential security patrol robots with ultrasonic multi-zone safety cones to deploying TinyML visual classifiers on low-power microcontrollers, I focus on systems that run independently of high-latency cloud dependencies.
+              </p>
             </div>
-            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--electric-purple); margin-top: 8px;">RESEARCH & DEPLOYMENT</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              <span class="about-pill" style="border-color: var(--electric-purple); color: #d8b4fe;">TinyML Quantization</span>
-              <span class="about-pill" style="border-color: var(--electric-purple); color: #d8b4fe;">OpenCV Jetson/Pi</span>
-              <span class="about-pill" style="border-color: var(--electric-purple); color: #d8b4fe;">Industrial PLC</span>
+
+            <div class="about-pills">
+              <span class="about-pill">Differential Drive Kinematics</span>
+              <span class="about-pill">C / C++ Embedded Systems</span>
+              <span class="about-pill">ESP32 FreeRTOS</span>
+              <span class="about-pill">TinyML &amp; Edge AI</span>
+              <span class="about-pill">Blynk &amp; MQTT IoT</span>
+              <span class="about-pill">Hardware Security</span>
+            </div>
+          </div>
+
+          <div class="vibe-card">
+            <h3 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 16px; color: var(--neon-mint);">
+              Active Build vs. Exploring
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+              Deterministic, validated stack components alongside current research frontiers.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);">ACTIVE HARDWARE STACK</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <span class="about-pill" style="border-color: var(--cyan); color: var(--cyan);">ESP32 / ESP32-CAM</span>
+                <span class="about-pill" style="border-color: var(--cyan); color: var(--cyan);">TB6612FNG Driver</span>
+                <span class="about-pill" style="border-color: var(--cyan); color: var(--cyan);">I2C / SPI / UART</span>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--electric-purple); margin-top: 8px;">RESEARCH &amp; DEPLOYMENT</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <span class="about-pill" style="border-color: var(--electric-purple); color: #d8b4fe;">TinyML Quantization</span>
+                <span class="about-pill" style="border-color: var(--electric-purple); color: #d8b4fe;">OpenCV Jetson/Pi</span>
+                <span class="about-pill" style="border-color: var(--electric-purple); color: #d8b4fe;">Industrial PLC</span>
+              </div>
             </div>
           </div>
         </div>
@@ -2818,6 +3081,21 @@
           { label: 'Response Time', val: '< 350 milliseconds' }
         ],
         details: 'Operates with hardware watchdog redundancy. Even during network disconnects, physical valve cutoff executes locally within milliseconds to prevent fire hazards.'
+      },
+      'workbench': {
+        title: 'Hardware Workbench & Embedded Lab',
+        badge: 'LIVE MECHATRONICS LAB // JYOTHI ENG',
+        image: 'sangeeth.jpg',
+        desc: 'Inside the engineering workspace of Sangeeth Sasikumar K S — assembling the next-generation autonomous differential rover (Robot V2), writing firmware in C++/FreeRTOS, and benchmarking edge sensors.',
+        specs: [
+          { label: 'Active Prototype', val: 'Autonomous Differential Rover V2' },
+          { label: 'Firmware IDE', val: 'ESP-IDF / PlatformIO C++ on Lenovo LOQ' },
+          { label: 'Core Architecture', val: 'ESP32 240MHz Dual-Core FreeRTOS' },
+          { label: 'Sensory Suite', val: 'HC-SR04 Dual Ultrasonic + MPU6050' },
+          { label: 'Theoretical Base', val: 'Mechatronics, Kinematics & TinyML' },
+          { label: 'Developer Motto', val: 'Good Code. Cool Robots. Better Me.' }
+        ],
+        details: 'The workstation is engineered for rapid embedded hardware design, serial bus probing, and sensory calibration. Every physical prototype progresses through disciplined validation: chassis assembly, power rail bucking, non-blocking FSM loops, and local neural network deployment.'
       }
     };
 
@@ -2839,9 +3117,19 @@
         `;
       });
 
+      let imageHtml = '';
+      if (data.image) {
+        imageHtml = `
+          <div style="margin-bottom: 20px; border-radius: 14px; overflow: hidden; border: 1px solid var(--border-glass); box-shadow: 0 10px 30px rgba(0,0,0,0.8); max-height: 440px;">
+            <img src="${data.image}" alt="${data.title}" style="width: 100%; height: 100%; max-height: 440px; object-fit: cover; object-position: center 20%; display: block;" />
+          </div>
+        `;
+      }
+
       content.innerHTML = `
         <span class="modal-badge">${data.badge}</span>
         <h2 class="modal-title">${data.title}</h2>
+        ${imageHtml}
         <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 20px;">
           ${data.desc}
         </p>
