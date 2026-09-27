@@ -1378,58 +1378,54 @@
 
     /* ==========================================================================
        CINEMATIC 3D FULL-SCALE FILM MOTION ARCHITECTURE (SECTIONS 02 - 06)
-       Zero-Border Full-Scale Viewports, Edge-to-Edge Film Motion, Mobile-First
+       Full Viewport Coverage (100vw x 100vh) First, Details Come After, Mobile-First
        ========================================================================== */
     .film-section {
       position: relative;
       width: 100%;
       max-width: 100vw;
-      padding: 60px 4vw 140px;
-      margin: 0 auto;
+      min-height: 220vh;
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
       overflow-x: hidden;
     }
 
-    .film-grid-layout {
-      display: grid;
-      grid-template-columns: minmax(460px, 1.15fr) 1fr;
-      gap: 60px;
-      align-items: start;
+    .film-grid-layout,
+    .film-grid-layout.reverse-desktop {
+      display: flex;
+      flex-direction: column;
       position: relative;
       width: 100%;
-      max-width: 1720px;
-      margin: 0 auto;
-    }
-    .film-grid-layout.reverse-desktop {
-      grid-template-columns: 1fr minmax(460px, 1.15fr);
-    }
-    .film-grid-layout.reverse-desktop .film-canvas-col {
-      order: 1;
-    }
-    .film-grid-layout.reverse-desktop .film-content-col {
-      order: 2;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Pinned Sticky Visual Stage — Full Height, Edge-to-Edge Scale */
+    /* Pinned Sticky Visual Stage â€” Covers Viewport Fully (100vw x 100vh), Zero Borders */
     .film-canvas-col {
       position: sticky;
-      top: 76px;
-      height: calc(100vh - 90px);
-      height: calc(100dvh - 90px);
-      width: 100%;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 15;
+      z-index: 10;
       pointer-events: none;
+      background: radial-gradient(circle at center, #061024 0%, #02040a 85%);
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Zero-Border Film Viewport — No Card Frame, No Outline, Seamless Immersion */
     .film-stage-viewport {
       position: relative;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1438,15 +1434,15 @@
       outline: none !important;
       border-radius: 0 !important;
       box-shadow: none !important;
-      overflow: visible;
     }
 
-    /* Full-Scale 3D Sequence Canvas: Zero Boundaries, Matches Hero Experience */
+    /* Full-Scale 3D Sequence Canvas: Zero Boundaries, Max Immersion */
     .film-fullscreen-canvas {
-      width: 100%;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      max-width: 100vw;
+      max-height: 100vh;
       object-fit: contain;
       background: transparent !important;
       border: none !important;
@@ -1454,62 +1450,77 @@
       border-radius: 0 !important;
       box-shadow: none !important;
       display: block;
-      filter: drop-shadow(0 0 55px rgba(0, 180, 255, 0.22));
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 0 65px rgba(0, 180, 255, 0.28));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
       will-change: transform;
     }
 
-    /* Floating Film HUD Telemetry Overlay */
+    /* Floating Film HUD Bar */
     .film-hud-bar {
       position: absolute;
-      top: 14px;
-      left: 14px;
-      right: 14px;
+      top: 80px;
+      left: 3.5vw;
+      right: 3.5vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 20;
       pointer-events: none;
     }
-
     .film-hud-tag {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(2, 4, 10, 0.85);
+      background: rgba(2, 4, 10, 0.88);
       border: 1px solid rgba(0, 180, 255, 0.35);
-      padding: 5px 12px;
-      border-radius: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: 1.2px;
+      font-size: 0.74rem;
+      letter-spacing: 1.4px;
       color: var(--text-main);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
-
     .film-frame-indicator {
-      background: rgba(2, 4, 10, 0.85);
-      border: 1px solid rgba(0, 230, 118, 0.35);
-      padding: 5px 12px;
-      border-radius: 6px;
+      background: rgba(2, 4, 10, 0.88);
+      border: 1px solid rgba(0, 230, 118, 0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       color: var(--neon-mint);
-      letter-spacing: 1.2px;
-      backdrop-filter: blur(12px);
+      letter-spacing: 1.4px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
 
+    /* Film Content Column â€” Comes After Full Film Coverage with Cinematic Glass Styling */
     .film-content-col {
+      position: relative;
+      z-index: 25;
       width: 100%;
-      min-width: 0;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 60px 4vw 160px;
+      margin-top: 15vh;
       pointer-events: auto;
+      background: transparent;
     }
 
-    /* About Cinematic Flow Layout */
-    .about-layout-cinematic {
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
+    /* Modern Glass Card Styling over the 3D Film Background */
+    .film-content-col .vibe-card {
+      background: rgba(4, 9, 24, 0.88) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      border: 1px solid rgba(0, 180, 255, 0.28) !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 180, 255, 0.12) !important;
+    }
+    .film-content-col .vibe-card:hover {
+      border-color: var(--cyan) !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 180, 255, 0.25) !important;
     }
 
     /* Desktop Custom Interactive Hardware Cursor */
@@ -1554,64 +1565,111 @@
       }
     }
 
-    /* Mobile Optimization: Full-width borderless cinematic stage */
-    @media (max-width: 1024px) {
-      .film-grid-layout,
-      .film-grid-layout.reverse-desktop {
-        grid-template-columns: 1fr;
-        gap: 30px;
+    /* Mobile Responsive Optimizations for Film Sections */
+    @media (max-width: 992px) {
+      .film-section {
+        min-height: 180vh;
       }
       .film-canvas-col {
         position: sticky;
-        top: 60px;
-        height: 48vh;
-        height: 48dvh;
-        max-height: 400px;
-        min-height: 250px;
+        top: 0;
+        height: 56vh;
+        height: 56dvh;
         width: 100vw;
-        max-width: 100vw;
-        margin-left: -4vw;
-        margin-right: -4vw;
-        margin-bottom: 24px;
-        background: #02040a;
-        order: -1 !important;
-        z-index: 30;
+      }
+      .film-stage-viewport {
+        height: 56vh;
+        height: 56dvh;
       }
       .film-fullscreen-canvas {
-        width: 100vw;
-        height: 100%;
-        max-width: 100vw;
-        object-fit: contain;
-      }
-      .film-section {
-        padding: 50px 4vw 80px;
+        height: 56vh;
+        height: 56dvh;
       }
       .film-hud-bar {
-        top: 8px;
-        left: 10px;
-        right: 10px;
+        top: 65px;
+        left: 3vw;
+        right: 3vw;
       }
       .film-hud-tag,
       .film-frame-indicator {
         font-size: 0.65rem;
-        padding: 3px 8px;
+        padding: 4px 10px;
       }
-    }
-
-    @media (max-width: 640px) {
-      .film-canvas-col {
-        height: 42vh;
-        min-height: 220px;
-        margin-bottom: 18px;
-      }
-      .film-section {
-        padding: 40px 3.5vw 70px;
+      .film-content-col {
+        padding: 30px 4vw 100px;
+        margin-top: 5vh;
       }
     }
 
     /* ==========================================================================
        HERO WORKSTATION & REFERENCE EXPERIENCE (EXACT MATCH TO REFERENCE DESIGN)
        ========================================================================== */
+    /* Hero Landing Intro (First Place: Animated 3D Hero on Initial Load) */
+    .hero-landing-intro {
+      position: absolute;
+      top: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(780px, 90vw);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      z-index: 39;
+      pointer-events: auto;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hero-landing-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.2vw, 4.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      color: #ffffff;
+      margin: 0;
+      text-transform: uppercase;
+      text-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
+    }
+    .hero-landing-name .landing-last {
+      display: block;
+      color: #00b4ff;
+      background: linear-gradient(135deg, #00b4ff 0%, #38bdf8 60%, #00e676 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px rgba(0, 180, 255, 0.5));
+    }
+    .hero-landing-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .hero-landing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+    .hero-landing-cue {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 1.5px;
+      color: var(--cyan);
+      margin-top: 18px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .hero-landing-cue:hover {
+      transform: translateY(2px);
+      color: #ffffff;
+    }
     .hero-left-intro {
       position: absolute;
       top: 17%;
@@ -3319,6 +3377,31 @@
               <p>Passionate about Robotics, IoT, Embedded AI and building real world solutions. Constructing deterministic cyber-physical hardware that senses, computes, and actuates in real-time.</p>
             </div>
 
+            <!-- Stage 1: Clean Animated Hero Landing (First Place on Load) -->
+            <div class="hero-landing-intro" id="heroLandingIntro">
+              <div class="hero-role-tag">3D ROBOTICS &bull; MECHATRONICS LAB</div>
+              <h1 class="hero-landing-name">
+                <span class="landing-first">SANGEETH</span>
+                <span class="landing-last">SASIKUMAR K S</span>
+              </h1>
+              <p class="hero-landing-sub">Autonomous Robotics &bull; Embedded AI &bull; IoT Kinematics</p>
+              <div class="hero-landing-actions">
+                <button class="hero-btn-journey" onclick="scrollToWorkstation()">
+                  <span>Explore Workstation</span>
+                  <span class="btn-arrow">&darr;</span>
+                </button>
+                <button class="hero-btn-showreel" onclick="openShowreelModal()" aria-label="Watch cinematic showreel">
+                  <span class="play-icon">&#9654;</span>
+                  <span>Watch Showreel</span>
+                </button>
+              </div>
+              <div class="hero-landing-cue" onclick="scrollToWorkstation()">
+                <div class="mouse-scroll-wheel"><div class="wheel-dot"></div></div>
+                <span>SCROLL TO LAUNCH WORKSTATION &darr;</span>
+              </div>
+            </div>
+
+            <!-- Stage 2: Interactive Section of Reference Image (Comes in 2nd on Scroll) -->
             <!-- Left side: Iconic Hero Introduction (Matches Reference Image) -->
             <div class="hero-left-intro" id="heroLeftIntro">
               <div class="hero-role-tag">ENGINEER &bull; BUILDER &bull; PROBLEM SOLVER</div>
@@ -5008,41 +5091,78 @@
         const heroConveyorDeck = document.getElementById('heroConveyorDeck');
         const pedestalCreedBand = document.getElementById('pedestalCreedBand');
 
-        if (heroProgress < 0.16) {
-          // STAGE 1: INITIAL HERO — Full scale rover turntable visual, action buttons active
-          if (heroContentCol) {
-            heroContentCol.style.opacity = '1';
-            heroContentCol.style.pointerEvents = 'auto';
+        const heroLandingIntro = document.getElementById('heroLandingIntro');
+
+        if (heroProgress < 0.14) {
+          // STAGE 1: ANIMATED HERO IN FIRST PLACE (CLEAN 3D ROVER TURNTABLE VISUAL)
+          if (heroLandingIntro) {
+            heroLandingIntro.style.opacity = Math.max(0, 1 - heroProgress * 6).toString();
+            heroLandingIntro.style.pointerEvents = heroProgress > 0.10 ? 'none' : 'auto';
+            heroLandingIntro.style.transform = 'translate(-50%, ' + (-heroProgress * 60) + 'px)';
           }
-          if (deckHotspots) deckHotspots.style.opacity = '1';
-          if (heroLeftIntro) { heroLeftIntro.style.opacity = '1'; heroLeftIntro.style.pointerEvents = 'auto'; }
-          if (heroAiHud) { heroAiHud.style.opacity = '1'; heroAiHud.style.pointerEvents = 'auto'; }
-          if (heroConveyorDeck) { heroConveyorDeck.style.opacity = '1'; heroConveyorDeck.style.pointerEvents = 'auto'; }
-          if (pedestalCreedBand) pedestalCreedBand.style.opacity = '1';
+
+          // Interactive reference workstation hidden at first place
+          if (heroLeftIntro) {
+            heroLeftIntro.style.opacity = '0';
+            heroLeftIntro.style.pointerEvents = 'none';
+            heroLeftIntro.style.transform = 'translateX(-30px)';
+          }
+          if (heroAiHud) {
+            heroAiHud.style.opacity = '0';
+            heroAiHud.style.pointerEvents = 'none';
+            heroAiHud.style.transform = 'scale(0.92)';
+          }
+          if (heroConveyorDeck) {
+            heroConveyorDeck.style.opacity = '0';
+            heroConveyorDeck.style.pointerEvents = 'none';
+            heroConveyorDeck.style.transform = 'translateX(30px)';
+          }
+          if (pedestalCreedBand) {
+            pedestalCreedBand.style.opacity = '0';
+            pedestalCreedBand.style.pointerEvents = 'none';
+          }
+          if (deckHotspots) deckHotspots.style.opacity = '0';
           if (explodedCad) explodedCad.style.opacity = '0';
           if (stageTelemetry) stageTelemetry.style.opacity = '0';
 
-          if (hudText) hudText.textContent = 'STAGE 01 // ROBOTICS LAB HERO // ASSEMBLED';
+          if (hudText) hudText.textContent = 'STAGE 01 // ANIMATED 3D ROBOTICS HERO';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
 
-        } else if (heroProgress < 0.44) {
-          // STAGE 2: SCROLL BEGINS — Camera plunge, rover turns, actions fade out
-          const t = (heroProgress - 0.16) / 0.28;
-
-          if (heroContentCol) {
-            heroContentCol.style.opacity = Math.max(0, 1 - t * 1.5).toString();
-            heroContentCol.style.pointerEvents = t > 0.4 ? 'none' : 'auto';
+        } else if (heroProgress < 0.48) {
+          // STAGE 2: AFTER SCROLLING, 2ND COMES THE INTERACTIVE SECTION OF THAT IMAGE
+          if (heroLandingIntro) {
+            heroLandingIntro.style.opacity = '0';
+            heroLandingIntro.style.pointerEvents = 'none';
           }
-          if (deckHotspots) deckHotspots.style.opacity = Math.max(0, 1 - t * 2).toString();
-          const fadeVal = Math.max(0, 1 - t * 1.8).toString();
-          if (heroLeftIntro) { heroLeftIntro.style.opacity = fadeVal; heroLeftIntro.style.pointerEvents = t > 0.4 ? 'none' : 'auto'; }
-          if (heroAiHud) { heroAiHud.style.opacity = fadeVal; heroAiHud.style.pointerEvents = t > 0.4 ? 'none' : 'auto'; }
-          if (heroConveyorDeck) { heroConveyorDeck.style.opacity = fadeVal; heroConveyorDeck.style.pointerEvents = t > 0.4 ? 'none' : 'auto'; }
-          if (pedestalCreedBand) pedestalCreedBand.style.opacity = fadeVal;
-          if (explodedCad) explodedCad.style.opacity = '0';
-          if (stageTelemetry) stageTelemetry.style.opacity = (t * 0.7).toString();
 
-          if (hudText) hudText.textContent = 'STAGE 02 // ENTERING ROBOTICS LAB // CAMERA PLUNGE';
+          // Smooth reveal from 0.14 to 0.22, solid active through 0.42, then exits to 0.48
+          const enterT = Math.min(Math.max((heroProgress - 0.14) / 0.08, 0), 1);
+          const exitT = Math.min(Math.max((heroProgress - 0.42) / 0.06, 0), 1);
+          const activeOpacity = enterT * (1 - exitT);
+
+          if (heroLeftIntro) {
+            heroLeftIntro.style.opacity = activeOpacity.toString();
+            heroLeftIntro.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
+            heroLeftIntro.style.transform = 'translateX(' + (-20 * (1 - enterT)) + 'px)';
+          }
+          if (heroAiHud) {
+            heroAiHud.style.opacity = activeOpacity.toString();
+            heroAiHud.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
+            heroAiHud.style.transform = 'scale(' + (0.92 + 0.08 * enterT) + ')';
+          }
+          if (heroConveyorDeck) {
+            heroConveyorDeck.style.opacity = activeOpacity.toString();
+            heroConveyorDeck.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
+            heroConveyorDeck.style.transform = 'translateX(' + (20 * (1 - enterT)) + 'px)';
+          }
+          if (pedestalCreedBand) {
+            pedestalCreedBand.style.opacity = activeOpacity.toString();
+          }
+          if (deckHotspots) deckHotspots.style.opacity = activeOpacity.toString();
+          if (explodedCad) explodedCad.style.opacity = '0';
+          if (stageTelemetry) stageTelemetry.style.opacity = (enterT * 0.7).toString();
+
+          if (hudText) hudText.textContent = 'STAGE 02 // INTERACTIVE WORKSTATION & DECK // ACTIVE';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
 
         } else if (heroProgress < 0.70) {
@@ -5805,13 +5925,9 @@
         const rect = this.section.getBoundingClientRect();
         const winH = window.innerHeight;
 
-        // Eased travel mapping across natural section traversal
-        const startOffset = winH * 0.70;
-        const endOffset = winH * 0.30;
-        const totalDist = rect.height + startOffset - endOffset;
-        const currentDist = startOffset - rect.top;
-
-        let p = totalDist > 0 ? currentDist / totalDist : 0;
+        // Fullscreen film sequence scrubs across initial full coverage scroll distance
+        const scrubDistance = Math.max(winH * 1.15, 600);
+        let p = -rect.top / scrubDistance;
         p = Math.min(Math.max(p, 0), 1);
 
         this.targetFrameIndex = p * (this.frameCount - 1);
@@ -6035,6 +6151,15 @@
     /* ==========================================================================
        CINEMATIC SHOWREEL MODAL CONTROLLER
        ========================================================================== */
+    window.scrollToWorkstation = function() {
+      const heroTrack = document.getElementById('heroTrack');
+      if (heroTrack) {
+        const targetScroll = heroTrack.offsetTop + (heroTrack.offsetHeight - window.innerHeight) * 0.25;
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        playBeep(640, 0.08);
+      }
+    };
+
     window.openShowreelModal = function() {
       const modal = document.getElementById('showreelModal');
       const video = document.getElementById('showreelVideoPlayer');
