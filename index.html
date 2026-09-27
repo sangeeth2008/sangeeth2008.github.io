@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1376,6 +1376,252 @@
       transform: translateY(-4px);
     }
 
+    /* ==========================================================================
+       CINEMATIC 3D SCROLL & WORKSTATION STAGE ARCHITECTURE (SECTIONS 02 - 06)
+       ========================================================================== */
+    .cinematic-section {
+      position: relative;
+      width: 100%;
+      padding: 100px 6vw 140px;
+      max-width: 1540px;
+      margin: 0 auto;
+    }
+
+    .cinematic-grid-layout {
+      display: grid;
+      grid-template-columns: minmax(360px, 46%) 1fr;
+      gap: 48px;
+      align-items: start;
+      position: relative;
+    }
+
+    /* Reverse side layout for alternating visual workstation flow on desktop */
+    .cinematic-grid-layout.reverse-desktop {
+      grid-template-columns: minmax(360px, 46%) 1fr;
+    }
+    .cinematic-grid-layout.reverse-desktop .cinematic-canvas-pin {
+      order: 1;
+    }
+    .cinematic-grid-layout.reverse-desktop .cinematic-content-flow {
+      order: 2;
+    }
+
+    .cinematic-canvas-pin {
+      position: sticky;
+      top: 92px;
+      z-index: 15;
+      width: 100%;
+    }
+
+    .cinematic-content-flow {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .cinematic-canvas-card {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, rgba(12, 22, 50, 0.72) 0%, rgba(2, 4, 10, 0.96) 100%);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 180, 255, 0.12);
+      backdrop-filter: var(--glass-filter);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .cinematic-canvas-card:hover {
+      border-color: var(--border-glass-hover);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(0, 180, 255, 0.22);
+    }
+
+    .cinematic-sequence-canvas {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      display: block;
+      object-fit: cover;
+      background: #02040a;
+    }
+
+    /* Canvas HUD Overlay & Corner Brackets */
+    .canvas-hud-top {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .canvas-telemetry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(2, 4, 10, 0.88);
+      border: 1px solid rgba(0, 180, 255, 0.35);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      color: var(--text-main);
+      backdrop-filter: blur(8px);
+    }
+
+    .canvas-frame-indicator {
+      background: rgba(2, 4, 10, 0.88);
+      border: 1px solid rgba(0, 230, 118, 0.35);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--neon-mint);
+      letter-spacing: 1px;
+      backdrop-filter: blur(8px);
+    }
+
+    .canvas-hud-bottom {
+      position: absolute;
+      bottom: 10px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 5;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-faint);
+      letter-spacing: 0.8px;
+    }
+
+    .canvas-scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0, 180, 255, 0.7), transparent);
+      opacity: 0.45;
+      pointer-events: none;
+      animation: canvasScan 4s linear infinite;
+    }
+
+    @keyframes canvasScan {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translateY(500%); opacity: 0; }
+    }
+
+    /* Corner Reticle Brackets */
+    .corner-bracket {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      pointer-events: none;
+      border-color: var(--cyan);
+      border-style: solid;
+      opacity: 0.75;
+      z-index: 4;
+    }
+    .corner-bracket.tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .corner-bracket.tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+    .corner-bracket.bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+    .corner-bracket.br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+    /* About Cinematic Flow Layout */
+    .about-layout-cinematic {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Desktop Custom Interactive Hardware Cursor */
+    @media (hover: hover) and (pointer: fine) {
+      .cyber-cursor-dot {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 6px;
+        background: var(--cyan);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 0 8px var(--cyan);
+      }
+      .cyber-cursor-ring {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 32px;
+        height: 32px;
+        border: 1px solid rgba(0, 180, 255, 0.45);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+      }
+      body.cursor-hover .cyber-cursor-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--neon-mint);
+        box-shadow: 0 0 12px var(--neon-mint);
+      }
+      body.cursor-hover .cyber-cursor-ring {
+        width: 48px;
+        height: 48px;
+        border-color: rgba(0, 230, 118, 0.7);
+      }
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1100px) {
+      .cinematic-grid-layout,
+      .cinematic-grid-layout.reverse-desktop {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .cinematic-canvas-pin {
+        position: relative;
+        top: 0;
+        max-width: 720px;
+        margin: 0 auto 24px;
+        order: -1 !important;
+      }
+      .cinematic-section {
+        padding: 80px 5vw 100px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .cinematic-section {
+        padding: 60px 4vw 80px;
+      }
+      .cinematic-canvas-card {
+        border-radius: 12px;
+      }
+      .canvas-telemetry-badge,
+      .canvas-frame-indicator {
+        font-size: 0.62rem;
+        padding: 2px 6px;
+      }
+      .canvas-hud-bottom {
+        display: none;
+      }
+    }
+
+
     /* ABOUT SECTION & WORKBENCH */
     .about-layout {
       display: grid;
@@ -2728,14 +2974,41 @@
     </section>
 
     <!-- 02 ABOUT SECTION: EXPLODED ROBOTICS LAB & WORKBENCH -->
-    <section class="section" id="about">
-      <div class="section-tag reveal">01 // ABOUT ME</div>
+        <!-- 02 ABOUT SECTION: EXPLODED ROBOTICS LAB & WORKBENCH -->
+    <section class="section cinematic-section" id="about">
+      <div class="cinematic-grid-layout">
+        <!-- Sticky 3D Canvas Stage -->
+        <div class="cinematic-canvas-pin">
+          <div class="cinematic-canvas-card" data-tilt>
+            <div class="corner-bracket tl"></div>
+            <div class="corner-bracket tr"></div>
+            <div class="corner-bracket bl"></div>
+            <div class="corner-bracket br"></div>
+            <div class="canvas-hud-top">
+              <div class="canvas-telemetry-badge">
+                <span class="hud-status-indicator"></span>
+                <span>STAGE 02 // ABOUT LAB</span>
+              </div>
+              <div class="canvas-frame-indicator" id="aboutFrameNum">FR: 01/80</div>
+            </div>
+            <canvas id="aboutCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
+            <div class="canvas-scan-line"></div>
+            <div class="canvas-hud-bottom">
+              <span>KINEMATICS: DUAL-CORE ESP32</span>
+              <span>TELEMETRY: ONLINE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrolling Content Column -->
+        <div class="cinematic-content-flow">
+<div class="section-tag reveal">01 // ABOUT ME</div>
       <h2 class="section-title reveal delay-1">Entering Sangeeth's Robotics Lab</h2>
       <p class="section-desc reveal delay-2">
         I am Sangeeth Sasikumar K S, a B.Tech Mechatronics Engineering student interested in building real-world systems combining electronics, robotics, IoT, embedded systems, AI and computer vision.
       </p>
 
-      <div class="about-layout">
+      <div class="about-layout-cinematic">
         <!-- Interactive Cyber Profile Card -->
         <div class="vibe-card about-profile-card reveal-left">
           <div class="profile-card-header">
@@ -2834,11 +3107,39 @@
           </div>
         </div>
       </div>
+        </div>
+      </div>
     </section>
 
     <!-- 03 SKILLS SECTION: 3D HOLOGRAPHIC MODULES -->
-    <section class="section" id="skills">
-      <div class="section-tag reveal">02 // TECHNICAL MODULES</div>
+        <section class="section cinematic-section" id="skills">
+      <div class="cinematic-grid-layout reverse-desktop">
+        <!-- Sticky 3D Canvas Stage -->
+        <div class="cinematic-canvas-pin">
+          <div class="cinematic-canvas-card" data-tilt>
+            <div class="corner-bracket tl"></div>
+            <div class="corner-bracket tr"></div>
+            <div class="corner-bracket bl"></div>
+            <div class="corner-bracket br"></div>
+            <div class="canvas-hud-top">
+              <div class="canvas-telemetry-badge">
+                <span class="hud-status-indicator"></span>
+                <span>STAGE 03 // HOLOGRAPHIC SKILLS</span>
+              </div>
+              <div class="canvas-frame-indicator" id="skillsFrameNum">FR: 01/80</div>
+            </div>
+            <canvas id="skillsCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
+            <div class="canvas-scan-line"></div>
+            <div class="canvas-hud-bottom">
+              <span>MODULES: 8 DOMAINS ONLINE</span>
+              <span>INFERENCE: SUB-MILLISECOND</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrolling Content Column -->
+        <div class="cinematic-content-flow">
+<div class="section-tag reveal">02 // TECHNICAL MODULES</div>
       <h2 class="section-title reveal delay-1">Holographic Skill Domains</h2>
       <p class="section-desc reveal delay-2">
         Physical-style holographic modules spanning software engineering, embedded microcontrollers, edge artificial intelligence, and robotic kinematics.
@@ -2989,11 +3290,39 @@
           </div>
         </div>
       </div>
+        </div>
+      </div>
     </section>
 
     <!-- 04 PROJECTS SECTION: 3D PROJECT SHOWCASE -->
-    <section class="section" id="projects">
-      <div class="section-tag reveal">03 // HARDWARE SHOWCASE</div>
+        <section class="section cinematic-section" id="projects">
+      <div class="cinematic-grid-layout">
+        <!-- Sticky 3D Canvas Stage -->
+        <div class="cinematic-canvas-pin">
+          <div class="cinematic-canvas-card" data-tilt>
+            <div class="corner-bracket tl"></div>
+            <div class="corner-bracket tr"></div>
+            <div class="corner-bracket bl"></div>
+            <div class="corner-bracket br"></div>
+            <div class="canvas-hud-top">
+              <div class="canvas-telemetry-badge">
+                <span class="hud-status-indicator"></span>
+                <span>STAGE 04 // HARDWARE SHOWCASE</span>
+              </div>
+              <div class="canvas-frame-indicator" id="projectsFrameNum">FR: 01/80</div>
+            </div>
+            <canvas id="projectsCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
+            <div class="canvas-scan-line"></div>
+            <div class="canvas-hud-bottom">
+              <span>SCHEMATICS: CLICK CARD TO INSPECT</span>
+              <span>TELEMETRY: VERIFIED</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrolling Content Column -->
+        <div class="cinematic-content-flow">
+<div class="section-tag reveal">03 // HARDWARE SHOWCASE</div>
       <h2 class="section-title reveal delay-1">Featured Engineering Deployments</h2>
       <p class="section-desc reveal delay-2">
         Interactive 3D project cards. Hover to elevate; click any project to launch the deep-dive schematic inspector with pinouts, architectures, and system specifications.
@@ -3146,11 +3475,39 @@
           </div>
         </div>
       </div>
+        </div>
+      </div>
     </section>
 
     <!-- 05 JOURNEY SECTION: 3D CIRCUIT PATH TIMELINE -->
-    <section class="section" id="journey">
-      <div class="section-tag reveal">04 // 3D TIMELINE</div>
+        <section class="section cinematic-section" id="journey">
+      <div class="cinematic-grid-layout reverse-desktop">
+        <!-- Sticky 3D Canvas Stage -->
+        <div class="cinematic-canvas-pin">
+          <div class="cinematic-canvas-card" data-tilt>
+            <div class="corner-bracket tl"></div>
+            <div class="corner-bracket tr"></div>
+            <div class="corner-bracket bl"></div>
+            <div class="corner-bracket br"></div>
+            <div class="canvas-hud-top">
+              <div class="canvas-telemetry-badge">
+                <span class="hud-status-indicator"></span>
+                <span>STAGE 05 // 3D TIMELINE</span>
+              </div>
+              <div class="canvas-frame-indicator" id="journeyFrameNum">FR: 01/80</div>
+            </div>
+            <canvas id="journeyCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
+            <div class="canvas-scan-line"></div>
+            <div class="canvas-hud-bottom">
+              <span>MILESTONES: 01 THROUGH 06</span>
+              <span>CONTINUOUS EVOLUTION</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrolling Content Column -->
+        <div class="cinematic-content-flow">
+<div class="section-tag reveal">04 // 3D TIMELINE</div>
       <h2 class="section-title reveal delay-1">My Engineering Journey</h2>
       <p class="section-desc reveal delay-2">
         A futuristic path connecting foundational mechatronics principles, hands-on microcontroller firmware, networked IoT systems, and edge intelligence.
@@ -3223,11 +3580,39 @@
           </div>
         </div>
       </div>
+        </div>
+      </div>
     </section>
 
     <!-- 06 CONTACT SECTION: HOLOGRAPHIC COMMUNICATION HUB -->
-    <section class="section" id="contact">
-      <div class="section-tag reveal">05 // COMMUNICATION LINK</div>
+        <section class="section cinematic-section" id="contact">
+      <div class="cinematic-grid-layout">
+        <!-- Sticky 3D Canvas Stage -->
+        <div class="cinematic-canvas-pin">
+          <div class="cinematic-canvas-card" data-tilt>
+            <div class="corner-bracket tl"></div>
+            <div class="corner-bracket tr"></div>
+            <div class="corner-bracket bl"></div>
+            <div class="corner-bracket br"></div>
+            <div class="canvas-hud-top">
+              <div class="canvas-telemetry-badge">
+                <span class="hud-status-indicator"></span>
+                <span>STAGE 06 // COMMUNICATION LINK</span>
+              </div>
+              <div class="canvas-frame-indicator" id="contactFrameNum">FR: 01/80</div>
+            </div>
+            <canvas id="contactCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
+            <div class="canvas-scan-line"></div>
+            <div class="canvas-hud-bottom">
+              <span>BAUD RATE: 115200</span>
+              <span>MISSION STATUS: READY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrolling Content Column -->
+        <div class="cinematic-content-flow">
+<div class="section-tag reveal">05 // COMMUNICATION LINK</div>
       <h2 class="section-title reveal delay-1">Let's Build Something Together</h2>
       <p class="section-desc reveal delay-2">
         Get in touch for mechatronics engineering projects, embedded robotics collaborations, or edge AI development.
@@ -3291,8 +3676,13 @@
           </div>
         </div>
       </div>
+        </div>
+      </div>
     </section>
 
+    <!-- Interactive Hardware Cursor Elements (Desktop) -->
+    <div class="cyber-cursor-dot" id="cursorDot"></div>
+    <div class="cyber-cursor-ring" id="cursorRing"></div>
   </main>
 
   <!-- FOOTER -->
@@ -3996,19 +4386,50 @@
           }
         }
 
-        // Active Stage Determination (6 Stages) across document
+        // Active Stage Determination (6 Stages) across document dynamically
+        const stageSections = [
+          document.getElementById('heroTrack'),
+          document.getElementById('about'),
+          document.getElementById('skills'),
+          document.getElementById('projects'),
+          document.getElementById('journey'),
+          document.getElementById('contact')
+        ];
         let activeStageIndex = 0;
-        if (progress < 0.14) activeStageIndex = 0;
-        else if (progress < 0.32) activeStageIndex = 1;
-        else if (progress < 0.50) activeStageIndex = 2;
-        else if (progress < 0.72) activeStageIndex = 3;
-        else if (progress < 0.87) activeStageIndex = 4;
-        else activeStageIndex = 5;
+        const focalY = window.innerHeight * 0.45;
+        for (let s = stageSections.length - 1; s >= 0; s--) {
+          const sec = stageSections[s];
+          if (sec) {
+            const r = sec.getBoundingClientRect();
+            if (r.top <= focalY) {
+              activeStageIndex = s;
+              break;
+            }
+          }
+        }
 
         stageItems.forEach((item, idx) => {
           if (idx === activeStageIndex) item.classList.add('active');
           else item.classList.remove('active');
         });
+
+        // Dynamic Top HUD Stage Telemetry sync
+        if (activeStageIndex === 1 && hudText) {
+          hudText.textContent = 'STAGE 02 // ABOUT MECHATRONICS LAB // LIVE BENCH';
+          if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
+        } else if (activeStageIndex === 2 && hudText) {
+          hudText.textContent = 'STAGE 03 // HOLOGRAPHIC SKILL DOMAINS // 240MHz';
+          if (hudIndicator) hudIndicator.style.background = 'var(--neon-mint)';
+        } else if (activeStageIndex === 3 && hudText) {
+          hudText.textContent = 'STAGE 04 // HARDWARE SHOWCASE // SCHEMATICS ONLINE';
+          if (hudIndicator) hudIndicator.style.background = 'var(--electric-purple)';
+        } else if (activeStageIndex === 4 && hudText) {
+          hudText.textContent = 'STAGE 05 // 3D TIMELINE // 6 ENGINEERING MILESTONES';
+          if (hudIndicator) hudIndicator.style.background = 'var(--laser-red)';
+        } else if (activeStageIndex === 5 && hudText) {
+          hudText.textContent = 'STAGE 06 // COMMUNICATION LINK // 115200 BAUD DISPATCH';
+          if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
+        }
 
         // Calculate Hero-specific scroll progress (0.0 to 1.0 within heroTrack)
         if (heroTrack) {
@@ -4680,6 +5101,343 @@
         }
       }
     });
+
+
+    /* ==========================================================================
+       8. MODULAR SCROLL FRAME SEQUENCE ENGINE (<canvas> + RAF + INTERSECTION OBSERVER)
+       Optimized Web JPG Architecture with off-thread decode, JIT proximity cache & lerp
+       ========================================================================== */
+    class ScrollFrameSequence {
+      constructor(cfg) {
+        this.canvas = document.getElementById(cfg.canvasId);
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d', { alpha: false });
+        this.section = document.getElementById(cfg.sectionId);
+        this.indicator = document.getElementById(cfg.indicatorId);
+        this.frameCount = cfg.frameCount || 80;
+        this.framePrefix = cfg.framePrefix;
+        this.frameExt = cfg.frameExt || '.jpg';
+        this.stageName = cfg.stageName || '';
+
+        this.images = new Array(this.frameCount);
+        this.loaded = new Uint8Array(this.frameCount);
+        this.currentFrameFloat = 0;
+        this.targetFrameIndex = 0;
+        this.lastRenderedFrame = -1;
+        this.isVisible = false;
+        this.hasPreloaded = false;
+        this.rafId = null;
+        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 820;
+
+        this.init();
+      }
+
+      getFrameSrc(idx) {
+        const pad = String(idx + 1).padStart(6, '0');
+        return this.framePrefix + pad + this.frameExt;
+      }
+
+      loadFrame(idx, callback) {
+        if (idx < 0 || idx >= this.frameCount) {
+          if (callback) callback();
+          return;
+        }
+        if (this.images[idx]) {
+          if (callback) callback();
+          return;
+        }
+        const img = new Image();
+        this.images[idx] = img;
+        img.src = this.getFrameSrc(idx);
+
+        if ('decode' in img) {
+          img.decode().then(() => {
+            this.loaded[idx] = 1;
+            if (callback) callback();
+          }).catch(() => {
+            this.loaded[idx] = 1;
+            if (callback) callback();
+          });
+        } else {
+          img.onload = () => {
+            this.loaded[idx] = 1;
+            if (callback) callback();
+          };
+          img.onerror = () => {
+            if (callback) callback();
+          };
+        }
+      }
+
+      drawFrame(idx) {
+        if (!this.ctx || !this.canvas) return;
+        idx = Math.min(this.frameCount - 1, Math.max(0, idx));
+
+        if (!this.images[idx]) {
+          this.loadFrame(idx);
+        }
+
+        // Nearest loaded frame fallback to guarantee 0% flicker or blank canvas
+        let frameToDraw = idx;
+        if (!this.loaded[frameToDraw]) {
+          for (let offset = 1; offset < 10; offset++) {
+            if (idx - offset >= 0 && this.loaded[idx - offset]) {
+              frameToDraw = idx - offset;
+              break;
+            }
+            if (idx + offset < this.frameCount && this.loaded[idx + offset]) {
+              frameToDraw = idx + offset;
+              break;
+            }
+          }
+        }
+
+        if (frameToDraw === this.lastRenderedFrame) return;
+
+        const img = this.images[frameToDraw];
+        if (img && (this.loaded[frameToDraw] || img.complete)) {
+          this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+          this.lastRenderedFrame = frameToDraw;
+
+          if (this.indicator) {
+            const curPad = String(frameToDraw + 1).padStart(2, '0');
+            const totPad = String(this.frameCount).padStart(2, '0');
+            this.indicator.textContent = 'FR: ' + curPad + '/' + totPad;
+          }
+        }
+      }
+
+      preloadAllFrames() {
+        // Prioritized 3-pass batch preloader (Keyframes first, then even, then all)
+        const pass1 = [], pass2 = [], pass3 = [];
+        for (let i = 1; i < this.frameCount; i++) {
+          if (i % 5 === 0) pass1.push(i);
+          else if (i % 2 === 0) pass2.push(i);
+          else pass3.push(i);
+        }
+        const queue = [...pass1, ...pass2, ...pass3];
+        let active = 0;
+        const maxConcurrent = this.isMobile ? 3 : 6;
+
+        const pump = () => {
+          while (active < maxConcurrent && queue.length > 0) {
+            const nextIdx = queue.shift();
+            if (this.images[nextIdx]) continue;
+            active++;
+            this.loadFrame(nextIdx, () => {
+              active--;
+              pump();
+            });
+          }
+        };
+        pump();
+      }
+
+      updateProgress() {
+        if (!this.section) return;
+        const rect = this.section.getBoundingClientRect();
+        const winH = window.innerHeight;
+
+        // Eased travel mapping across natural section traversal
+        const startOffset = winH * 0.70;
+        const endOffset = winH * 0.30;
+        const totalDist = rect.height + startOffset - endOffset;
+        const currentDist = startOffset - rect.top;
+
+        let p = totalDist > 0 ? currentDist / totalDist : 0;
+        p = Math.min(Math.max(p, 0), 1);
+
+        this.targetFrameIndex = p * (this.frameCount - 1);
+
+        // Proximity JIT Preloader: prioritize nearby frames immediately
+        const targetIdx = Math.round(this.targetFrameIndex);
+        const range = this.isMobile ? 2 : 4;
+        for (let j = 0; j <= range; j++) {
+          if (targetIdx + j < this.frameCount) this.loadFrame(targetIdx + j);
+          if (targetIdx - j >= 0) this.loadFrame(targetIdx - j);
+        }
+      }
+
+      renderLoop() {
+        if (!this.isVisible) {
+          this.rafId = null;
+          return;
+        }
+
+        if (this.isReducedMotion) {
+          this.currentFrameFloat = this.targetFrameIndex;
+        } else {
+          // Velvety smooth lerp easing for forward and reverse scrubbing
+          const diff = this.targetFrameIndex - this.currentFrameFloat;
+          if (Math.abs(diff) > 0.02) {
+            this.currentFrameFloat += diff * 0.20;
+          } else {
+            this.currentFrameFloat = this.targetFrameIndex;
+          }
+        }
+
+        const frameIdx = Math.min(this.frameCount - 1, Math.max(0, Math.round(this.currentFrameFloat)));
+        this.drawFrame(frameIdx);
+
+        this.rafId = requestAnimationFrame(() => this.renderLoop());
+      }
+
+      init() {
+        // Native 1280x720 canvas rendering buffer
+        this.canvas.width = 1280;
+        this.canvas.height = 720;
+
+        // Instant frame 0 render so visual is immediately present on mount
+        this.loadFrame(0, () => {
+          this.drawFrame(0);
+        });
+
+        // IntersectionObserver: Only scrub & prefetch when user approaches section
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              this.isVisible = true;
+              if (!this.hasPreloaded) {
+                this.hasPreloaded = true;
+                if ('requestIdleCallback' in window) {
+                  requestIdleCallback(() => this.preloadAllFrames(), { timeout: 400 });
+                } else {
+                  setTimeout(() => this.preloadAllFrames(), 100);
+                }
+              }
+              this.updateProgress();
+              if (!this.rafId) {
+                this.rafId = requestAnimationFrame(() => this.renderLoop());
+              }
+            } else {
+              this.isVisible = false;
+              if (this.rafId) {
+                cancelAnimationFrame(this.rafId);
+                this.rafId = null;
+              }
+            }
+          });
+        }, { rootMargin: '300px 0px 300px 0px' });
+
+        if (this.section) observer.observe(this.section);
+
+        window.addEventListener('scroll', () => {
+          if (this.isVisible) this.updateProgress();
+        }, { passive: true });
+
+        this.updateProgress();
+      }
+    }
+
+    /* Instantiate All 5 Cinematic Scroll Frame Sequences */
+    const seqAbout = new ScrollFrameSequence({
+      canvasId: 'aboutCanvas',
+      indicatorId: 'aboutFrameNum',
+      sectionId: 'about',
+      frameCount: 80,
+      framePrefix: 'frames_about/frame_',
+      frameExt: '.jpg',
+      stageName: '02 // ABOUT LAB'
+    });
+
+    const seqSkills = new ScrollFrameSequence({
+      canvasId: 'skillsCanvas',
+      indicatorId: 'skillsFrameNum',
+      sectionId: 'skills',
+      frameCount: 80,
+      framePrefix: 'frames_skills/frame_',
+      frameExt: '.jpg',
+      stageName: '03 // HOLOGRAPHIC SKILLS'
+    });
+
+    const seqProjects = new ScrollFrameSequence({
+      canvasId: 'projectsCanvas',
+      indicatorId: 'projectsFrameNum',
+      sectionId: 'projects',
+      frameCount: 80,
+      framePrefix: 'frames_projects/frame_',
+      frameExt: '.jpg',
+      stageName: '04 // HARDWARE SHOWCASE'
+    });
+
+    const seqJourney = new ScrollFrameSequence({
+      canvasId: 'journeyCanvas',
+      indicatorId: 'journeyFrameNum',
+      sectionId: 'journey',
+      frameCount: 80,
+      framePrefix: 'frames_journey/frame_',
+      frameExt: '.jpg',
+      stageName: '05 // 3D TIMELINE'
+    });
+
+    const seqContact = new ScrollFrameSequence({
+      canvasId: 'contactCanvas',
+      indicatorId: 'contactFrameNum',
+      sectionId: 'contact',
+      frameCount: 80,
+      framePrefix: 'frames_contact/frame_',
+      frameExt: '.jpg',
+      stageName: '06 // COMMUNICATION LINK'
+    });
+
+    /* ==========================================================================
+       9. DESKTOP INTERACTIVE HARDWARE CROSSHAIR / DOT & RING CURSOR
+       ========================================================================== */
+    (function initHardwareCursor() {
+      const dot = document.getElementById('cursorDot');
+      const ring = document.getElementById('cursorRing');
+      if (!dot || !ring) return;
+
+      const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth < 1024;
+      if (isTouch) {
+        dot.style.display = 'none';
+        ring.style.display = 'none';
+        return;
+      }
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX = mouseX;
+      let ringY = mouseY;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      }, { passive: true });
+
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.22;
+        ringY += (mouseY - ringY) * 0.22;
+        ring.style.left = ringX + 'px';
+        ring.style.top = ringY + 'px';
+        requestAnimationFrame(animateRing);
+      }
+      requestAnimationFrame(animateRing);
+
+      const interactives = 'a, button, input, .vibe-card, .cinematic-canvas-card, .scope-btn, .stage-item';
+      document.querySelectorAll(interactives).forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+    })();
+
+    /* 3D Perspective Tilt on Cinematic Canvas Cards for Desktop */
+    if (window.innerWidth > 992) {
+      document.querySelectorAll('.cinematic-canvas-card[data-tilt]').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+          const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+          card.style.transform = 'perspective(1000px) rotateX(' + (-y * 4) + 'deg) rotateY(' + (x * 5) + 'deg) translateY(-2px)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    }
 
     /* ==========================================================================
        7. SCROLL-TRIGGERED COMPONENT REVEAL OBSERVER
