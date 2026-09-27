@@ -1497,17 +1497,26 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
 
-    /* Film Content Column â€” Comes After Full Film Coverage with Cinematic Glass Styling */
+    /* Film Content Column â€” Broader, Fully Fledged, Expansive on Laptop & Computer Viewports */
     .film-content-col {
       position: relative;
       z-index: 25;
       width: 100%;
-      max-width: 1360px;
+      max-width: 1600px;
       margin: 0 auto;
       padding: 60px 4vw 160px;
       margin-top: 15vh;
       pointer-events: auto;
       background: transparent;
+    }
+
+    /* Broader About Cinematic Grid Layout */
+    .about-layout-cinematic {
+      display: grid;
+      grid-template-columns: minmax(360px, 460px) 1fr;
+      gap: 36px;
+      align-items: start;
+      width: 100%;
     }
 
     /* Modern Glass Card Styling over the 3D Film Background */
@@ -1523,6 +1532,26 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 180, 255, 0.25) !important;
     }
 
+    /* Fully Fitted Canvas Across Device Classes */
+    @media (min-width: 993px) {
+      .film-fullscreen-canvas {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        object-fit: cover;
+      }
+    }
+    @media (max-width: 992px) {
+      .about-layout-cinematic {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .film-fullscreen-canvas {
+        width: 100vw;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
     /* Desktop Custom Interactive Hardware Cursor */
     @media (hover: hover) and (pointer: fine) {
       .cyber-cursor-dot {
@@ -1605,7 +1634,38 @@
        HERO WORKSTATION & REFERENCE EXPERIENCE (EXACT MATCH TO REFERENCE DESIGN)
        ========================================================================== */
     /* Hero Landing Intro (First Place: Animated 3D Hero on Initial Load) */
-    .hero-left-intro {
+        /* 1st: 3D Effect Initial Floating Scroll Cue */
+    .hero-3d-scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 1.8px;
+      color: var(--cyan);
+      background: rgba(3, 7, 20, 0.78);
+      border: 1px solid rgba(0, 180, 255, 0.4);
+      padding: 8px 20px;
+      border-radius: 24px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.75), 0 0 15px rgba(0, 180, 255, 0.25);
+      cursor: pointer;
+      user-select: none;
+      z-index: 45;
+      transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .hero-3d-scroll-hint:hover {
+      border-color: #ffffff;
+      color: #ffffff;
+      box-shadow: 0 6px 30px rgba(0, 180, 255, 0.45);
+      transform: translateX(-50%) translateY(-2px);
+    }
+.hero-left-intro {
       position: absolute;
       top: 17%;
       left: 3.5vw;
@@ -5000,67 +5060,81 @@
         const heroAiHud = document.getElementById('heroAiHud');
         const heroConveyorDeck = document.getElementById('heroConveyorDeck');
         const pedestalCreedBand = document.getElementById('pedestalCreedBand');
+        const hero3dHint = document.getElementById('hero3dHint');
 
-        if (heroProgress < 0.22) {
-          // STAGE 01: FIRST PLACE â€” INTERACTIVE ROBOTICS WORKSTATION (REFERENCE IMAGE DESIGN)
-          // 100% visible, fully active, and all keys/cards clickable right from initial page load!
+        if (heroProgress < 0.18) {
+          // 1ST: 3D EFFECT IN FULL SPOTLIGHT (CLEAN, UNOBSTRUCTED 3D ROBOTICS MOTION)
+          if (hero3dHint) {
+            hero3dHint.style.opacity = Math.max(0, 1 - heroProgress * 6).toString();
+            hero3dHint.style.pointerEvents = heroProgress > 0.12 ? 'none' : 'auto';
+            hero3dHint.style.transform = 'translateX(-50%) translateY(' + (-heroProgress * 40) + 'px)';
+          }
+
+          // Interactive reference workstation is hidden during initial 3D effect
           if (heroLeftIntro) {
-            heroLeftIntro.style.opacity = '1';
-            heroLeftIntro.style.pointerEvents = 'auto';
-            heroLeftIntro.style.transform = 'translateX(0)';
+            heroLeftIntro.style.opacity = '0';
+            heroLeftIntro.style.pointerEvents = 'none';
+            heroLeftIntro.style.transform = 'translateX(-30px)';
           }
           if (heroAiHud) {
-            heroAiHud.style.opacity = '1';
-            heroAiHud.style.pointerEvents = 'auto';
-            heroAiHud.style.transform = 'scale(1)';
+            heroAiHud.style.opacity = '0';
+            heroAiHud.style.pointerEvents = 'none';
+            heroAiHud.style.transform = 'scale(0.92)';
           }
           if (heroConveyorDeck) {
-            heroConveyorDeck.style.opacity = '1';
-            heroConveyorDeck.style.pointerEvents = 'auto';
-            heroConveyorDeck.style.transform = 'translateX(0)';
+            heroConveyorDeck.style.opacity = '0';
+            heroConveyorDeck.style.pointerEvents = 'none';
+            heroConveyorDeck.style.transform = 'translateX(30px)';
           }
           if (pedestalCreedBand) {
-            pedestalCreedBand.style.opacity = '1';
+            pedestalCreedBand.style.opacity = '0';
+            pedestalCreedBand.style.pointerEvents = 'none';
           }
-          if (deckHotspots) deckHotspots.style.opacity = '1';
+          if (deckHotspots) deckHotspots.style.opacity = '0';
           if (explodedCad) explodedCad.style.opacity = '0';
           if (stageTelemetry) stageTelemetry.style.opacity = '0';
 
-          if (hudText) hudText.textContent = 'STAGE 01 // INTERACTIVE ROBOTICS WORKSTATION // ACTIVE';
+          if (hudText) hudText.textContent = 'STAGE 01 // 3D ROBOTICS VISUAL EXPERIENCE';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
 
         } else if (heroProgress < 0.65) {
-          // STAGE 02: 2ND PLACE â€” 3D SCROLLING VIDEO & KINEMATIC CAMERA PLUNGE
-          // Interactive workstation UI smoothly fades out as scroll begins; 3D robot motion takes over full screen!
-          const fadeOutT = Math.min((heroProgress - 0.22) / 0.12, 1);
-          const uiOpacity = Math.max(0, 1 - fadeOutT);
+          // 2ND: AND THEN COMES THIS INTERACTIVE PAGE (REFERENCE DESIGN 100% ACTIVE & CLICKABLE)
+          if (hero3dHint) {
+            hero3dHint.style.opacity = '0';
+            hero3dHint.style.pointerEvents = 'none';
+          }
+
+          // Smooth reveal from 0.18 to 0.28, solid through 0.58, then exits to 0.65
+          const enterT = Math.min(Math.max((heroProgress - 0.18) / 0.10, 0), 1);
+          const exitT = Math.min(Math.max((heroProgress - 0.58) / 0.07, 0), 1);
+          const activeOpacity = enterT * (1 - exitT);
 
           if (heroLeftIntro) {
-            heroLeftIntro.style.opacity = uiOpacity.toString();
-            heroLeftIntro.style.pointerEvents = uiOpacity > 0.4 ? 'auto' : 'none';
-            heroLeftIntro.style.transform = 'translateX(' + (-30 * fadeOutT) + 'px)';
+            heroLeftIntro.style.opacity = activeOpacity.toString();
+            heroLeftIntro.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
+            heroLeftIntro.style.transform = 'translateX(' + (-25 * (1 - enterT)) + 'px)';
           }
           if (heroAiHud) {
-            heroAiHud.style.opacity = uiOpacity.toString();
-            heroAiHud.style.pointerEvents = uiOpacity > 0.4 ? 'auto' : 'none';
-            heroAiHud.style.transform = 'scale(' + (1 - 0.08 * fadeOutT) + ')';
+            heroAiHud.style.opacity = activeOpacity.toString();
+            heroAiHud.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
+            heroAiHud.style.transform = 'scale(' + (0.92 + 0.08 * enterT) + ')';
           }
           if (heroConveyorDeck) {
-            heroConveyorDeck.style.opacity = uiOpacity.toString();
-            heroConveyorDeck.style.pointerEvents = uiOpacity > 0.4 ? 'auto' : 'none';
-            heroConveyorDeck.style.transform = 'translateX(' + (30 * fadeOutT) + 'px)';
+            heroConveyorDeck.style.opacity = activeOpacity.toString();
+            heroConveyorDeck.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
+            heroConveyorDeck.style.transform = 'translateX(' + (25 * (1 - enterT)) + 'px)';
           }
           if (pedestalCreedBand) {
-            pedestalCreedBand.style.opacity = uiOpacity.toString();
+            pedestalCreedBand.style.opacity = activeOpacity.toString();
           }
-          if (deckHotspots) deckHotspots.style.opacity = uiOpacity.toString();
+          if (deckHotspots) deckHotspots.style.opacity = activeOpacity.toString();
           if (explodedCad) explodedCad.style.opacity = '0';
           if (stageTelemetry) {
-            stageTelemetry.style.opacity = (fadeOutT * 1).toString();
-            if (telemetryLabel) telemetryLabel.textContent = 'ROVER V2 // 3D KINEMATICS & SENSORS ACTIVE';
+            stageTelemetry.style.opacity = (enterT * 0.7).toString();
+            if (telemetryLabel) telemetryLabel.textContent = 'ROVER V2 // INTERACTIVE WORKSTATION ACTIVE';
           }
 
-          if (hudText) hudText.textContent = 'STAGE 02 // 3D ROBOTICS MOTION // SCROLL-DRIVEN VIDEO';
+          if (hudText) hudText.textContent = 'STAGE 02 // INTERACTIVE ROBOTICS WORKSTATION // ACTIVE';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
 
         } else if (heroProgress < 0.70) {
@@ -6049,6 +6123,15 @@
     /* ==========================================================================
        CINEMATIC SHOWREEL MODAL CONTROLLER
        ========================================================================== */
+    window.scrollToInteractiveLab = function() {
+      const heroTrack = document.getElementById('heroTrack');
+      if (heroTrack) {
+        const target = heroTrack.offsetTop + (heroTrack.offsetHeight - window.innerHeight) * 0.32;
+        window.scrollTo({ top: target, behavior: 'smooth' });
+        playBeep(640, 0.08);
+      }
+    };
+
     window.scrollToWorkstation = function() {
       const heroTrack = document.getElementById('heroTrack');
       if (heroTrack) {
