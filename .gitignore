@@ -10,3 +10,7 @@ Thumbs.db
 *.key
 *.pem
 .env
+
+# Large archives (exceed GitHub 100MB per-file limit)
+*.zip
+
