@@ -1605,71 +1605,6 @@
        HERO WORKSTATION & REFERENCE EXPERIENCE (EXACT MATCH TO REFERENCE DESIGN)
        ========================================================================== */
     /* Hero Landing Intro (First Place: Animated 3D Hero on Initial Load) */
-    .hero-landing-intro {
-      position: absolute;
-      top: 22%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(780px, 90vw);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      z-index: 39;
-      pointer-events: auto;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .hero-landing-name {
-      font-family: var(--font-display);
-      font-size: clamp(2.4rem, 5.2vw, 4.8rem);
-      font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -1px;
-      color: #ffffff;
-      margin: 0;
-      text-transform: uppercase;
-      text-shadow: 0 0 35px rgba(0, 0, 0, 0.9);
-    }
-    .hero-landing-name .landing-last {
-      display: block;
-      color: #00b4ff;
-      background: linear-gradient(135deg, #00b4ff 0%, #38bdf8 60%, #00e676 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 25px rgba(0, 180, 255, 0.5));
-    }
-    .hero-landing-sub {
-      font-size: clamp(0.95rem, 1.8vw, 1.25rem);
-      color: var(--text-muted);
-      max-width: 580px;
-      line-height: 1.5;
-      margin: 0;
-    }
-    .hero-landing-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 6px;
-    }
-    .hero-landing-cue {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      letter-spacing: 1.5px;
-      color: var(--cyan);
-      margin-top: 18px;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.2s ease, color 0.2s ease;
-    }
-    .hero-landing-cue:hover {
-      transform: translateY(2px);
-      color: #ffffff;
-    }
     .hero-left-intro {
       position: absolute;
       top: 17%;
@@ -3377,32 +3312,7 @@
               <p>Passionate about Robotics, IoT, Embedded AI and building real world solutions. Constructing deterministic cyber-physical hardware that senses, computes, and actuates in real-time.</p>
             </div>
 
-            <!-- Stage 1: Clean Animated Hero Landing (First Place on Load) -->
-            <div class="hero-landing-intro" id="heroLandingIntro">
-              <div class="hero-role-tag">3D ROBOTICS &bull; MECHATRONICS LAB</div>
-              <h1 class="hero-landing-name">
-                <span class="landing-first">SANGEETH</span>
-                <span class="landing-last">SASIKUMAR K S</span>
-              </h1>
-              <p class="hero-landing-sub">Autonomous Robotics &bull; Embedded AI &bull; IoT Kinematics</p>
-              <div class="hero-landing-actions">
-                <button class="hero-btn-journey" onclick="scrollToWorkstation()">
-                  <span>Explore Workstation</span>
-                  <span class="btn-arrow">&darr;</span>
-                </button>
-                <button class="hero-btn-showreel" onclick="openShowreelModal()" aria-label="Watch cinematic showreel">
-                  <span class="play-icon">&#9654;</span>
-                  <span>Watch Showreel</span>
-                </button>
-              </div>
-              <div class="hero-landing-cue" onclick="scrollToWorkstation()">
-                <div class="mouse-scroll-wheel"><div class="wheel-dot"></div></div>
-                <span>SCROLL TO LAUNCH WORKSTATION &darr;</span>
-              </div>
-            </div>
-
-            <!-- Stage 2: Interactive Section of Reference Image (Comes in 2nd on Scroll) -->
-            <!-- Left side: Iconic Hero Introduction (Matches Reference Image) -->
+            <!-- 01 FIRST: INTERACTIVE WORKSTATION (REFERENCE IMAGE DESIGN) -->
             <div class="hero-left-intro" id="heroLeftIntro">
               <div class="hero-role-tag">ENGINEER &bull; BUILDER &bull; PROBLEM SOLVER</div>
               <h1 class="hero-main-name">
@@ -5091,78 +5001,66 @@
         const heroConveyorDeck = document.getElementById('heroConveyorDeck');
         const pedestalCreedBand = document.getElementById('pedestalCreedBand');
 
-        const heroLandingIntro = document.getElementById('heroLandingIntro');
-
-        if (heroProgress < 0.14) {
-          // STAGE 1: ANIMATED HERO IN FIRST PLACE (CLEAN 3D ROVER TURNTABLE VISUAL)
-          if (heroLandingIntro) {
-            heroLandingIntro.style.opacity = Math.max(0, 1 - heroProgress * 6).toString();
-            heroLandingIntro.style.pointerEvents = heroProgress > 0.10 ? 'none' : 'auto';
-            heroLandingIntro.style.transform = 'translate(-50%, ' + (-heroProgress * 60) + 'px)';
-          }
-
-          // Interactive reference workstation hidden at first place
+        if (heroProgress < 0.22) {
+          // STAGE 01: FIRST PLACE â€” INTERACTIVE ROBOTICS WORKSTATION (REFERENCE IMAGE DESIGN)
+          // 100% visible, fully active, and all keys/cards clickable right from initial page load!
           if (heroLeftIntro) {
-            heroLeftIntro.style.opacity = '0';
-            heroLeftIntro.style.pointerEvents = 'none';
-            heroLeftIntro.style.transform = 'translateX(-30px)';
+            heroLeftIntro.style.opacity = '1';
+            heroLeftIntro.style.pointerEvents = 'auto';
+            heroLeftIntro.style.transform = 'translateX(0)';
           }
           if (heroAiHud) {
-            heroAiHud.style.opacity = '0';
-            heroAiHud.style.pointerEvents = 'none';
-            heroAiHud.style.transform = 'scale(0.92)';
+            heroAiHud.style.opacity = '1';
+            heroAiHud.style.pointerEvents = 'auto';
+            heroAiHud.style.transform = 'scale(1)';
           }
           if (heroConveyorDeck) {
-            heroConveyorDeck.style.opacity = '0';
-            heroConveyorDeck.style.pointerEvents = 'none';
-            heroConveyorDeck.style.transform = 'translateX(30px)';
+            heroConveyorDeck.style.opacity = '1';
+            heroConveyorDeck.style.pointerEvents = 'auto';
+            heroConveyorDeck.style.transform = 'translateX(0)';
           }
           if (pedestalCreedBand) {
-            pedestalCreedBand.style.opacity = '0';
-            pedestalCreedBand.style.pointerEvents = 'none';
+            pedestalCreedBand.style.opacity = '1';
           }
-          if (deckHotspots) deckHotspots.style.opacity = '0';
+          if (deckHotspots) deckHotspots.style.opacity = '1';
           if (explodedCad) explodedCad.style.opacity = '0';
           if (stageTelemetry) stageTelemetry.style.opacity = '0';
 
-          if (hudText) hudText.textContent = 'STAGE 01 // ANIMATED 3D ROBOTICS HERO';
+          if (hudText) hudText.textContent = 'STAGE 01 // INTERACTIVE ROBOTICS WORKSTATION // ACTIVE';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
 
-        } else if (heroProgress < 0.48) {
-          // STAGE 2: AFTER SCROLLING, 2ND COMES THE INTERACTIVE SECTION OF THAT IMAGE
-          if (heroLandingIntro) {
-            heroLandingIntro.style.opacity = '0';
-            heroLandingIntro.style.pointerEvents = 'none';
-          }
-
-          // Smooth reveal from 0.14 to 0.22, solid active through 0.42, then exits to 0.48
-          const enterT = Math.min(Math.max((heroProgress - 0.14) / 0.08, 0), 1);
-          const exitT = Math.min(Math.max((heroProgress - 0.42) / 0.06, 0), 1);
-          const activeOpacity = enterT * (1 - exitT);
+        } else if (heroProgress < 0.65) {
+          // STAGE 02: 2ND PLACE â€” 3D SCROLLING VIDEO & KINEMATIC CAMERA PLUNGE
+          // Interactive workstation UI smoothly fades out as scroll begins; 3D robot motion takes over full screen!
+          const fadeOutT = Math.min((heroProgress - 0.22) / 0.12, 1);
+          const uiOpacity = Math.max(0, 1 - fadeOutT);
 
           if (heroLeftIntro) {
-            heroLeftIntro.style.opacity = activeOpacity.toString();
-            heroLeftIntro.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
-            heroLeftIntro.style.transform = 'translateX(' + (-20 * (1 - enterT)) + 'px)';
+            heroLeftIntro.style.opacity = uiOpacity.toString();
+            heroLeftIntro.style.pointerEvents = uiOpacity > 0.4 ? 'auto' : 'none';
+            heroLeftIntro.style.transform = 'translateX(' + (-30 * fadeOutT) + 'px)';
           }
           if (heroAiHud) {
-            heroAiHud.style.opacity = activeOpacity.toString();
-            heroAiHud.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
-            heroAiHud.style.transform = 'scale(' + (0.92 + 0.08 * enterT) + ')';
+            heroAiHud.style.opacity = uiOpacity.toString();
+            heroAiHud.style.pointerEvents = uiOpacity > 0.4 ? 'auto' : 'none';
+            heroAiHud.style.transform = 'scale(' + (1 - 0.08 * fadeOutT) + ')';
           }
           if (heroConveyorDeck) {
-            heroConveyorDeck.style.opacity = activeOpacity.toString();
-            heroConveyorDeck.style.pointerEvents = activeOpacity > 0.5 ? 'auto' : 'none';
-            heroConveyorDeck.style.transform = 'translateX(' + (20 * (1 - enterT)) + 'px)';
+            heroConveyorDeck.style.opacity = uiOpacity.toString();
+            heroConveyorDeck.style.pointerEvents = uiOpacity > 0.4 ? 'auto' : 'none';
+            heroConveyorDeck.style.transform = 'translateX(' + (30 * fadeOutT) + 'px)';
           }
           if (pedestalCreedBand) {
-            pedestalCreedBand.style.opacity = activeOpacity.toString();
+            pedestalCreedBand.style.opacity = uiOpacity.toString();
           }
-          if (deckHotspots) deckHotspots.style.opacity = activeOpacity.toString();
+          if (deckHotspots) deckHotspots.style.opacity = uiOpacity.toString();
           if (explodedCad) explodedCad.style.opacity = '0';
-          if (stageTelemetry) stageTelemetry.style.opacity = (enterT * 0.7).toString();
+          if (stageTelemetry) {
+            stageTelemetry.style.opacity = (fadeOutT * 1).toString();
+            if (telemetryLabel) telemetryLabel.textContent = 'ROVER V2 // 3D KINEMATICS & SENSORS ACTIVE';
+          }
 
-          if (hudText) hudText.textContent = 'STAGE 02 // INTERACTIVE WORKSTATION & DECK // ACTIVE';
+          if (hudText) hudText.textContent = 'STAGE 02 // 3D ROBOTICS MOTION // SCROLL-DRIVEN VIDEO';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
 
         } else if (heroProgress < 0.70) {
