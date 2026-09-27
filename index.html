@@ -1377,164 +1377,133 @@
     }
 
     /* ==========================================================================
-       CINEMATIC 3D SCROLL & WORKSTATION STAGE ARCHITECTURE (SECTIONS 02 - 06)
+       CINEMATIC 3D FULL-SCALE FILM MOTION ARCHITECTURE (SECTIONS 02 - 06)
+       Zero-Border Full-Scale Viewports, Edge-to-Edge Film Motion, Mobile-First
        ========================================================================== */
-    .cinematic-section {
+    .film-section {
       position: relative;
       width: 100%;
-      padding: 100px 6vw 140px;
-      max-width: 1540px;
+      max-width: 100vw;
+      padding: 60px 4vw 140px;
       margin: 0 auto;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
 
-    .cinematic-grid-layout {
+    .film-grid-layout {
       display: grid;
-      grid-template-columns: minmax(360px, 46%) 1fr;
-      gap: 48px;
+      grid-template-columns: minmax(460px, 1.15fr) 1fr;
+      gap: 60px;
       align-items: start;
       position: relative;
+      width: 100%;
+      max-width: 1720px;
+      margin: 0 auto;
     }
-
-    /* Reverse side layout for alternating visual workstation flow on desktop */
-    .cinematic-grid-layout.reverse-desktop {
-      grid-template-columns: minmax(360px, 46%) 1fr;
+    .film-grid-layout.reverse-desktop {
+      grid-template-columns: 1fr minmax(460px, 1.15fr);
     }
-    .cinematic-grid-layout.reverse-desktop .cinematic-canvas-pin {
+    .film-grid-layout.reverse-desktop .film-canvas-col {
       order: 1;
     }
-    .cinematic-grid-layout.reverse-desktop .cinematic-content-flow {
+    .film-grid-layout.reverse-desktop .film-content-col {
       order: 2;
     }
 
-    .cinematic-canvas-pin {
+    /* Pinned Sticky Visual Stage — Full Height, Edge-to-Edge Scale */
+    .film-canvas-col {
       position: sticky;
-      top: 92px;
+      top: 76px;
+      height: calc(100vh - 90px);
+      height: calc(100dvh - 90px);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       z-index: 15;
-      width: 100%;
+      pointer-events: none;
     }
 
-    .cinematic-content-flow {
-      width: 100%;
-      min-width: 0;
-    }
-
-    .cinematic-canvas-card {
+    /* Zero-Border Film Viewport — No Card Frame, No Outline, Seamless Immersion */
+    .film-stage-viewport {
       position: relative;
       width: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-      background: radial-gradient(circle at center, rgba(12, 22, 50, 0.72) 0%, rgba(2, 4, 10, 0.96) 100%);
-      border: 1px solid var(--border-glass);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 180, 255, 0.12);
-      backdrop-filter: var(--glass-filter);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      overflow: visible;
+    }
+
+    /* Full-Scale 3D Sequence Canvas: Zero Boundaries, Matches Hero Experience */
+    .film-fullscreen-canvas {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      display: block;
+      filter: drop-shadow(0 0 55px rgba(0, 180, 255, 0.22));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform;
     }
 
-    .cinematic-canvas-card:hover {
-      border-color: var(--border-glass-hover);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(0, 180, 255, 0.22);
-    }
-
-    .cinematic-sequence-canvas {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      display: block;
-      object-fit: cover;
-      background: #02040a;
-    }
-
-    /* Canvas HUD Overlay & Corner Brackets */
-    .canvas-hud-top {
+    /* Floating Film HUD Telemetry Overlay */
+    .film-hud-bar {
       position: absolute;
-      top: 12px;
+      top: 14px;
       left: 14px;
       right: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 20;
       pointer-events: none;
-      z-index: 5;
     }
 
-    .canvas-telemetry-badge {
+    .film-hud-tag {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(2, 4, 10, 0.88);
+      background: rgba(2, 4, 10, 0.85);
       border: 1px solid rgba(0, 180, 255, 0.35);
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 6px;
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 1px;
+      font-size: 0.72rem;
+      letter-spacing: 1.2px;
       color: var(--text-main);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
     }
 
-    .canvas-frame-indicator {
-      background: rgba(2, 4, 10, 0.88);
+    .film-frame-indicator {
+      background: rgba(2, 4, 10, 0.85);
       border: 1px solid rgba(0, 230, 118, 0.35);
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 6px;
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--neon-mint);
-      letter-spacing: 1px;
-      backdrop-filter: blur(8px);
+      letter-spacing: 1.2px;
+      backdrop-filter: blur(12px);
     }
 
-    .canvas-hud-bottom {
-      position: absolute;
-      bottom: 10px;
-      left: 14px;
-      right: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      pointer-events: none;
-      z-index: 5;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--text-faint);
-      letter-spacing: 0.8px;
-    }
-
-    .canvas-scan-line {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .film-content-col {
       width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(0, 180, 255, 0.7), transparent);
-      opacity: 0.45;
-      pointer-events: none;
-      animation: canvasScan 4s linear infinite;
+      min-width: 0;
+      pointer-events: auto;
     }
-
-    @keyframes canvasScan {
-      0% { transform: translateY(0); opacity: 0; }
-      10% { opacity: 0.7; }
-      90% { opacity: 0.7; }
-      100% { transform: translateY(500%); opacity: 0; }
-    }
-
-    /* Corner Reticle Brackets */
-    .corner-bracket {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      pointer-events: none;
-      border-color: var(--cyan);
-      border-style: solid;
-      opacity: 0.75;
-      z-index: 4;
-    }
-    .corner-bracket.tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
-    .corner-bracket.tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
-    .corner-bracket.bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
-    .corner-bracket.br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
 
     /* About Cinematic Flow Layout */
     .about-layout-cinematic {
@@ -1585,43 +1554,554 @@
       }
     }
 
-    /* Responsive Breakpoints */
-    @media (max-width: 1100px) {
-      .cinematic-grid-layout,
-      .cinematic-grid-layout.reverse-desktop {
+    /* Mobile Optimization: Full-width borderless cinematic stage */
+    @media (max-width: 1024px) {
+      .film-grid-layout,
+      .film-grid-layout.reverse-desktop {
         grid-template-columns: 1fr;
-        gap: 36px;
+        gap: 30px;
       }
-      .cinematic-canvas-pin {
-        position: relative;
-        top: 0;
-        max-width: 720px;
-        margin: 0 auto 24px;
+      .film-canvas-col {
+        position: sticky;
+        top: 60px;
+        height: 48vh;
+        height: 48dvh;
+        max-height: 400px;
+        min-height: 250px;
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: -4vw;
+        margin-right: -4vw;
+        margin-bottom: 24px;
+        background: #02040a;
         order: -1 !important;
+        z-index: 30;
       }
-      .cinematic-section {
-        padding: 80px 5vw 100px;
+      .film-fullscreen-canvas {
+        width: 100vw;
+        height: 100%;
+        max-width: 100vw;
+        object-fit: contain;
+      }
+      .film-section {
+        padding: 50px 4vw 80px;
+      }
+      .film-hud-bar {
+        top: 8px;
+        left: 10px;
+        right: 10px;
+      }
+      .film-hud-tag,
+      .film-frame-indicator {
+        font-size: 0.65rem;
+        padding: 3px 8px;
       }
     }
 
     @media (max-width: 640px) {
-      .cinematic-section {
-        padding: 60px 4vw 80px;
+      .film-canvas-col {
+        height: 42vh;
+        min-height: 220px;
+        margin-bottom: 18px;
       }
-      .cinematic-canvas-card {
-        border-radius: 12px;
-      }
-      .canvas-telemetry-badge,
-      .canvas-frame-indicator {
-        font-size: 0.62rem;
-        padding: 2px 6px;
-      }
-      .canvas-hud-bottom {
-        display: none;
+      .film-section {
+        padding: 40px 3.5vw 70px;
       }
     }
 
+    /* ==========================================================================
+       HERO WORKSTATION & REFERENCE EXPERIENCE (EXACT MATCH TO REFERENCE DESIGN)
+       ========================================================================== */
+    .hero-left-intro {
+      position: absolute;
+      top: 17%;
+      left: 3.5vw;
+      width: min(520px, 32vw);
+      z-index: 40;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
 
+    .hero-role-tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-role-tag::before {
+      content: '//';
+      color: var(--cyan);
+      font-weight: bold;
+    }
+
+    .hero-main-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.2vw, 4.4rem);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: -1px;
+      color: #ffffff;
+      margin: 4px 0 8px;
+      text-transform: uppercase;
+    }
+    .hero-main-name .name-first {
+      display: block;
+      color: #ffffff;
+    }
+    .hero-main-name .name-last {
+      display: block;
+      color: #00b4ff;
+      background: linear-gradient(135deg, #00b4ff 0%, #38bdf8 60%, #00e676 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0, 180, 255, 0.4));
+    }
+
+    .hero-main-sub {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .hero-main-sub strong {
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    .hero-main-sub p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 480px;
+    }
+
+    .hero-action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .hero-btn-journey {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0077ff 0%, #00b4ff 100%);
+      box-shadow: 0 0 25px rgba(0, 180, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .hero-btn-journey:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 180, 255, 0.8);
+      color: #ffffff;
+    }
+
+    .hero-btn-showreel {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #ffffff;
+      background: rgba(8, 16, 36, 0.65);
+      border: 1px solid rgba(0, 180, 255, 0.4);
+      backdrop-filter: blur(16px);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .hero-btn-showreel:hover {
+      border-color: var(--cyan);
+      background: rgba(0, 180, 255, 0.15);
+      box-shadow: 0 0 20px rgba(0, 180, 255, 0.35);
+      transform: translateY(-2px);
+      color: #ffffff;
+    }
+
+    .hero-scroll-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+      margin-top: 24px;
+    }
+    .hero-scroll-indicator:hover {
+      color: var(--cyan);
+    }
+    .mouse-scroll-wheel {
+      width: 18px;
+      height: 28px;
+      border: 1.5px solid var(--cyan);
+      border-radius: 10px;
+      position: relative;
+    }
+    .wheel-dot {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 5px;
+      background: var(--cyan);
+      border-radius: 2px;
+      animation: wheelMove 1.6s infinite ease-in-out;
+    }
+    @keyframes wheelMove {
+      0% { top: 5px; opacity: 1; }
+      100% { top: 14px; opacity: 0; }
+    }
+
+    /* Floating AI Brain HUD Module (Beside the Rover) */
+    .hero-ai-hud-module {
+      position: absolute;
+      top: 21%;
+      left: 31vw;
+      width: 175px;
+      z-index: 38;
+      background: linear-gradient(135deg, rgba(8, 16, 36, 0.75) 0%, rgba(3, 7, 20, 0.88) 100%);
+      border: 1px solid rgba(0, 180, 255, 0.35);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 180, 255, 0.15);
+      backdrop-filter: blur(20px);
+      pointer-events: auto;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hero-ai-hud-module:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 180, 255, 0.3);
+      transform: translateY(-3px);
+    }
+    .ai-hud-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+      margin-bottom: 10px;
+    }
+    .ai-brain-img {
+      width: 34px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px var(--cyan));
+      border-radius: 4px;
+    }
+    .ai-hud-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 1px;
+    }
+    .ai-hud-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding: 0;
+      margin: 0;
+    }
+    .ai-hud-points li a {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+    .ai-hud-points li a:hover {
+      color: var(--cyan);
+      transform: translateX(3px);
+    }
+    .target-ring {
+      width: 8px;
+      height: 8px;
+      border: 1.5px solid var(--cyan);
+      border-radius: 50%;
+      position: relative;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .target-ring::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 2px; height: 2px;
+      background: var(--cyan);
+      border-radius: 50%;
+    }
+
+    /* Pedestal Rotating Text Creed */
+    .pedestal-creed-band {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(720px, 60vw);
+      height: 32px;
+      border-radius: 16px;
+      background: rgba(3, 7, 20, 0.85);
+      border: 1px solid rgba(0, 180, 255, 0.3);
+      box-shadow: 0 0 25px rgba(0, 180, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 35;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .pedestal-creed-track {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 2.5px;
+      color: var(--cyan);
+      white-space: nowrap;
+      animation: creedScroll 25s linear infinite;
+    }
+    @keyframes creedScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* The 5 Interactive Holographic Glass Cards Deck (Right Side of Hero) */
+    .hero-conveyor-deck {
+      position: absolute;
+      top: 15%;
+      right: 2.5vw;
+      width: min(640px, 46vw);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      z-index: 40;
+      pointer-events: auto;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .deck-glass-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(8, 16, 36, 0.72) 0%, rgba(3, 7, 18, 0.88) 100%);
+      border: 1px solid rgba(0, 180, 255, 0.35);
+      border-radius: 12px;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 180, 255, 0.1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      color: inherit;
+    }
+    .deck-glass-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      border-color: var(--cyan);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 180, 255, 0.4);
+      background: linear-gradient(180deg, rgba(12, 24, 52, 0.85) 0%, rgba(5, 12, 30, 0.95) 100%);
+    }
+
+    .deck-card-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+    }
+    .deck-card-title {
+      font-family: var(--font-display);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: #ffffff;
+    }
+    .deck-card-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    .deck-card-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(2, 4, 10, 0.9);
+      border: 1px solid rgba(0, 180, 255, 0.2);
+    }
+    .deck-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .deck-glass-card:hover .deck-card-img {
+      transform: scale(1.08);
+    }
+
+    .deck-card-links {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .deck-sublink {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: all 0.2s ease;
+      display: block;
+      padding: 1px 0;
+    }
+    .deck-sublink:hover {
+      color: var(--cyan);
+      transform: translateX(2px);
+    }
+
+    /* Cinematic Showreel Modal */
+    .showreel-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(2, 4, 10, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .showreel-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .showreel-modal-dialog {
+      width: 100%;
+      max-width: 960px;
+      background: #030712;
+      border: 1px solid var(--border-glass-hover);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 180, 255, 0.25);
+      display: flex;
+      flex-direction: column;
+    }
+    .showreel-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+      background: rgba(8, 16, 36, 0.8);
+    }
+    .showreel-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 4px;
+      transition: color 0.2s ease;
+    }
+    .showreel-close-btn:hover {
+      color: var(--laser-red);
+    }
+    .showreel-video-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+    .showreel-modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(8, 16, 36, 0.8);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+    }
+
+    /* Mobile Responsive Optimizations for Reference Hero */
+    @media (max-width: 1100px) {
+      .hero-left-intro {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 90px 5vw 20px;
+        z-index: 40;
+      }
+      .hero-ai-hud-module {
+        display: none;
+      }
+      .pedestal-creed-band {
+        display: none;
+      }
+      .hero-conveyor-deck {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: -5vw;
+        margin-right: -5vw;
+        padding: 16px 5vw;
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .deck-glass-card {
+        flex: 0 0 135px;
+        scroll-snap-align: start;
+      }
+      .hero-scroll-indicator {
+        display: none;
+      }
+    }
     /* ABOUT SECTION & WORKBENCH */
     .about-layout {
       display: grid;
@@ -2839,34 +3319,144 @@
               <p>Passionate about Robotics, IoT, Embedded AI and building real world solutions. Constructing deterministic cyber-physical hardware that senses, computes, and actuates in real-time.</p>
             </div>
 
-            <!-- Mobile Hero Header (Prominent & sharp on Mobile/Tablet screens <= 992px) -->
-            <div class="mobile-hero-header">
-              <div class="mobile-hero-badge">
-                <span class="vibe-pulse"></span>
-                <span>3D ROBOTICS &bull; MECHATRONICS</span>
-              </div>
-              <h1 class="mobile-hero-title">
-                SANGEETH<br>
-                <span class="mobile-name-accent">SASIKUMAR K S</span>
+            <!-- Left side: Iconic Hero Introduction (Matches Reference Image) -->
+            <div class="hero-left-intro" id="heroLeftIntro">
+              <div class="hero-role-tag">ENGINEER &bull; BUILDER &bull; PROBLEM SOLVER</div>
+              <h1 class="hero-main-name">
+                <span class="name-first">SANGEETH</span>
+                <span class="name-last">SASIKUMAR K S</span>
               </h1>
-              <p class="mobile-hero-subtitle">
-                B.Tech Mechatronics &bull; Robotics &bull; IoT &bull; Edge AI
-              </p>
+              <div class="hero-main-sub">
+                <strong>B.Tech Mechatronics Engineering</strong>
+                <p>Passionate about Robotics, IoT, Embedded AI and building real world solutions.</p>
+              </div>
+              <div class="hero-action-buttons">
+                <a href="#journey" class="hero-btn-journey" onclick="playBeep(640, 0.08)">
+                  <span>Explore My Journey</span>
+                  <span class="btn-arrow">&darr;</span>
+                </a>
+                <button class="hero-btn-showreel" onclick="openShowreelModal()" aria-label="Watch cinematic showreel">
+                  <span class="play-icon">&#9654;</span>
+                  <span>Watch Showreel</span>
+                </button>
+              </div>
+              <div class="hero-scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+                <div class="mouse-scroll-wheel">
+                  <div class="wheel-dot"></div>
+                </div>
+                <span>SCROLL TO EXPLORE &darr;</span>
+              </div>
             </div>
 
-            <!-- Interactive Action Controls (Positioned cleanly over full-scale visual) -->
-            <div class="hero-cta-group">
-              <a href="#projects" class="btn-primary" onclick="playBeep(660, 0.08)">
-                Explore My Projects &rarr;
-              </a>
-              <a href="#about" class="btn-secondary" onclick="playBeep(520, 0.08)">
-                About Me &#8599;
-              </a>
+            <!-- Center Floating AI Brain Hologram HUD Module (Matches Reference Image) -->
+            <div class="hero-ai-hud-module" id="heroAiHud">
+              <div class="ai-hud-header">
+                <img src="ai_brain_icon.jpg" alt="AI Brain Hologram" class="ai-brain-img" width="34" height="28">
+                <span class="ai-hud-title">AI</span>
+              </div>
+              <ul class="ai-hud-points">
+                <li><a href="#skills" onclick="playBeep(520, 0.05)"><span class="target-ring"></span> Robotics</a></li>
+                <li><a href="#skills" onclick="playBeep(540, 0.05)"><span class="target-ring"></span> IoT</a></li>
+                <li><a href="#skills" onclick="playBeep(560, 0.05)"><span class="target-ring"></span> Embedded Systems</a></li>
+                <li><a href="#skills" onclick="playBeep(580, 0.05)"><span class="target-ring"></span> Computer Vision</a></li>
+                <li><a href="#skills" onclick="playBeep(600, 0.05)"><span class="target-ring"></span> Mechatronics</a></li>
+                <li><a href="#skills" onclick="playBeep(620, 0.05)"><span class="target-ring"></span> Cybersecurity</a></li>
+              </ul>
             </div>
 
-            <div class="scroll-down-cue" id="heroScrollCue" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
-              <div class="scroll-mouse-icon"></div>
-              <span>SCROLL TO EXPLORE &darr;</span>
+            <!-- Pedestal Rotating Text Creed (Matches Reference Image) -->
+            <div class="pedestal-creed-band" id="pedestalCreedBand">
+              <div class="pedestal-creed-track">
+                <span>IDEAS &rarr; CIRCUITS &rarr; ROBOTS &rarr; REAL WORLD IMPACT &nbsp;&bull;&nbsp; IDEAS &rarr; CIRCUITS &rarr; ROBOTS &rarr; REAL WORLD IMPACT</span>
+              </div>
+            </div>
+
+            <!-- Right Side: 5 Interactive Holographic Glass Cards Deck (Matches Reference Image) -->
+            <div class="hero-conveyor-deck" id="heroConveyorDeck">
+              
+              <!-- Card 01: ABOUT 01 -->
+              <div class="deck-glass-card" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'}); playBeep(520, 0.06);" title="Explore About Me">
+                <div class="deck-card-topbar">
+                  <span class="deck-card-title">ABOUT</span>
+                  <span class="deck-card-num">01</span>
+                </div>
+                <div class="deck-card-img-wrap">
+                  <img src="card_thumb_about.jpg" alt="About Me Story" class="deck-card-img" width="115" height="105" loading="eager">
+                </div>
+                <div class="deck-card-links">
+                  <a href="#about" class="deck-sublink" onclick="event.stopPropagation(); playBeep(520, 0.05);">&rarr; My Story</a>
+                  <a href="#about" class="deck-sublink" onclick="event.stopPropagation(); playBeep(520, 0.05);">&rarr; Education</a>
+                  <a href="#about" class="deck-sublink" onclick="event.stopPropagation(); playBeep(520, 0.05);">&rarr; Interests</a>
+                  <a href="#about" class="deck-sublink" onclick="event.stopPropagation(); playBeep(520, 0.05);">&rarr; Goals</a>
+                </div>
+              </div>
+
+              <!-- Card 02: SKILLS 02 -->
+              <div class="deck-glass-card" onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'}); playBeep(560, 0.06);" title="Explore Technical Skills">
+                <div class="deck-card-topbar">
+                  <span class="deck-card-title">SKILLS</span>
+                  <span class="deck-card-num">02</span>
+                </div>
+                <div class="deck-card-img-wrap">
+                  <img src="card_thumb_skills.jpg" alt="Holographic Skills" class="deck-card-img" width="105" height="100" loading="eager">
+                </div>
+                <div class="deck-card-links">
+                  <a href="#skills" class="deck-sublink" onclick="event.stopPropagation(); playBeep(560, 0.05);">&rarr; Technical Skills</a>
+                  <a href="#skills" class="deck-sublink" onclick="event.stopPropagation(); playBeep(560, 0.05);">&rarr; Tools &amp; Technologies</a>
+                  <a href="#skills" class="deck-sublink" onclick="event.stopPropagation(); playBeep(560, 0.05);">&rarr; Certifications</a>
+                </div>
+              </div>
+
+              <!-- Card 03: PROJECTS 03 -->
+              <div class="deck-glass-card" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'}); playBeep(600, 0.06);" title="Explore Hardware Showcase">
+                <div class="deck-card-topbar">
+                  <span class="deck-card-title">PROJECTS</span>
+                  <span class="deck-card-num">03</span>
+                </div>
+                <div class="deck-card-img-wrap">
+                  <img src="card_thumb_projects.jpg" alt="Autonomous Robotics Deployments" class="deck-card-img" width="95" height="100" loading="eager">
+                </div>
+                <div class="deck-card-links">
+                  <a href="#projects" class="deck-sublink" onclick="event.stopPropagation(); playBeep(600, 0.05);">&rarr; Featured Projects</a>
+                  <a href="#projects" class="deck-sublink" onclick="event.stopPropagation(); playBeep(600, 0.05);">&rarr; IoT &amp; Embedded</a>
+                  <a href="#projects" class="deck-sublink" onclick="event.stopPropagation(); playBeep(600, 0.05);">&rarr; Robotics</a>
+                  <a href="#projects" class="deck-sublink" onclick="event.stopPropagation(); playBeep(600, 0.05);">&rarr; AI / Computer Vision</a>
+                </div>
+              </div>
+
+              <!-- Card 04: JOURNEY 04 -->
+              <div class="deck-glass-card" onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'}); playBeep(640, 0.06);" title="Explore Engineering Journey">
+                <div class="deck-card-topbar">
+                  <span class="deck-card-title">JOURNEY</span>
+                  <span class="deck-card-num">04</span>
+                </div>
+                <div class="deck-card-img-wrap">
+                  <img src="card_thumb_journey.jpg" alt="Engineering Milestones Journey" class="deck-card-img" width="88" height="95" loading="eager">
+                </div>
+                <div class="deck-card-links">
+                  <a href="#journey" class="deck-sublink" onclick="event.stopPropagation(); playBeep(640, 0.05);">&rarr; Timeline</a>
+                  <a href="#journey" class="deck-sublink" onclick="event.stopPropagation(); playBeep(640, 0.05);">&rarr; Achievements</a>
+                  <a href="#journey" class="deck-sublink" onclick="event.stopPropagation(); playBeep(640, 0.05);">&rarr; Internships</a>
+                  <a href="#journey" class="deck-sublink" onclick="event.stopPropagation(); playBeep(640, 0.05);">&rarr; Future Goals</a>
+                </div>
+              </div>
+
+              <!-- Card 05: CONTACT 05 -->
+              <div class="deck-glass-card" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'}); playBeep(680, 0.06);" title="Connect with Sangeeth">
+                <div class="deck-card-topbar">
+                  <span class="deck-card-title">CONTACT</span>
+                  <span class="deck-card-num">05</span>
+                </div>
+                <div class="deck-card-img-wrap">
+                  <img src="card_thumb_contact.jpg" alt="Global Communication Link" class="deck-card-img" width="85" height="95" loading="eager">
+                </div>
+                <div class="deck-card-links">
+                  <a href="#contact" class="deck-sublink" onclick="event.stopPropagation(); playBeep(680, 0.05);">&rarr; Let's Work Together</a>
+                  <a href="#contact" class="deck-sublink" onclick="event.stopPropagation(); playBeep(680, 0.05);">&rarr; Links</a>
+                  <a href="mailto:sangeethsasikumar47@gmail.com" class="deck-sublink" onclick="event.stopPropagation(); playBeep(680, 0.05);">&rarr; Resume / Dispatch</a>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -2975,33 +3565,24 @@
 
     <!-- 02 ABOUT SECTION: EXPLODED ROBOTICS LAB & WORKBENCH -->
         <!-- 02 ABOUT SECTION: EXPLODED ROBOTICS LAB & WORKBENCH -->
-    <section class="section cinematic-section" id="about">
-      <div class="cinematic-grid-layout">
-        <!-- Sticky 3D Canvas Stage -->
-        <div class="cinematic-canvas-pin">
-          <div class="cinematic-canvas-card" data-tilt>
-            <div class="corner-bracket tl"></div>
-            <div class="corner-bracket tr"></div>
-            <div class="corner-bracket bl"></div>
-            <div class="corner-bracket br"></div>
-            <div class="canvas-hud-top">
-              <div class="canvas-telemetry-badge">
+    <section class="section film-section" id="about">
+      <div class="film-grid-layout">
+        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
+        <div class="film-canvas-col">
+          <div class="film-stage-viewport">
+            <div class="film-hud-bar">
+              <div class="film-hud-tag">
                 <span class="hud-status-indicator"></span>
-                <span>STAGE 02 // ABOUT LAB</span>
+                <span>STAGE 02 // ABOUT ROBOTICS LAB</span>
               </div>
-              <div class="canvas-frame-indicator" id="aboutFrameNum">FR: 01/80</div>
+              <div class="film-frame-indicator" id="aboutFrameNum">FR: 01/80</div>
             </div>
-            <canvas id="aboutCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
-            <div class="canvas-scan-line"></div>
-            <div class="canvas-hud-bottom">
-              <span>KINEMATICS: DUAL-CORE ESP32</span>
-              <span>TELEMETRY: ONLINE</span>
-            </div>
+            <canvas id="aboutCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D About Robotics Lab sequence"></canvas>
           </div>
         </div>
 
-        <!-- Scrolling Content Column -->
-        <div class="cinematic-content-flow">
+        <!-- Film Content Column -->
+        <div class="film-content-col">
 <div class="section-tag reveal">01 // ABOUT ME</div>
       <h2 class="section-title reveal delay-1">Entering Sangeeth's Robotics Lab</h2>
       <p class="section-desc reveal delay-2">
@@ -3112,33 +3693,24 @@
     </section>
 
     <!-- 03 SKILLS SECTION: 3D HOLOGRAPHIC MODULES -->
-        <section class="section cinematic-section" id="skills">
-      <div class="cinematic-grid-layout reverse-desktop">
-        <!-- Sticky 3D Canvas Stage -->
-        <div class="cinematic-canvas-pin">
-          <div class="cinematic-canvas-card" data-tilt>
-            <div class="corner-bracket tl"></div>
-            <div class="corner-bracket tr"></div>
-            <div class="corner-bracket bl"></div>
-            <div class="corner-bracket br"></div>
-            <div class="canvas-hud-top">
-              <div class="canvas-telemetry-badge">
+        <section class="section film-section" id="skills">
+      <div class="film-grid-layout reverse-desktop">
+        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
+        <div class="film-canvas-col">
+          <div class="film-stage-viewport">
+            <div class="film-hud-bar">
+              <div class="film-hud-tag">
                 <span class="hud-status-indicator"></span>
                 <span>STAGE 03 // HOLOGRAPHIC SKILLS</span>
               </div>
-              <div class="canvas-frame-indicator" id="skillsFrameNum">FR: 01/80</div>
+              <div class="film-frame-indicator" id="skillsFrameNum">FR: 01/80</div>
             </div>
-            <canvas id="skillsCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
-            <div class="canvas-scan-line"></div>
-            <div class="canvas-hud-bottom">
-              <span>MODULES: 8 DOMAINS ONLINE</span>
-              <span>INFERENCE: SUB-MILLISECOND</span>
-            </div>
+            <canvas id="skillsCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Holographic Skills sequence"></canvas>
           </div>
         </div>
 
-        <!-- Scrolling Content Column -->
-        <div class="cinematic-content-flow">
+        <!-- Film Content Column -->
+        <div class="film-content-col">
 <div class="section-tag reveal">02 // TECHNICAL MODULES</div>
       <h2 class="section-title reveal delay-1">Holographic Skill Domains</h2>
       <p class="section-desc reveal delay-2">
@@ -3295,33 +3867,24 @@
     </section>
 
     <!-- 04 PROJECTS SECTION: 3D PROJECT SHOWCASE -->
-        <section class="section cinematic-section" id="projects">
-      <div class="cinematic-grid-layout">
-        <!-- Sticky 3D Canvas Stage -->
-        <div class="cinematic-canvas-pin">
-          <div class="cinematic-canvas-card" data-tilt>
-            <div class="corner-bracket tl"></div>
-            <div class="corner-bracket tr"></div>
-            <div class="corner-bracket bl"></div>
-            <div class="corner-bracket br"></div>
-            <div class="canvas-hud-top">
-              <div class="canvas-telemetry-badge">
+        <section class="section film-section" id="projects">
+      <div class="film-grid-layout">
+        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
+        <div class="film-canvas-col">
+          <div class="film-stage-viewport">
+            <div class="film-hud-bar">
+              <div class="film-hud-tag">
                 <span class="hud-status-indicator"></span>
                 <span>STAGE 04 // HARDWARE SHOWCASE</span>
               </div>
-              <div class="canvas-frame-indicator" id="projectsFrameNum">FR: 01/80</div>
+              <div class="film-frame-indicator" id="projectsFrameNum">FR: 01/80</div>
             </div>
-            <canvas id="projectsCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
-            <div class="canvas-scan-line"></div>
-            <div class="canvas-hud-bottom">
-              <span>SCHEMATICS: CLICK CARD TO INSPECT</span>
-              <span>TELEMETRY: VERIFIED</span>
-            </div>
+            <canvas id="projectsCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Hardware Showcase sequence"></canvas>
           </div>
         </div>
 
-        <!-- Scrolling Content Column -->
-        <div class="cinematic-content-flow">
+        <!-- Film Content Column -->
+        <div class="film-content-col">
 <div class="section-tag reveal">03 // HARDWARE SHOWCASE</div>
       <h2 class="section-title reveal delay-1">Featured Engineering Deployments</h2>
       <p class="section-desc reveal delay-2">
@@ -3480,33 +4043,24 @@
     </section>
 
     <!-- 05 JOURNEY SECTION: 3D CIRCUIT PATH TIMELINE -->
-        <section class="section cinematic-section" id="journey">
-      <div class="cinematic-grid-layout reverse-desktop">
-        <!-- Sticky 3D Canvas Stage -->
-        <div class="cinematic-canvas-pin">
-          <div class="cinematic-canvas-card" data-tilt>
-            <div class="corner-bracket tl"></div>
-            <div class="corner-bracket tr"></div>
-            <div class="corner-bracket bl"></div>
-            <div class="corner-bracket br"></div>
-            <div class="canvas-hud-top">
-              <div class="canvas-telemetry-badge">
+        <section class="section film-section" id="journey">
+      <div class="film-grid-layout reverse-desktop">
+        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
+        <div class="film-canvas-col">
+          <div class="film-stage-viewport">
+            <div class="film-hud-bar">
+              <div class="film-hud-tag">
                 <span class="hud-status-indicator"></span>
                 <span>STAGE 05 // 3D TIMELINE</span>
               </div>
-              <div class="canvas-frame-indicator" id="journeyFrameNum">FR: 01/80</div>
+              <div class="film-frame-indicator" id="journeyFrameNum">FR: 01/80</div>
             </div>
-            <canvas id="journeyCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
-            <div class="canvas-scan-line"></div>
-            <div class="canvas-hud-bottom">
-              <span>MILESTONES: 01 THROUGH 06</span>
-              <span>CONTINUOUS EVOLUTION</span>
-            </div>
+            <canvas id="journeyCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Timeline sequence"></canvas>
           </div>
         </div>
 
-        <!-- Scrolling Content Column -->
-        <div class="cinematic-content-flow">
+        <!-- Film Content Column -->
+        <div class="film-content-col">
 <div class="section-tag reveal">04 // 3D TIMELINE</div>
       <h2 class="section-title reveal delay-1">My Engineering Journey</h2>
       <p class="section-desc reveal delay-2">
@@ -3585,33 +4139,24 @@
     </section>
 
     <!-- 06 CONTACT SECTION: HOLOGRAPHIC COMMUNICATION HUB -->
-        <section class="section cinematic-section" id="contact">
-      <div class="cinematic-grid-layout">
-        <!-- Sticky 3D Canvas Stage -->
-        <div class="cinematic-canvas-pin">
-          <div class="cinematic-canvas-card" data-tilt>
-            <div class="corner-bracket tl"></div>
-            <div class="corner-bracket tr"></div>
-            <div class="corner-bracket bl"></div>
-            <div class="corner-bracket br"></div>
-            <div class="canvas-hud-top">
-              <div class="canvas-telemetry-badge">
+        <section class="section film-section" id="contact">
+      <div class="film-grid-layout">
+        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
+        <div class="film-canvas-col">
+          <div class="film-stage-viewport">
+            <div class="film-hud-bar">
+              <div class="film-hud-tag">
                 <span class="hud-status-indicator"></span>
                 <span>STAGE 06 // COMMUNICATION LINK</span>
               </div>
-              <div class="canvas-frame-indicator" id="contactFrameNum">FR: 01/80</div>
+              <div class="film-frame-indicator" id="contactFrameNum">FR: 01/80</div>
             </div>
-            <canvas id="contactCanvas" class="cinematic-sequence-canvas" width="1280" height="720"></canvas>
-            <div class="canvas-scan-line"></div>
-            <div class="canvas-hud-bottom">
-              <span>BAUD RATE: 115200</span>
-              <span>MISSION STATUS: READY</span>
-            </div>
+            <canvas id="contactCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Communication Link sequence"></canvas>
           </div>
         </div>
 
-        <!-- Scrolling Content Column -->
-        <div class="cinematic-content-flow">
+        <!-- Film Content Column -->
+        <div class="film-content-col">
 <div class="section-tag reveal">05 // COMMUNICATION LINK</div>
       <h2 class="section-title reveal delay-1">Let's Build Something Together</h2>
       <p class="section-desc reveal delay-2">
@@ -4458,6 +5003,10 @@
         }
 
         const deckHotspots = document.getElementById('heroDeckHotspots');
+        const heroLeftIntro = document.getElementById('heroLeftIntro');
+        const heroAiHud = document.getElementById('heroAiHud');
+        const heroConveyorDeck = document.getElementById('heroConveyorDeck');
+        const pedestalCreedBand = document.getElementById('pedestalCreedBand');
 
         if (heroProgress < 0.16) {
           // STAGE 1: INITIAL HERO — Full scale rover turntable visual, action buttons active
@@ -4466,6 +5015,10 @@
             heroContentCol.style.pointerEvents = 'auto';
           }
           if (deckHotspots) deckHotspots.style.opacity = '1';
+          if (heroLeftIntro) { heroLeftIntro.style.opacity = '1'; heroLeftIntro.style.pointerEvents = 'auto'; }
+          if (heroAiHud) { heroAiHud.style.opacity = '1'; heroAiHud.style.pointerEvents = 'auto'; }
+          if (heroConveyorDeck) { heroConveyorDeck.style.opacity = '1'; heroConveyorDeck.style.pointerEvents = 'auto'; }
+          if (pedestalCreedBand) pedestalCreedBand.style.opacity = '1';
           if (explodedCad) explodedCad.style.opacity = '0';
           if (stageTelemetry) stageTelemetry.style.opacity = '0';
 
@@ -4481,6 +5034,11 @@
             heroContentCol.style.pointerEvents = t > 0.4 ? 'none' : 'auto';
           }
           if (deckHotspots) deckHotspots.style.opacity = Math.max(0, 1 - t * 2).toString();
+          const fadeVal = Math.max(0, 1 - t * 1.8).toString();
+          if (heroLeftIntro) { heroLeftIntro.style.opacity = fadeVal; heroLeftIntro.style.pointerEvents = t > 0.4 ? 'none' : 'auto'; }
+          if (heroAiHud) { heroAiHud.style.opacity = fadeVal; heroAiHud.style.pointerEvents = t > 0.4 ? 'none' : 'auto'; }
+          if (heroConveyorDeck) { heroConveyorDeck.style.opacity = fadeVal; heroConveyorDeck.style.pointerEvents = t > 0.4 ? 'none' : 'auto'; }
+          if (pedestalCreedBand) pedestalCreedBand.style.opacity = fadeVal;
           if (explodedCad) explodedCad.style.opacity = '0';
           if (stageTelemetry) stageTelemetry.style.opacity = (t * 0.7).toString();
 
@@ -4496,6 +5054,10 @@
             heroContentCol.style.pointerEvents = 'none';
           }
           if (deckHotspots) deckHotspots.style.opacity = '0';
+          if (heroLeftIntro) { heroLeftIntro.style.opacity = '0'; heroLeftIntro.style.pointerEvents = 'none'; }
+          if (heroAiHud) { heroAiHud.style.opacity = '0'; heroAiHud.style.pointerEvents = 'none'; }
+          if (heroConveyorDeck) { heroConveyorDeck.style.opacity = '0'; heroConveyorDeck.style.pointerEvents = 'none'; }
+          if (pedestalCreedBand) pedestalCreedBand.style.opacity = '0';
           if (explodedCad) explodedCad.style.opacity = '0';
           if (stageTelemetry) {
             stageTelemetry.style.opacity = '1';
@@ -4514,6 +5076,10 @@
             heroContentCol.style.pointerEvents = 'none';
           }
           if (deckHotspots) deckHotspots.style.opacity = '0';
+          if (heroLeftIntro) { heroLeftIntro.style.opacity = '0'; heroLeftIntro.style.pointerEvents = 'none'; }
+          if (heroAiHud) { heroAiHud.style.opacity = '0'; heroAiHud.style.pointerEvents = 'none'; }
+          if (heroConveyorDeck) { heroConveyorDeck.style.opacity = '0'; heroConveyorDeck.style.pointerEvents = 'none'; }
+          if (pedestalCreedBand) pedestalCreedBand.style.opacity = '0';
           if (explodedCad) explodedCad.style.opacity = (t * 1.2).toString();
           if (stageTelemetry) {
             stageTelemetry.style.opacity = '1';
@@ -4626,7 +5192,7 @@
             card.style.transform = `perspective(1000px) rotateX(${-y * 9}deg) rotateY(${x * 9}deg) translateY(-4px)`;
           });
           card.addEventListener('mouseleave', () => {
-            card.style.transform = '';
+            const cvs = card.querySelector('canvas'); if (cvs) cvs.style.transform = '';
           });
         });
 
@@ -5426,12 +5992,12 @@
 
     /* 3D Perspective Tilt on Cinematic Canvas Cards for Desktop */
     if (window.innerWidth > 992) {
-      document.querySelectorAll('.cinematic-canvas-card[data-tilt]').forEach(card => {
+      document.querySelectorAll('.film-stage-viewport').forEach(card => {
         card.addEventListener('mousemove', (e) => {
           const rect = card.getBoundingClientRect();
           const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
           const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-          card.style.transform = 'perspective(1000px) rotateX(' + (-y * 4) + 'deg) rotateY(' + (x * 5) + 'deg) translateY(-2px)';
+          const cvs = card.querySelector('canvas'); if (cvs) cvs.style.transform = 'perspective(1200px) rotateX(' + (-y * 3.5) + 'deg) rotateY(' + (x * 4.5) + 'deg) scale(1.02)';
         });
         card.addEventListener('mouseleave', () => {
           card.style.transform = '';
@@ -5465,6 +6031,64 @@
         }
       });
     }, 150);
-  </script>
+  
+    /* ==========================================================================
+       CINEMATIC SHOWREEL MODAL CONTROLLER
+       ========================================================================== */
+    window.openShowreelModal = function() {
+      const modal = document.getElementById('showreelModal');
+      const video = document.getElementById('showreelVideoPlayer');
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (video) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        }
+        playBeep(720, 0.08);
+      }
+    };
+
+    window.closeShowreelModal = function() {
+      const modal = document.getElementById('showreelModal');
+      const video = document.getElementById('showreelVideoPlayer');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        if (video) video.pause();
+        playBeep(480, 0.06);
+      }
+    };
+
+    window.closeShowreelOnBg = function(e) {
+      if (e.target.id === 'showreelModal') closeShowreelModal();
+    };
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeShowreelModal();
+    });
+</script>
+
+  <!-- CINEMATIC SHOWREEL MODAL (4K/HD Video Player) -->
+  <div class="showreel-modal" id="showreelModal" onclick="closeShowreelOnBg(event)">
+    <div class="showreel-modal-dialog">
+      <div class="showreel-modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="hud-status-indicator"></span>
+          <span style="font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 1.2px; color: var(--cyan);">SHOWREEL // ROBOTICS LAB CINEMATIC REEL</span>
+        </div>
+        <button class="showreel-close-btn" onclick="closeShowreelModal()" aria-label="Close Showreel">&times;</button>
+      </div>
+      <div class="showreel-video-wrapper">
+        <video id="showreelVideoPlayer" src="Robotic_rover_interface_animation_20260926221438.mp4" controls playsinline preload="auto" style="width: 100%; height: 100%; object-fit: contain; background: #000;"></video>
+      </div>
+      <div class="showreel-modal-footer">
+        <span>AUTONOMOUS DIFFERENTIAL ROVER V2 &bull; ESP32 DUAL-CORE &bull; MECHATRONICS LAB</span>
+        <a href="#projects" class="btn-primary" onclick="closeShowreelModal(); document.getElementById('projects').scrollIntoView({behavior:'smooth'})" style="padding: 6px 16px; font-size: 0.75rem;">
+          Explore Projects &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
