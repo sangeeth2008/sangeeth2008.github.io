@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#02040a">
+  <title>Privacy Policy | Sangeeth Sasikumar K S Portfolio</title>
+  <meta name="description" content="Privacy Policy for the official engineering portfolio of Sangeeth Sasikumar K S. Explains data collection, usage, retention, deletion rights, and plain-language summary.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://sangeeth2008-github-io.vercel.app/privacy.html">
+  <meta name="google-site-verification" content="googleb89d3c21c331b445">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sangeeth2008-github-io.vercel.app/privacy.html">
+  <meta property="og:title" content="Privacy Policy | Sangeeth Sasikumar K S">
+  <meta property="og:description" content="Privacy Policy and data governance for Sangeeth Sasikumar K S portfolio website.">
+  <meta property="og:image" content="https://sangeeth2008-github-io.vercel.app/sangeeth.jpg">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7PMLJCSH4F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7PMLJCSH4F');
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #02040a;
+      --bg-surface: rgba(8, 14, 30, 0.75);
+      --bg-card: rgba(10, 18, 42, 0.65);
+      --cyan: #00b4ff;
+      --cyan-glow: rgba(0, 180, 255, 0.45);
+      --neon-mint: #00e676;
+      --laser-red: #ff1744;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-faint: #475569;
+      --border-glass: rgba(0, 180, 255, 0.22);
+      --border-glass-hover: rgba(0, 180, 255, 0.65);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .cyber-bg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: 
+        linear-gradient(rgba(0, 180, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 180, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 6vw;
+      background: rgba(3, 6, 16, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-glass);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--cyan), #3d5afe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 1rem;
+      color: #000;
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    .nav-back {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--cyan);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-glass);
+      background: rgba(0, 180, 255, 0.08);
+      transition: all 0.25s ease;
+    }
+    .nav-back:hover {
+      background: var(--cyan);
+      color: #000;
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    main {
+      flex: 1;
+      position: relative;
+      z-index: 10;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 6vw 100px;
+      width: 100%;
+    }
+
+    .doc-meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .doc-badge {
+      color: var(--cyan);
+      background: rgba(0, 180, 255, 0.12);
+      border: 1px solid rgba(0, 180, 255, 0.35);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .doc-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.15;
+    }
+
+    /* Plain-Language Executive Summary Box */
+    .summary-box {
+      background: linear-gradient(135deg, rgba(0, 180, 255, 0.1) 0%, rgba(61, 90, 254, 0.06) 100%);
+      border: 1px solid var(--cyan);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0, 180, 255, 0.1);
+    }
+
+    .summary-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .summary-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .summary-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .summary-list li::before {
+      content: '✓';
+      color: var(--neon-mint);
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    /* Changelog / Version History */
+    .changelog-box {
+      background: rgba(10, 18, 42, 0.55);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 40px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .changelog-title {
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .changelog-item {
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Content Body */
+    .doc-section {
+      margin-bottom: 36px;
+    }
+
+    .doc-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .doc-section h2::before {
+      content: '//';
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+    }
+
+    .doc-section p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+
+    .doc-section ul {
+      margin-left: 20px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .doc-section strong {
+      color: var(--text-main);
+    }
+
+    .doc-section a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--cyan);
+    }
+    .doc-section a:hover {
+      color: #fff;
+      border-bottom-style: solid;
+    }
+
+    .contact-card {
+      background: rgba(8, 16, 36, 0.7);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .contact-card .email {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      color: var(--cyan);
+      margin-top: 8px;
+      display: block;
+      font-weight: 600;
+    }
+
+    .footer {
+      padding: 30px 6vw;
+      border-top: 1px solid var(--border-glass);
+      background: rgba(2, 4, 10, 0.95);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cyber-bg-overlay"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="brand-link">
+      <div class="brand-icon">S</div>
+      <span>SANGEETH SASIKUMAR K S</span>
+    </a>
+    <a href="index.html" class="nav-back">
+      &larr; Return to 3D Lab
+    </a>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="doc-meta-strip">
+      <span class="doc-badge">LEGAL COMPLIANCE // PRIVACY</span>
+      <span>Effective Date: September 8, 2026</span>
+      <span>Last Updated: September 25, 2026</span>
+      <span>Version: 2.1</span>
+    </div>
+
+    <h1 class="doc-title">Privacy Policy</h1>
+
+    <!-- Plain-Language Summary Box -->
+    <div class="summary-box">
+      <div class="summary-header">
+        <span>⚡ PLAIN-LANGUAGE SUMMARY (TL;DR)</span>
+      </div>
+      <ul class="summary-list">
+        <li><strong>We do not sell your data.</strong> We have zero interest in marketing, monetizing, or broker-selling your personal information.</li>
+        <li><strong>No accounts or passwords:</strong> This portfolio does not require registration, login credentials, or payment details.</li>
+        <li><strong>Minimal telemetry:</strong> We use privacy-conscious Google Analytics to observe overall visitor counts and page interactions.</li>
+        <li><strong>You control your correspondence:</strong> If you send an email or message, we only use your email address to reply to your inquiry.</li>
+        <li><strong>Simple deletion requests:</strong> You can request immediate erasure of any communication records by emailing our dedicated legal address.</li>
+      </ul>
+    </div>
+
+    <!-- Version History / Changelog -->
+    <div class="changelog-box">
+      <div class="changelog-title">
+        <span>📋 VERSION HISTORY &amp; CHANGELOG</span>
+      </div>
+      <div class="changelog-item">
+        <strong>v2.1 (September 25, 2026):</strong> Added dedicated legal query dispatch address, formal data retention duration standards, and explicit user deletion request procedures.
+      </div>
+      <div class="changelog-item" style="margin-top: 6px;">
+        <strong>v2.0 (September 8, 2026):</strong> Initial formal release coinciding with portfolio deployment and Google Analytics (gtag.js) measurement integration.
+      </div>
+    </div>
+
+    <!-- Section 1: Overview & Scope -->
+    <div class="doc-section">
+      <h2>1. Overview &amp; Scope</h2>
+      <p>
+        This Privacy Policy outlines how <strong>Sangeeth Sasikumar K S</strong> ("we", "us", or "operator") collects, handles, stores, and protects personal information when you visit and interact with the official engineering portfolio website located at <a href="https://sangeeth2008-github-io.vercel.app/">https://sangeeth2008-github-io.vercel.app/</a>.
+      </p>
+      <p>
+        We respect your privacy and are committed to maintaining transparent data practices in compliance with global standards, including the General Data Protection Regulation (GDPR) and the California Consumer Privacy Act (CCPA).
+      </p>
+    </div>
+
+    <!-- Section 2: Information We Collect -->
+    <div class="doc-section">
+      <h2>2. Information Collected</h2>
+      <p>We collect information in two limited ways:</p>
+      <ul>
+        <li>
+          <strong>Automatically Collected Technical Data:</strong> When you navigate the website, certain non-identifying technical information is processed, such as browser type, operating system, device screen resolution, approximate geographic region (country/city level, without precise GPS coordinates), referring URL, visit timestamp, and page interaction duration.
+        </li>
+        <li>
+          <strong>Voluntarily Disclosed Direct Communication:</strong> If you choose to contact us via direct email (<a href="mailto:sangeethsasikumar47@gmail.com">sangeethsasikumar47@gmail.com</a>), GitHub, or LinkedIn, we receive the personal information you explicitly provide (such as your name, email address, and message contents).
+        </li>
+      </ul>
+      <p>
+        We <strong>do not</strong> collect sensitive personal data such as financial account details, government identification numbers, biometrics, or protected demographic categories.
+      </p>
+    </div>
+
+    <!-- Section 3: How We Use Information -->
+    <div class="doc-section">
+      <h2>3. Purpose of Processing</h2>
+      <p>The collected information is utilized strictly for the following purposes:</p>
+      <ul>
+        <li>Monitoring website availability, performance, and server stability.</li>
+        <li>Analyzing aggregated traffic patterns to optimize the 3D WebGL experience across different devices and screen dimensions.</li>
+        <li>Responding to project collaborations, hiring inquiries, engineering feedback, and research discussions sent by visitors.</li>
+        <li>Detecting and mitigating malicious traffic, Denial of Service (DoS) attempts, and abusive automated scrapers.</li>
+      </ul>
+    </div>
+
+    <!-- Section 4: Analytics & Third-Party Services -->
+    <div class="doc-section">
+      <h2>4. Analytics &amp; Infrastructure Services</h2>
+      <p>To deliver and analyze this site, we utilize trusted third-party providers:</p>
+      <ul>
+        <li>
+          <strong>Google Analytics (gtag.js):</strong> Measures anonymous traffic and interaction events. IP anonymization is applied where mandated. You can opt out using the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a>.
+        </li>
+        <li>
+          <strong>Google Fonts &amp; CDN Services:</strong> Google Fonts (Space Grotesk, Outfit, JetBrains Mono) and CDNJS (Three.js WebGL library) are loaded to render modern technical typography and 3D graphics.
+        </li>
+        <li>
+          <strong>Hosting (Vercel / GitHub Pages):</strong> Edge infrastructure providers that serve static HTML/CSS/JS assets and maintain standard access server logs for operational security.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Section 5: Data Retention & Deletion -->
+    <div class="doc-section">
+      <h2>5. Data Retention &amp; Deletion Rights</h2>
+      <p>
+        <strong>Retention Period:</strong> Aggregated analytical metrics collected via Google Analytics are automatically retained according to Google's standard retention cycle (up to 14 months) after which they are systematically purged. Direct communication emails are retained only as long as necessary to conduct project or professional correspondence.
+      </p>
+      <p>
+        <strong>Your Deletion &amp; Access Rights:</strong> Regardless of your physical location, you have the right to:
+      </p>
+      <ul>
+        <li>Request confirmation whether any personal data concerning you is stored.</li>
+        <li>Request a copy of any correspondence records containing your information.</li>
+        <li>Request the immediate erasure ("right to be forgotten") of your correspondence and contact history from our local records.</li>
+      </ul>
+      <p>
+        To execute any deletion or data request, simply dispatch an email with your request to the legal contact address below. We process requests within <strong>14 business days</strong> with zero fee.
+      </p>
+    </div>
+
+    <!-- Section 6: Children's Privacy -->
+    <div class="doc-section">
+      <h2>6. Children's Privacy</h2>
+      <p>
+        This portfolio is an educational engineering showcase and is not directed to children under 13 years of age. We do not knowingly collect personal data from minors. If you believe a minor has provided us with personal information, please contact us for prompt deletion.
+      </p>
+    </div>
+
+    <!-- Section 7: Contact for Legal & Privacy Queries -->
+    <div class="doc-section">
+      <h2>7. Contact for Legal &amp; Privacy Queries</h2>
+      <p>
+        For inquiries regarding this Privacy Policy, data handling practices, or to submit a data deletion request, please contact:
+      </p>
+      <div class="contact-card">
+        <strong>Data Controller &amp; Operator:</strong> Sangeeth Sasikumar K S<br>
+        <strong>Discipline:</strong> Mechatronics Engineering<br>
+        <strong>Institution:</strong> Jyothi Engineering College, Kerala, India<br>
+        <strong>Dedicated Legal &amp; Privacy Email:</strong>
+        <a href="mailto:sangeethsasikumar47@gmail.com" class="email">sangeethsasikumar47@gmail.com</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>&copy; 2026 Sangeeth Sasikumar K S. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="privacy.html" style="font-weight: 700; color: #fff;">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="cookies.html">Cookie Policy</a>
+      <a href="index.html">3D Lab Home</a>
+    </div>
+  </footer>
+
+</body>
+</html>
