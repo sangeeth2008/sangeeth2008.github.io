@@ -154,7 +154,7 @@
   };
 
   /* ==========================================================================
-     2. GLOBAL STATE & HELPERS
+     2. GLOBAL STATE & HELPERS (AUDIO SYNTH, DUAL THEME, COMMAND PALETTE, SONAR)
      ========================================================================== */
   let lenis = null;
   const isMobile = () => window.innerWidth < 900 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
@@ -175,6 +175,203 @@
   }
   setInterval(updateClock, 1000);
   updateClock();
+
+  /* --------------------------------------------------------------------------
+     WEB AUDIO PARAMETRIC SYNTHESIZER SFX SYSTEM
+     -------------------------------------------------------------------------- */
+  let audioCtx = null;
+  let sfxEnabled = localStorage.getItem('sangeeth_sfx') === '1';
+
+  function initAudio() {
+    if (!audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) audioCtx = new AudioContext();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playSfx(type = 'click') {
+    if (!sfxEnabled) return;
+    try {
+      initAudio();
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'click') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(820, now);
+        osc.frequency.exponentialRampToValueAtTime(180, now + 0.035);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+        osc.start(now);
+        osc.stop(now + 0.035);
+      } else if (type === 'tone') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(659.25, now);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+        osc.start(now);
+        osc.stop(now + 0.07);
+      } else if (type === 'key') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(1200, now);
+        gain.gain.setValueAtTime(0.015, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+        osc.start(now);
+        osc.stop(now + 0.02);
+      } else if (type === 'boot') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      }
+    } catch (e) {}
+  }
+
+  function toggleSfx() {
+    sfxEnabled = !sfxEnabled;
+    localStorage.setItem('sangeeth_sfx', sfxEnabled ? '1' : '0');
+    updateSfxUI();
+    if (sfxEnabled) playSfx('boot');
+    showToast(sfxEnabled ? 'Audio SFX Synthesizer: ACTIVE' : 'Audio SFX Synthesizer: MUTED');
+  }
+
+  function updateSfxUI() {
+    const btn = document.getElementById('sfxToggleBtn');
+    if (btn) btn.classList.toggle('is-active', sfxEnabled);
+  }
+
+  /* --------------------------------------------------------------------------
+     WIRE CODE DUAL-THEME ENGINE (DARK GRAPHITE <-> LIGHT BONE)
+     -------------------------------------------------------------------------- */
+  function initTheme() {
+    const saved = localStorage.getItem('sangeeth_theme');
+    const theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeUI(theme);
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('sangeeth_theme', next);
+    updateThemeUI(next);
+    playSfx('click');
+    showToast(`Theme Switched: ${next.toUpperCase()}`);
+  }
+
+  function updateThemeUI(theme) {
+    const btn = document.getElementById('themeToggleBtn');
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0E1013' : '#F2EFE8');
+    if (btn) btn.classList.toggle('is-active', theme === 'light');
+  }
+
+  /* --------------------------------------------------------------------------
+     COMMAND PALETTE (CTRL+K / CMD+K) CONTROLLER
+     -------------------------------------------------------------------------- */
+  function initCommandPalette() {
+    const dlg = document.getElementById('cmdPaletteDialog');
+    const btn = document.getElementById('cmdPaletteBtn');
+    const inp = document.getElementById('cmdPaletteInput');
+    const list = document.getElementById('cmdPaletteList');
+    if (!dlg) return;
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (dlg.open) dlg.close();
+        else { dlg.showModal(); inp?.focus(); playSfx('click'); }
+      }
+    });
+
+    btn?.addEventListener('click', () => {
+      dlg.showModal();
+      inp?.focus();
+      playSfx('click');
+    });
+
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+
+    inp?.addEventListener('input', () => {
+      const q = inp.value.trim().toLowerCase();
+      const items = list?.querySelectorAll('.cmd-item');
+      items?.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+      playSfx('key');
+    });
+
+    list?.addEventListener('click', (e) => {
+      const item = e.target.closest('.cmd-item');
+      if (!item) return;
+      const action = item.dataset.action;
+      const target = item.dataset.target;
+      dlg.close();
+
+      if (action === 'nav' && target) {
+        const el = document.querySelector(target);
+        if (el && lenis) lenis.scrollTo(el);
+        else if (el) el.scrollIntoView({ behavior: 'smooth' });
+        playSfx('click');
+      } else if (action === 'theme') {
+        toggleTheme();
+      } else if (action === 'sfx') {
+        toggleSfx();
+      } else if (action === 'resume') {
+        window.open('assets/Sangeeth_Sasikumar_CV.pdf', '_blank');
+        playSfx('click');
+      }
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     TOUCH SONAR RIPPLES (SUPERCHARGED FOR PHONES & TOUCHSCREENS)
+     -------------------------------------------------------------------------- */
+  function initTouchSonar() {
+    const container = document.getElementById('sonarContainer');
+    if (!container) return;
+
+    const triggerSonar = (x, y) => {
+      const ripple = document.createElement('div');
+      ripple.className = 'sonar-ripple';
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      container.appendChild(ripple);
+      playSfx('click');
+      setTimeout(() => ripple.remove(), 750);
+    };
+
+    window.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('button, a, input, select, textarea, canvas, .case, .reel, .cmd-dialog')) return;
+      triggerSonar(e.clientX, e.clientY);
+    }, { passive: true });
+  }
+
+  /* Toast Notification Helper */
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('is-visible');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.classList.remove('is-visible');
+    }, 2400);
+  }
 
   /* ==========================================================================
      3. PRELOADER & HERO CANVAS FRAME SCRUBBER (240 FRAMES)
@@ -1023,6 +1220,7 @@
           if (this.lblA) this.lblA.textContent = cfg.a;
           if (this.lblB) this.lblB.textContent = cfg.b;
           if (this.lblC) this.lblC.textContent = cfg.c;
+          playSfx('tone');
         });
       });
 
@@ -1398,8 +1596,13 @@
   <span class="t-accent">open &lt;id&gt;</span>         — Launch schematic case study (e.g. 'open patrol-robot')
   <span class="t-accent">about</span>           — Sangeeth's discipline, university &amp; engineering creed
   <span class="t-accent">skills</span>          — Core technical firmware &amp; hardware capabilities
+  <span class="t-accent">resume</span>          — Download official Curriculum Vitae (PDF)
   <span class="t-accent">contact</span>         — Direct email dispatch &amp; social profiles
+  <span class="t-accent">theme</span>           — Toggle theme (Dark Graphite / Light Bone)
+  <span class="t-accent">sfx</span>             — Toggle Web Audio parametric synthesizer
+  <span class="t-accent">matrix</span>          — Telemetry hardware matrix readout
   <span class="t-accent">bench</span>           — Live ESP32 Rover V2 hardware status
+  <span class="t-accent">estop</span>           — Emergency hardware stop trigger
   <span class="t-accent">clear</span>           — Clear terminal buffer
   <span class="t-accent">sudo hire-me</span>    — Accelerated contact pipeline`);
       },
@@ -1440,6 +1643,34 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
 <span class="t-ok">✓ FIRMWARE:</span> Non-blocking FSM Loop (10ms tick, 0% delay calls)
 <span class="t-accent">ROVER V2 IN CHASSIS VALIDATION.</span>`);
       },
+      'theme': () => {
+        toggleTheme();
+        print(`<span class="t-ok">Theme switched successfully.</span>`);
+      },
+      'sfx': () => {
+        toggleSfx();
+        print(`<span class="t-ok">Audio SFX state updated.</span>`);
+      },
+      'resume': () => {
+        print(`<span class="t-ok">Dispatching Curriculum Vitae PDF (Sangeeth_Sasikumar_CV.pdf)...</span>`);
+        window.open('assets/Sangeeth_Sasikumar_CV.pdf', '_blank');
+      },
+      'cv': () => {
+        commands.resume();
+      },
+      'matrix': () => {
+        print(`<span class="t-accent">=== CORE TELEMETRY MATRIX ===</span>
+CORE FREQ:   240 MHz (XTAL locked)
+HEAP FREE:   284 KB internal SRAM
+BUS I2C:     400 kHz ACK (MPU6050, LCD)
+BUS SPI:     10 MHz (OV2640 DVP)
+PWM LEDC:    20 kHz 14-bit resolution
+SAFETY CONE: &gt; 25cm all zones clear`);
+      },
+      'estop': () => {
+        print(`<span class="t-warn">⚠ EMERGENCY STOP TRIGGERED.</span> TB6612FNG disabled. PWM duty set to 0. MPU6050 angle latch active.`);
+        playSfx('tone');
+      },
       'clear': () => {
         body.innerHTML = '';
       },
@@ -1450,6 +1681,8 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
         }, 600);
       }
     };
+
+    input.addEventListener('input', () => playSfx('key'));
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1882,6 +2115,18 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
      INITIALIZATION ORCHESTRATION
      ========================================================================== */
   window.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    initCommandPalette();
+    initTouchSonar();
+
+    // Hook navbar tools
+    document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
+    document.getElementById('sfxToggleBtn')?.addEventListener('click', toggleSfx);
+
+    // Audio unlocking on first gesture
+    window.addEventListener('click', () => initAudio(), { once: true });
+    window.addEventListener('touchstart', () => initAudio(), { once: true });
+
     const scrubber = new HeroScrubber();
     initScrollExperience(scrubber);
     new HeroParticleConstellation(scrubber);

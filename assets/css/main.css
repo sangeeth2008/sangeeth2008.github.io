@@ -1,23 +1,42 @@
 /* ==========================================================================
-   SANGEETH SASIKUMAR K S — PORTFOLIO
-   Design system: "Bench Noir": near-black studio, editorial type, one blue signal.
+   SANGEETH SASIKUMAR K S — FLAGSHIP MECHATRONICS ENGINE
+   Design system: "Wire Code" — Graphite base (dark), Bone base (light),
+   5 functional Signal Wire accents, fluid typography, 60fps GPU animation.
    ========================================================================== */
 
 :root {
-  /* Color */
-  --bg: #070708;
-  --bg-2: #0c0c0e;
-  --surface: #111114;
-  --surface-2: #17171b;
+  /* 5 Functional Signal Wire Accents */
+  --sig-power: #f59e0b;      /* 1. Amber: Power / Flagship */
+  --sig-power-glow: rgba(245, 158, 11, 0.4);
+  --sig-data: #06b6d4;       /* 2. Cyan: Data / IoT & Telemetry */
+  --sig-data-glow: rgba(6, 182, 212, 0.4);
+  --sig-control: #f43f5e;    /* 3. Magenta-Red: Control / Robotics */
+  --sig-control-glow: rgba(244, 63, 94, 0.4);
+  --sig-intel: #8b5cf6;      /* 4. Violet: Intelligence / Edge AI */
+  --sig-intel-glow: rgba(139, 92, 246, 0.4);
+  --sig-safety: #10b981;     /* 5. Green: Safety / Failsafes */
+  --sig-safety-glow: rgba(16, 185, 129, 0.4);
+
+  /* Primary Accent & Legacy mappings */
+  --accent: var(--sig-power);
+  --accent-2: #fbbf24;
+  --accent-glow: var(--sig-power-glow);
+  --signal: var(--sig-control);
+
+  /* DARK GRAPHITE (Default) */
+  --bg: #0E1013;
+  --bg-2: #14171C;
+  --surface: #181D24;
+  --surface-2: #202630;
   --line: rgba(255, 255, 255, 0.08);
   --line-2: rgba(255, 255, 255, 0.16);
-  --fg: #ededea;
-  --fg-2: #a3a39e;
-  --fg-3: #6a6a66;
-  --accent: #4c8dff;
-  --accent-2: #9cc0ff;
-  --accent-glow: rgba(76, 141, 255, 0.35);
-  --signal: #ff6b2c;
+  --fg: #F3F4F6;
+  --fg-2: #9CA3AF;
+  --fg-3: #6B7280;
+  --glass-bg: rgba(20, 24, 30, 0.78);
+  --glass-blur: blur(24px);
+  --card-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  --pcb-trace: rgba(255, 255, 255, 0.05);
 
   /* Type */
   --font-sans: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -27,17 +46,40 @@
   /* Layout */
   --pad: clamp(20px, 4vw, 56px);
   --max: 1520px;
-  --radius: 6px;
+  --radius: 8px;
+  --radius-lg: 16px;
   --nav-h: 76px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* LIGHT BONE THEME */
+[data-theme="light"] {
+  --bg: #F2EFE8;
+  --bg-2: #E8E4DA;
+  --surface: #DDD8CD;
+  --surface-2: #D2CCBE;
+  --line: rgba(0, 0, 0, 0.08);
+  --line-2: rgba(0, 0, 0, 0.16);
+  --fg: #14171C;
+  --fg-2: #4B5563;
+  --fg-3: #6B7280;
+  --glass-bg: rgba(232, 228, 218, 0.85);
+  --card-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+  --pcb-trace: rgba(0, 0, 0, 0.05);
 }
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; background: var(--bg); color-scheme: dark; }
+html {
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+  color-scheme: dark light;
+  transition: background-color 0.35s var(--ease-out), color 0.35s var(--ease-out);
+}
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -1002,3 +1044,207 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .grain { display: none; }
 }
+
+/* ==========================================================================
+   FLAGSHIP SUPERCHARGED EXTENSIONS (Awwwards / $1B Studio Standard)
+   ========================================================================== */
+
+/* Navbar Tools: Theme Switcher, Audio SFX, Command Palette, Resume */
+.nav__tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav__tool-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .3s var(--ease-out);
+  position: relative;
+}
+.nav__tool-btn:hover {
+  border-color: var(--sig-power);
+  color: var(--sig-power);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--sig-power-glow);
+}
+.nav__tool-btn svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.nav__tool-btn.is-active {
+  border-color: var(--sig-power);
+  color: var(--sig-power);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+/* Dedicated Resume Button */
+.btn--resume {
+  border-color: var(--sig-power);
+  color: var(--fg);
+  gap: 8px;
+  transition: all .35s var(--ease-out);
+}
+.btn--resume:hover {
+  background: var(--sig-power);
+  color: #0E1013 !important;
+  box-shadow: 0 6px 20px var(--sig-power-glow);
+  transform: translateY(-2px);
+}
+.btn--resume svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+/* 5 Signal Wire Theme Tinting */
+.sig-power { color: var(--sig-power) !important; }
+.sig-data { color: var(--sig-data) !important; }
+.sig-control { color: var(--sig-control) !important; }
+.sig-intel { color: var(--sig-intel) !important; }
+.sig-safety { color: var(--sig-safety) !important; }
+
+/* Capability Cards Colored by Signal Wire */
+.cap[data-sig="power"] { --card-glow: var(--sig-power-glow); border-top: 2px solid var(--sig-power); }
+.cap[data-sig="control"] { --card-glow: var(--sig-control-glow); border-top: 2px solid var(--sig-control); }
+.cap[data-sig="data"] { --card-glow: var(--sig-data-glow); border-top: 2px solid var(--sig-data); }
+.cap[data-sig="intel"] { --card-glow: var(--sig-intel-glow); border-top: 2px solid var(--sig-intel); }
+.cap[data-sig="safety"] { --card-glow: var(--sig-safety-glow); border-top: 2px solid var(--sig-safety); }
+
+.cap:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 30px var(--card-glow, rgba(245, 158, 11, 0.2));
+  transform: translateY(-4px);
+}
+
+/* 3D Holographic Card Specular Glare */
+.tilt-card {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform .25s ease-out, box-shadow .25s ease-out;
+  will-change: transform;
+}
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle 280px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.12), transparent 80%);
+  opacity: 0;
+  transition: opacity .35s;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+.tilt-card:hover .tilt-glare { opacity: 1; }
+
+/* Touch Sonar Waves for Phones */
+.sonar-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  overflow: hidden;
+}
+.sonar-ripple {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--sig-power);
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0.9;
+  animation: sonarWave 0.75s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  box-shadow: 0 0 12px var(--sig-power);
+}
+@keyframes sonarWave {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(7.5); opacity: 0; }
+}
+
+/* Animated PCB Circuit Trace Connectors */
+.pcb-trace-line {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(180deg, var(--sig-power), var(--sig-data), var(--sig-control), var(--sig-intel), var(--sig-safety));
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Command Palette Modal Dialog (Ctrl+K / Cmd+K) */
+.cmd-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(620px, calc(100% - 32px));
+  max-height: 480px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--fg);
+  padding: 0;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  z-index: 10002;
+}
+.cmd-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.cmd-palette {
+  display: flex;
+  flex-direction: column;
+}
+.cmd-palette__input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.cmd-palette__input-wrap svg { width: 20px; height: 20px; stroke: var(--sig-power); fill: none; stroke-width: 2; }
+.cmd-palette__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--fg);
+}
+.cmd-palette__input::placeholder { color: var(--fg-3); }
+.cmd-palette__list {
+  padding: 8px;
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cmd-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--fg-2);
+  font-size: 14px;
+  transition: all .15s var(--ease-out);
+}
+.cmd-item:hover, .cmd-item.is-selected {
+  background: var(--surface-2);
+  color: var(--fg);
+  transform: translateX(4px);
+}
+.cmd-item b { color: var(--fg); }
+.cmd-item .mono { font-size: 10.5px; color: var(--sig-power); }
+
+/* Oscilloscope CRT Tube Phosphor Bloom */
+#scopeCanvas {
+  filter: drop-shadow(0 0 8px var(--sig-data));
+  image-rendering: pixelated;
+}
+
