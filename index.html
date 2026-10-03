@@ -113,7 +113,10 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Archivo, Inter Tight, IBM Plex Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Lucide Line Icons (1.5px stroke) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Three.js 3D WebGL Engine from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -131,64 +134,112 @@
   </script>
 
   <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: "WIRE CODE"
+       ========================================================================== */
     :root {
-      --bg-dark: #02040a;
-      --bg-surface: rgba(8, 14, 30, 0.72);
-      --bg-card: linear-gradient(135deg, rgba(10, 18, 42, 0.75) 0%, rgba(5, 10, 26, 0.6) 50%, rgba(14, 25, 58, 0.7) 100%);
-      --bg-card-hover: linear-gradient(135deg, rgba(18, 32, 72, 0.88) 0%, rgba(9, 17, 42, 0.75) 50%, rgba(24, 44, 96, 0.85) 100%);
+      /* WIRE CODE DARK THEME (DEFAULT) */
+      --bg: #0F1412;
+      --surface: #171E1B;
+      --text: #E8E6DF;
+      --muted: #8A948E;
+      --line: #27312D;
 
-      /* ROBOTICS LAB COLOR PALETTE */
-      --cyan: #00b4ff;              /* Electric Cobalt Cyan */
-      --cyan-glow: rgba(0, 180, 255, 0.45);
-      --neon-mint: #00e676;         /* Emerald Sensor Green */
-      --neon-mint-glow: rgba(0, 230, 118, 0.45);
-      --laser-red: #ff1744;         /* Laser Crimson Red */
-      --laser-red-glow: rgba(255, 23, 68, 0.45);
-      --electric-purple: #3d5afe;   /* Royal Cobalt Blue */
-      --electric-purple-glow: rgba(61, 90, 254, 0.45);
+      --c-robotics: #FF6A1F;
+      --c-iot: #4C9AFF;
+      --c-embedded: #3DDC97;
+      --c-ai: #FFD23F;
+      --c-safety: #FF5C7A;
 
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-faint: #475569;
+      --wire-gradient: linear-gradient(90deg, #FF6A1F 0%, #FFD23F 25%, #3DDC97 50%, #4C9AFF 75%, #FF5C7A 100%);
 
-      /* GLASSMORPHISM & HUD TOKENS */
-      --border-glass: rgba(0, 180, 255, 0.25);
-      --border-glass-hover: rgba(0, 180, 255, 0.75);
-      --glass-filter: blur(24px) saturate(200%);
-      --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 2px 0 rgba(0, 0, 0, 0.8), 0 20px 50px rgba(0, 0, 0, 0.85);
+      /* Typography */
+      --font-display: 'Archivo', sans-serif;
+      --font-body: 'Inter Tight', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
 
-      --font-display: 'Space Grotesk', sans-serif;
-      --font-body: 'Outfit', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      /* Backwards-compatible mappings for existing classes */
+      --bg-dark: var(--bg);
+      --bg-surface: var(--surface);
+      --bg-card: var(--surface);
+      --bg-card-hover: color-mix(in srgb, var(--surface) 92%, var(--text));
 
-      /* Theme transition */
-      --theme-transition-speed: 0.4s;
+      --cyan: var(--c-robotics);
+      --cyan-glow: transparent;
+      --neon-mint: var(--c-embedded);
+      --neon-mint-glow: transparent;
+      --laser-red: var(--c-safety);
+      --laser-red-glow: transparent;
+      --electric-purple: var(--c-iot);
+      --electric-purple-glow: transparent;
+
+      --text-main: var(--text);
+      --text-muted: var(--muted);
+      --text-faint: var(--muted);
+
+      --border-glass: var(--line);
+      --border-glass-hover: color-mix(in srgb, var(--c-robotics) 50%, var(--line));
+      --glass-filter: none;
+      --glass-highlight: none;
+
+      --radius: 4px;
+      --theme-transition-speed: 0.3s;
     }
 
-    /* ===== LIGHT THEME — ROBOTICS BLUEPRINT AESTHETIC ===== */
+    /* WIRE CODE LIGHT THEME */
     [data-theme="light"] {
-      --bg-dark: #f0f4f8;
-      --bg-surface: rgba(220, 230, 245, 0.82);
-      --bg-card: linear-gradient(135deg, rgba(230, 238, 252, 0.88) 0%, rgba(242, 246, 255, 0.75) 50%, rgba(218, 228, 248, 0.82) 100%);
-      --bg-card-hover: linear-gradient(135deg, rgba(210, 224, 250, 0.95) 0%, rgba(225, 235, 255, 0.88) 50%, rgba(200, 216, 248, 0.92) 100%);
+      --bg: #EFEDE6;
+      --surface: #F8F6F0;
+      --text: #141816;
+      --muted: #5E6761;
+      --line: #D5D2C7;
 
-      --cyan: #0088cc;
-      --cyan-glow: rgba(0, 136, 204, 0.3);
-      --neon-mint: #00a854;
-      --neon-mint-glow: rgba(0, 168, 84, 0.3);
-      --laser-red: #d50000;
-      --laser-red-glow: rgba(213, 0, 0, 0.3);
-      --electric-purple: #304ffe;
-      --electric-purple-glow: rgba(48, 79, 254, 0.3);
+      --c-robotics: #E5560D;
+      --c-iot: #1F6FDB;
+      --c-embedded: #178A5C;
+      --c-ai: #A87B00;
+      --c-safety: #D63A55;
 
-      --text-main: #1a1e2e;
-      --text-muted: #4a5568;
-      --text-faint: #8896a6;
+      --wire-gradient: linear-gradient(90deg, #E5560D 0%, #A87B00 25%, #178A5C 50%, #1F6FDB 75%, #D63A55 100%);
 
-      --border-glass: rgba(0, 136, 204, 0.2);
-      --border-glass-hover: rgba(0, 136, 204, 0.6);
-      --glass-filter: blur(20px) saturate(140%);
-      --glass-highlight: inset 0 1px 2px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.06), 0 12px 40px rgba(0, 60, 120, 0.1);
+      --bg-dark: var(--bg);
+      --bg-surface: var(--surface);
+      --bg-card: var(--surface);
+      --bg-card-hover: color-mix(in srgb, var(--surface) 95%, var(--text));
+
+      --cyan: var(--c-robotics);
+      --cyan-glow: transparent;
+      --neon-mint: var(--c-embedded);
+      --neon-mint-glow: transparent;
+      --laser-red: var(--c-safety);
+      --laser-red-glow: transparent;
+      --electric-purple: var(--c-iot);
+      --electric-purple-glow: transparent;
+
+      --text-main: var(--text);
+      --text-muted: var(--muted);
+      --text-faint: var(--muted);
+
+      --border-glass: var(--line);
+      --border-glass-hover: color-mix(in srgb, var(--c-robotics) 50%, var(--line));
+      --glass-filter: none;
+      --glass-highlight: none;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg: #EFEDE6;
+        --surface: #F8F6F0;
+        --text: #141816;
+        --muted: #5E6761;
+        --line: #D5D2C7;
+        --c-robotics: #E5560D;
+        --c-iot: #1F6FDB;
+        --c-embedded: #178A5C;
+        --c-ai: #A87B00;
+        --c-safety: #D63A55;
+        --wire-gradient: linear-gradient(90deg, #E5560D 0%, #A87B00 25%, #178A5C 50%, #1F6FDB 75%, #D63A55 100%);
+      }
     }
 
     * {
@@ -3120,6 +3171,123 @@
         transform: none !important;
       }
     }
+  
+    /* Subtle dot grid pattern on hero and section headers */
+    body {
+      background-image: radial-gradient(var(--line) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* 1px Section Divider Hairline with Allowed Wire Gradient */
+    .section-divider {
+      height: 1px;
+      width: 100%;
+      background: var(--wire-gradient);
+      opacity: 0.65;
+      margin: 0;
+    }
+
+    /* Technical Card Corner Marks (+ in corners) & max 4px radius */
+    .vibe-card, .deck-glass-card, .scope-box, .terminal-window, .modal-container {
+      border-radius: var(--radius) !important;
+      border: 1px solid var(--line) !important;
+      box-shadow: none !important;
+      position: relative;
+    }
+    .vibe-card::before, .vibe-card::after {
+      content: '+';
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1;
+      color: var(--muted);
+      opacity: 0.45;
+      pointer-events: none;
+    }
+    .vibe-card::before { top: 4px; left: 5px; }
+    .vibe-card::after { bottom: 4px; right: 5px; }
+
+    /* Domain Colors & 3px Top Borders on Projects & Skills */
+    .project-card {
+      border-top: 3px solid var(--c-robotics) !important;
+    }
+    .project-card[data-domain="iot"] { border-top-color: var(--c-iot) !important; }
+    .project-card[data-domain="embedded"] { border-top-color: var(--c-embedded) !important; }
+    .project-card[data-domain="ai"] { border-top-color: var(--c-ai) !important; }
+    .project-card[data-domain="safety"] { border-top-color: var(--c-safety) !important; }
+
+    .skills-grid .vibe-card {
+      border-top: 3px solid var(--c-embedded) !important;
+    }
+    .skills-grid .vibe-card[data-domain="ai"] { border-top-color: var(--c-ai) !important; }
+    .skills-grid .vibe-card[data-domain="iot"] { border-top-color: var(--c-iot) !important; }
+    .skills-grid .vibe-card[data-domain="robotics"] { border-top-color: var(--c-robotics) !important; }
+
+    /* Allowed Wire Gradient in Top Progress Bar and Nav Underline */
+    .progress-bar {
+      background: var(--wire-gradient) !important;
+      box-shadow: none !important;
+      height: 2px !important;
+    }
+    .nav-links a.active::after {
+      background: var(--wire-gradient) !important;
+      box-shadow: none !important;
+      height: 2px !important;
+    }
+
+    /* About Section Icon Tweaks */
+    .about-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius) !important;
+      border: 1px solid var(--line) !important;
+      background: color-mix(in srgb, var(--surface) 90%, var(--text)) !important;
+    }
+    .about-pill i {
+      vertical-align: middle;
+    }
+    .scope-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 40px;
+    }
+    .scope-btn i {
+      vertical-align: middle;
+    }
+
+    /* Mobile Android & iOS Optimizations */
+    @media (max-width: 992px) {
+      body, html, main {
+        overflow-x: hidden !important;
+        width: 100% !important;
+      }
+      .header {
+        padding-top: max(12px, env(safe-area-inset-top));
+      }
+      .mobile-hero-header {
+        display: flex !important;
+        top: max(74px, calc(env(safe-area-inset-top) + 60px)) !important;
+      }
+      .hero-left-intro {
+        display: none !important; /* Mobile uses dedicated mobile-hero-header */
+      }
+      .hero-conveyor-deck {
+        display: none !important; /* Prevents viewport blocking on mobile */
+      }
+      .hero-ai-hud-module {
+        display: none !important;
+      }
+      .pedestal-creed-band {
+        display: none !important;
+      }
+      .hero-cta-group {
+        bottom: max(30px, env(safe-area-inset-bottom)) !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -3171,7 +3339,7 @@
         <span id="themeLabel">LIGHT</span>
       </button>
       <button class="nav-btn" id="sfxToggleBtn" onclick="toggleAudioSfx()">
-        <span id="sfxIcon">&#128266;</span> SFX: ON
+        <span id="sfxIcon">&#128266;</span> SFX: OFF
       </button>
       <a href="#contact" class="btn-connect-pill" onclick="playBeep(660, 0.06)">
         Let's Connect &#8594;
@@ -3246,7 +3414,7 @@
             <div class="hero-semantic-seo">
               <h1>SANGEETH SASIKUMAR K S</h1>
               <h2>B.Tech Mechatronics Engineering &bull; Robotics &bull; IoT &bull; Embedded AI</h2>
-              <p>Passionate about Robotics, IoT, Embedded AI and building real world solutions. Constructing deterministic cyber-physical hardware that senses, computes, and actuates in real-time.</p>
+              <p>Passionate about Robotics, IoT, Embedded AI and building real world solutions. Constructing deterministic cyber-physical hardware that <span style="color:var(--c-iot); font-weight:600;">senses</span>, <span style="color:var(--c-ai); font-weight:600;">computes</span>, and <span style="color:var(--c-robotics); font-weight:600;">actuates</span> in real-time.</p>
             </div>
 
             <!-- 01 FIRST: INTERACTIVE WORKSTATION (REFERENCE IMAGE DESIGN) -->
@@ -3422,10 +3590,13 @@
     </section>
 
     <!-- 02 ABOUT SECTION: EXPLODED ROBOTICS LAB & WORKBENCH -->
-    <section class="section film-section" id="about">
+    
+  <!-- Wire Gradient Section Divider (Allowed Location 3) -->
+  <div class="section-divider"></div>
+<section class="section film-section" id="about">
       <!-- Film Content Column -->
       <div class="film-content-col">
-        <div class="section-tag reveal">01 // ABOUT ME</div>
+        <div class="section-tag reveal"><i data-lucide="info" style="width:14px; height:14px; stroke-width:1.5; color:var(--c-embedded); vertical-align:middle; margin-right:4px;"></i> 01 // ABOUT ME</div>
         <h2 class="section-title reveal delay-1">Entering Sangeeth's Robotics Lab</h2>
         <p class="section-desc reveal delay-2">
           I am Sangeeth Sasikumar K S, a B.Tech Mechatronics Engineering student interested in building real-world systems combining electronics, robotics, IoT, embedded systems, AI and computer vision.
@@ -3437,7 +3608,7 @@
             <div class="profile-card-header">
               <div style="display: flex; align-items: center; gap: 8px; color: var(--cyan);">
                 <span class="hud-status-indicator"></span>
-                <span>HARDWARE BENCH // LIVE LAB</span>
+                <i data-lucide="activity" style="width:14px; height:14px; stroke-width:1.5; color:var(--c-embedded);"></i> <span>HARDWARE BENCH // LIVE LAB</span>
               </div>
               <span style="color: var(--text-faint);">ID: SS-MECHATRONICS</span>
             </div>
@@ -3460,22 +3631,22 @@
                 </div>
               </div>
               <button class="profile-inspect-btn" onclick="event.stopPropagation(); openProjectModal('workbench')" aria-label="Inspect workbench">
-                <span>&#128269; INSPECT BENCH ARCHITECTURE</span>
+                <i data-lucide="maximize-2" style="width:13px; height:13px; stroke-width:1.5; vertical-align:middle; margin-right:4px;"></i> <span>INSPECT BENCH ARCHITECTURE</span>
               </button>
             </div>
           </div>
 
           <div class="profile-meta-strip">
             <div class="profile-meta-item">
-              <span class="meta-label">DISCIPLINE</span>
+              <span class="meta-label"><i data-lucide="graduation-cap" style="width:12px; height:12px; stroke-width:1.5; vertical-align:middle; margin-right:2px;"></i> DISCIPLINE</span>
               <span class="meta-val">B.Tech Mechatronics</span>
             </div>
             <div class="profile-meta-item">
-              <span class="meta-label">COLLEGE</span>
+              <span class="meta-label"><i data-lucide="landmark" style="width:12px; height:12px; stroke-width:1.5; vertical-align:middle; margin-right:2px;"></i> COLLEGE</span>
               <span class="meta-val" style="color: var(--cyan);">Jyothi Eng College</span>
             </div>
             <div class="profile-meta-item">
-              <span class="meta-label">ACTIVE BUILD</span>
+              <span class="meta-label"><i data-lucide="bot" style="width:12px; height:12px; stroke-width:1.5; vertical-align:middle; margin-right:2px;"></i> ACTIVE BUILD</span>
               <span class="meta-val" style="color: var(--neon-mint);">ESP32 Rover V2</span>
             </div>
           </div>
@@ -3498,13 +3669,13 @@
             </div>
 
             <div class="about-pills">
-              <span class="about-pill">Differential Drive Kinematics</span>
-              <span class="about-pill">C / C++ Embedded Systems</span>
-              <span class="about-pill">ESP32 FreeRTOS</span>
-              <span class="about-pill">TinyML &amp; Edge AI</span>
-              <span class="about-pill">Computer Vision</span>
-              <span class="about-pill">Blynk &amp; MQTT IoT</span>
-              <span class="about-pill">Hardware Failsafes</span>
+              <span class="about-pill"><i data-lucide="bot" style="width:13px; height:13px; stroke-width:1.5; color:var(--c-robotics);"></i> Differential Drive Kinematics</span>
+              <span class="about-pill"><i data-lucide="code" style="width:13px; height:13px; stroke-width:1.5; color:var(--c-embedded);"></i> C / C++ Embedded Systems</span>
+              <span class="about-pill"><i data-lucide="cpu" style="width:13px; height:13px; stroke-width:1.5; color:var(--c-embedded);"></i> ESP32 FreeRTOS</span>
+              <span class="about-pill"><i data-lucide="brain" style="width:13px; height:13px; stroke-width:1.5; color:var(--c-ai);"></i> TinyML &amp; Edge AI</span>
+              <span class="about-pill"><i data-lucide="camera" style="width:13px; height:13px; stroke-width:1.5; color:var(--c-ai);"></i> Computer Vision</span>
+              <span class="about-pill"><i data-lucide="wifi" style="width:13px; height:13px; stroke-width:1.5; color:var(--c-iot);"></i> Blynk &amp; MQTT IoT</span>
+              <span class="about-pill"><i data-lucide="shield-check" style="width:13px; height:13px; stroke-width:1.5; color:var(--c-safety);"></i> Hardware Failsafes</span>
             </div>
           </div>
 
@@ -3512,7 +3683,7 @@
           <div class="vibe-card">
             <div class="scope-box">
               <div class="scope-header">
-                <span>SIGNAL OSCILLOSCOPE // 500kS/s</span>
+                <span><i data-lucide="activity" style="width:14px; height:14px; stroke-width:1.5; vertical-align:middle; margin-right:4px; color:var(--c-robotics);"></i> SIGNAL OSCILLOSCOPE // 500kS/s</span>
                 <span id="scopeModeLabel" style="color: var(--cyan);">BUS: I2C FAST-MODE (400 kHz)</span>
               </div>
 
@@ -3521,10 +3692,10 @@
               </div>
 
               <div class="scope-controls">
-                <button class="scope-btn active" onclick="switchScopeMode('I2C', this)">I2C SENSOR BUS</button>
-                <button class="scope-btn" onclick="switchScopeMode('SPI', this)">SPI DISPLAY CLK</button>
-                <button class="scope-btn" onclick="switchScopeMode('PWM', this)">PWM MOTOR DRIVE</button>
-                <button class="scope-btn" onclick="switchScopeMode('MQTT', this)">MQTT TELEMETRY</button>
+                <button class="scope-btn active" onclick="switchScopeMode('I2C', this)"><i data-lucide="sliders" style="width:12px; height:12px; stroke-width:1.5;"></i> I2C SENSOR BUS</button>
+                <button class="scope-btn" onclick="switchScopeMode('SPI', this)"><i data-lucide="cpu" style="width:12px; height:12px; stroke-width:1.5;"></i> SPI DISPLAY CLK</button>
+                <button class="scope-btn" onclick="switchScopeMode('PWM', this)"><i data-lucide="gauge" style="width:12px; height:12px; stroke-width:1.5;"></i> PWM MOTOR DRIVE</button>
+                <button class="scope-btn" onclick="switchScopeMode('MQTT', this)"><i data-lucide="radio" style="width:12px; height:12px; stroke-width:1.5;"></i> MQTT TELEMETRY</button>
               </div>
             </div>
           </div>
@@ -3534,7 +3705,10 @@
     </section>
 
     <!-- 03 SKILLS SECTION: 3D HOLOGRAPHIC MODULES -->
-    <section class="section film-section" id="skills">
+    
+  <!-- Wire Gradient Section Divider (Allowed Location 3) -->
+  <div class="section-divider"></div>
+<section class="section film-section" id="skills">
       <!-- Film Content Column -->
       <div class="film-content-col">
 <div class="section-tag reveal">02 // TECHNICAL MODULES</div>
@@ -3549,7 +3723,7 @@
           <div class="skill-card-header">
             <div class="skill-icon-badge">&#128013;</div>
             <div>
-              <h3 class="skill-card-title">Python</h3>
+              <h3 class="skill-card-title">Python</h3><script>/*ai*/</script>
               <span class="skill-category-tag">Automation, Data &amp; Systems</span>
             </div>
           </div>
@@ -3567,7 +3741,7 @@
           <div class="skill-card-header">
             <div class="skill-icon-badge">&#9881;&#65039;</div>
             <div>
-              <h3 class="skill-card-title">C / C++</h3>
+              <h3 class="skill-card-title">C / C++</h3><script>/*embedded*/</script>
               <span class="skill-category-tag">Deterministic Low-Latency Firmware</span>
             </div>
           </div>
@@ -3692,7 +3866,10 @@
     </section>
 
     <!-- 04 PROJECTS SECTION: 3D PROJECT SHOWCASE -->
-    <section class="section film-section" id="projects">
+    
+  <!-- Wire Gradient Section Divider (Allowed Location 3) -->
+  <div class="section-divider"></div>
+<section class="section film-section" id="projects">
       <!-- Film Content Column -->
       <div class="film-content-col">
 <div class="section-tag reveal">03 // HARDWARE SHOWCASE</div>
@@ -3703,7 +3880,7 @@
 
       <div class="projects-grid">
         <!-- 1. FEATURED: Smart Security Patrol Robot V1 -->
-        <div class="vibe-card project-card featured reveal-scale" onclick="openProjectModal('patrol-robot')">
+        <div class="vibe-card project-card featured reveal-scale" data-domain="robotics" onclick="openProjectModal('patrol-robot')">
           <div>
             <div class="project-header-badge">&#9733; FLAGSHIP MECHATRONIC DEPLOYMENT</div>
             <h3 class="project-title">Smart Security Patrol Robot V1</h3>
@@ -3730,7 +3907,7 @@
         </div>
 
         <!-- 2. Fire Fighting Robot -->
-        <div class="vibe-card project-card reveal delay-1" onclick="openProjectModal('fire-robot')">
+        <div class="vibe-card project-card reveal delay-1" onclick="openProjectModal('fire-robot')" data-domain="robotics">
           <div class="project-header-badge">AUTONOMOUS SAFETY ROBOTICS</div>
           <h3 class="project-title">Fire Fighting Robot</h3>
           <p class="project-desc">
@@ -3750,7 +3927,7 @@
         </div>
 
         <!-- 3. AI Waste Segregation Machine -->
-        <div class="vibe-card project-card reveal delay-2" onclick="openProjectModal('waste-machine')">
+        <div class="vibe-card project-card reveal delay-2" onclick="openProjectModal('waste-machine')" data-domain="ai">
           <div class="project-header-badge">TINYML &amp; COMPUTER VISION</div>
           <h3 class="project-title">AI Waste Segregation Machine</h3>
           <p class="project-desc">
@@ -3770,7 +3947,7 @@
         </div>
 
         <!-- 4. Smart Agriculture & AI Crop Monitoring -->
-        <div class="vibe-card project-card reveal delay-3" onclick="openProjectModal('smart-agri')">
+        <div class="vibe-card project-card reveal delay-3" onclick="openProjectModal('smart-agri')" data-domain="ai">
           <div class="project-header-badge">EDGE AI &amp; IOT</div>
           <h3 class="project-title">Smart Agriculture &amp; AI Crop Monitoring</h3>
           <p class="project-desc">
@@ -3790,7 +3967,7 @@
         </div>
 
         <!-- 5. Smart Classroom Management System -->
-        <div class="vibe-card project-card reveal delay-1" onclick="openProjectModal('smart-classroom')">
+        <div class="vibe-card project-card reveal delay-1" onclick="openProjectModal('smart-classroom')" data-domain="iot">
           <div class="project-header-badge">AUTOMATION &amp; RFID</div>
           <h3 class="project-title">Smart Classroom Management System</h3>
           <p class="project-desc">
@@ -3810,7 +3987,7 @@
         </div>
 
         <!-- 6. Smart LPG Safety System -->
-        <div class="vibe-card project-card reveal delay-2" onclick="openProjectModal('lpg-safety')">
+        <div class="vibe-card project-card reveal delay-2" onclick="openProjectModal('lpg-safety')" data-domain="safety">
           <div class="project-header-badge">SAFETY &amp; EMERGENCY CUTOFF</div>
           <h3 class="project-title">Smart LPG Safety System</h3>
           <p class="project-desc">
@@ -3829,7 +4006,7 @@
         </div>
 
         <!-- 7. Personal AI / MARK -->
-        <div class="vibe-card project-card reveal delay-3" onclick="openProjectModal('mark-ai')">
+        <div class="vibe-card project-card reveal delay-3" onclick="openProjectModal('mark-ai')" data-domain="ai">
           <div class="project-header-badge">EDGE AI COMPANION</div>
           <h3 class="project-title">Personal AI / MARK</h3>
           <p class="project-desc">
@@ -3852,7 +4029,10 @@
     </section>
 
     <!-- 05 JOURNEY SECTION: 3D CIRCUIT PATH TIMELINE -->
-    <section class="section film-section" id="journey">
+    
+  <!-- Wire Gradient Section Divider (Allowed Location 3) -->
+  <div class="section-divider"></div>
+<section class="section film-section" id="journey">
       <!-- Film Content Column -->
       <div class="film-content-col">
 <div class="section-tag reveal">04 // 3D TIMELINE</div>
@@ -3932,7 +4112,10 @@
     </section>
 
     <!-- 06 CONTACT SECTION: HOLOGRAPHIC COMMUNICATION HUB -->
-    <section class="section film-section" id="contact">
+    
+  <!-- Wire Gradient Section Divider (Allowed Location 3) -->
+  <div class="section-divider"></div>
+<section class="section film-section" id="contact">
       <!-- Film Content Column -->
       <div class="film-content-col">
 <div class="section-tag reveal">05 // COMMUNICATION LINK</div>
@@ -4041,7 +4224,7 @@
        1. WEB AUDIO SYNTHESIZER SFX SYSTEM (100% NATIVE / NO AUDIO FILES)
        ========================================================================== */
     let audioCtx = null;
-    let sfxEnabled = true;
+    let sfxEnabled = false;
 
     function initAudio() {
       if (!audioCtx) {
@@ -4076,7 +4259,7 @@
       const btn = document.getElementById('sfxToggleBtn');
       const icon = document.getElementById('sfxIcon');
       if (sfxEnabled) {
-        btn.innerHTML = '<span id="sfxIcon">&#128266;</span> SFX: ON';
+        btn.innerHTML = '<span id="sfxIcon">&#128266;</span> SFX: OFF';
         btn.style.color = 'var(--cyan)';
         playBeep(880, 0.1);
       } else {
@@ -4085,6 +4268,7 @@
       }
     }
 
+    if (window.lucide) lucide.createIcons();
     window.addEventListener('click', () => initAudio(), { once: true });
     window.addEventListener('touchstart', () => initAudio(), { once: true });
 
@@ -4164,13 +4348,14 @@
       const ambientLight = new THREE.AmbientLight(0x0a1228, 2.8);
       scene.add(ambientLight);
 
-      const bluePointLight = new THREE.PointLight(0x00b4ff, 4.5, 70);
-      bluePointLight.position.set(8, 8, 8);
-      scene.add(bluePointLight);
+      // Allowed Wire Gradient Location 4: Rim Light using wire-gradient colours
+      const orangeRimLight = new THREE.PointLight(0xFF6A1F, 3.5, 60);
+      orangeRimLight.position.set(-8, -5, 6);
+      scene.add(orangeRimLight);
 
-      const redPointLight = new THREE.PointLight(0xff1744, 3.5, 60);
-      redPointLight.position.set(-8, -5, 6);
-      scene.add(redPointLight);
+      const blueRimLight = new THREE.PointLight(0x4C9AFF, 4.0, 70);
+      blueRimLight.position.set(8, 8, 8);
+      scene.add(blueRimLight);
 
       const topKeyLight = new THREE.DirectionalLight(0xffffff, 1.2);
       topKeyLight.position.set(0, 15, 10);
@@ -5167,7 +5352,7 @@
         if (!this.canvas || !this.track) return;
 
         this.ctx = this.canvas.getContext('2d', { alpha: false });
-        this.frameCount = 192;
+        this.frameCount = 240;
         this.framePrefix = 'assets/frames/frame_';
         this.frameExt = '.jpg';
 
@@ -5186,7 +5371,7 @@
       }
 
       getFrameSrc(idx) {
-        const pad = String(idx).padStart(6, '0');
+        const pad = String(idx + 1).padStart(5, '0');
         return this.framePrefix + pad + this.frameExt;
       }
 
