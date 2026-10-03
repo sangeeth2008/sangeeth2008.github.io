@@ -25,13 +25,13 @@
   <meta property="og:title" content="Sangeeth Sasikumar K S | 3D Interactive Robotics &amp; Mechatronics Engineering Portfolio">
   <meta property="og:description" content="Official interactive 3D robotics laboratory and engineering portfolio of Sangeeth Sasikumar K S &mdash; Mechatronics Engineering student focused on Embedded Systems, ESP32, Robotics, IoT, and Edge AI.">
   <meta property="og:locale" content="en_US">
-  <meta property="og:image" content="https://sangeeth2008-github-io.vercel.app/sangeeth.jpg">
+  <meta property="og:image" content="https://sangeeth2008-github-io.vercel.app/assets/sangeeth.jpg">
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sangeeth Sasikumar K S | 3D Interactive Robotics &amp; Mechatronics Engineering Portfolio">
   <meta name="twitter:description" content="Official interactive 3D robotics laboratory and engineering portfolio of Sangeeth Sasikumar K S &mdash; Mechatronics Engineering student focused on Embedded Systems, ESP32, Robotics, IoT, and Edge AI.">
-  <meta name="twitter:image" content="https://sangeeth2008-github-io.vercel.app/sangeeth.jpg">
+  <meta name="twitter:image" content="https://sangeeth2008-github-io.vercel.app/assets/sangeeth.jpg">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -46,7 +46,7 @@
         "@id": "https://sangeeth2008-github-io.vercel.app/#person",
         "name": "Sangeeth Sasikumar K S",
         "alternateName": "Sangeeth Sasikumar",
-        "image": "https://sangeeth2008-github-io.vercel.app/sangeeth.jpg",
+        "image": "https://sangeeth2008-github-io.vercel.app/assets/sangeeth.jpg",
         "url": "https://sangeeth2008-github-io.vercel.app/",
         "jobTitle": "Mechatronics Engineering Student",
         "affiliation": {
@@ -668,19 +668,20 @@
     }
 
     /* ==========================================================================
-       HERO CINEMATIC SCROLL-DRIVEN 3D ROBOTICS STAGE
+       HERO WORKSTATION & REFERENCE STAGE (3D SCROLLING MECHANICAL ASSEMBLY)
        ========================================================================== */
     .hero-cinematic-track {
       position: relative;
       width: 100%;
-      min-height: 520vh; /* Extended for butter-smooth, unhurried scroll exploration down and back */
+      min-height: 250vh;
       z-index: 20;
     }
 
     .hero-cinematic-sticky {
       position: sticky;
       top: 0;
-      width: 100vw;
+      left: 0;
+      width: 100%;
       height: 100vh;
       height: 100dvh;
       overflow: hidden;
@@ -718,9 +719,8 @@
       width: 100vw;
       height: 100vh;
       z-index: 35;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-      will-change: opacity;
+      pointer-events: auto;
+      opacity: 1;
     }
 
     .hero-semantic-seo {
@@ -981,7 +981,8 @@
       border-color: transparent;
     }
 
-    /* 3D Rover Canvas: Edge-to-edge coverage across desktop and portrait mobile */
+    /* 3D Rover Visual: Edge-to-edge coverage across desktop and portrait mobile */
+    .hero-robot-img,
     .hero-robot-canvas,
     .hero-robot-video {
       width: 100vw;
@@ -999,6 +1000,8 @@
       box-shadow: none;
       filter: contrast(1.02) brightness(1.02);
       pointer-events: none;
+      user-select: none;
+      transition: transform 0.25s ease-out;
     }
 
     /* Base state for dedicated mobile hero header (hidden on desktop) */
@@ -1384,128 +1387,31 @@
       position: relative;
       width: 100%;
       max-width: 100vw;
-      min-height: 220vh;
+      min-height: auto;
       margin: 0;
-      padding: 0;
+      padding: 90px 4vw 110px;
       box-sizing: border-box;
       overflow-x: hidden;
     }
 
     .film-grid-layout,
     .film-grid-layout.reverse-desktop {
-      display: flex;
-      flex-direction: column;
+      display: block;
       position: relative;
       width: 100%;
       margin: 0;
       padding: 0;
     }
 
-    /* Pinned Sticky Visual Stage â€” Covers Viewport Fully (100vw x 100vh), Zero Borders */
-    .film-canvas-col {
-      position: sticky;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      pointer-events: none;
-      background: radial-gradient(circle at center, #061024 0%, #02040a 85%);
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
-    }
-
-    .film-stage-viewport {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent !important;
-      border: none !important;
-      outline: none !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-    }
-
-    /* Full-Scale 3D Sequence Canvas: Zero Boundaries, Max Immersion */
-    .film-fullscreen-canvas {
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      max-width: 100vw;
-      max-height: 100vh;
-      object-fit: contain;
-      background: transparent !important;
-      border: none !important;
-      outline: none !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      display: block;
-      filter: drop-shadow(0 0 65px rgba(0, 180, 255, 0.28));
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-      will-change: transform;
-    }
-
-    /* Floating Film HUD Bar */
-    .film-hud-bar {
-      position: absolute;
-      top: 80px;
-      left: 3.5vw;
-      right: 3.5vw;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 20;
-      pointer-events: none;
-    }
-    .film-hud-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(2, 4, 10, 0.88);
-      border: 1px solid rgba(0, 180, 255, 0.35);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      letter-spacing: 1.4px;
-      color: var(--text-main);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    }
-    .film-frame-indicator {
-      background: rgba(2, 4, 10, 0.88);
-      border: 1px solid rgba(0, 230, 118, 0.4);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      color: var(--neon-mint);
-      letter-spacing: 1.4px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    }
-
-    /* Film Content Column â€” Broader, Fully Fledged, Expansive on Laptop & Computer Viewports */
+    /* Film Content Column — Full-Fledged Expansive Cyber Content */
     .film-content-col {
       position: relative;
       z-index: 25;
       width: 100%;
-      max-width: 1600px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 60px 4vw 160px;
-      margin-top: 15vh;
+      padding: 0;
+      margin-top: 0;
       pointer-events: auto;
       background: transparent;
     }
@@ -1519,7 +1425,7 @@
       width: 100%;
     }
 
-    /* Modern Glass Card Styling over the 3D Film Background */
+    /* Modern Glass Card Styling */
     .film-content-col .vibe-card {
       background: rgba(4, 9, 24, 0.88) !important;
       backdrop-filter: blur(24px) !important;
@@ -1532,24 +1438,10 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 180, 255, 0.25) !important;
     }
 
-    /* Fully Fitted Canvas Across Device Classes */
-    @media (min-width: 993px) {
-      .film-fullscreen-canvas {
-        width: 100vw;
-        height: 100vh;
-        height: 100dvh;
-        object-fit: cover;
-      }
-    }
     @media (max-width: 992px) {
       .about-layout-cinematic {
         grid-template-columns: 1fr;
         gap: 24px;
-      }
-      .film-fullscreen-canvas {
-        width: 100vw;
-        height: 100%;
-        object-fit: contain;
       }
     }
     /* Desktop Custom Interactive Hardware Cursor */
@@ -1633,39 +1525,7 @@
     /* ==========================================================================
        HERO WORKSTATION & REFERENCE EXPERIENCE (EXACT MATCH TO REFERENCE DESIGN)
        ========================================================================== */
-    /* Hero Landing Intro (First Place: Animated 3D Hero on Initial Load) */
-        /* 1st: 3D Effect Initial Floating Scroll Cue */
-    .hero-3d-scroll-hint {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      letter-spacing: 1.8px;
-      color: var(--cyan);
-      background: rgba(3, 7, 20, 0.78);
-      border: 1px solid rgba(0, 180, 255, 0.4);
-      padding: 8px 20px;
-      border-radius: 24px;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.75), 0 0 15px rgba(0, 180, 255, 0.25);
-      cursor: pointer;
-      user-select: none;
-      z-index: 45;
-      transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.2s ease, color 0.2s ease;
-    }
-    .hero-3d-scroll-hint:hover {
-      border-color: #ffffff;
-      color: #ffffff;
-      box-shadow: 0 6px 30px rgba(0, 180, 255, 0.45);
-      transform: translateX(-50%) translateY(-2px);
-    }
-.hero-left-intro {
+    .hero-left-intro {
       position: absolute;
       top: 17%;
       left: 3.5vw;
@@ -2115,8 +1975,23 @@
       color: var(--text-faint);
     }
 
-    /* Mobile Responsive Optimizations for Reference Hero */
+    /* Mobile Responsive Optimizations for 3D Hero */
     @media (max-width: 1100px) {
+      .hero-cinematic-track {
+        min-height: 200vh;
+      }
+      .hero-cinematic-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        height: 100dvh;
+      }
+      .hero-content-col {
+        position: absolute;
+        inset: 0;
+        height: 100vh;
+        height: 100dvh;
+      }
       .hero-left-intro {
         position: relative;
         top: 0;
@@ -3022,7 +2897,8 @@
     /* RESPONSIVE MEDIA QUERIES */
     @media (max-width: 992px) {
       .hero-cinematic-track {
-        min-height: 340vh;
+        min-height: 100vh;
+        height: auto;
       }
       .mobile-hero-header {
         display: flex;
@@ -3137,7 +3013,8 @@
         padding: 80px 5vw;
       }
       .hero-cinematic-track {
-        min-height: 280vh;
+        min-height: 100vh;
+        height: auto;
       }
       .mobile-hero-header {
         top: 68px;
@@ -3397,14 +3274,14 @@
                 <div class="mouse-scroll-wheel">
                   <div class="wheel-dot"></div>
                 </div>
-                <span>SCROLL TO EXPLORE &darr;</span>
+                <span>SCROLL TO ASSEMBLE &darr;</span>
               </div>
             </div>
 
             <!-- Center Floating AI Brain Hologram HUD Module (Matches Reference Image) -->
             <div class="hero-ai-hud-module" id="heroAiHud">
               <div class="ai-hud-header">
-                <img src="ai_brain_icon.jpg" alt="AI Brain Hologram" class="ai-brain-img" width="34" height="28">
+                <img src="assets/ai_brain_icon.jpg" alt="AI Brain Hologram" class="ai-brain-img" width="34" height="28">
                 <span class="ai-hud-title">AI</span>
               </div>
               <ul class="ai-hud-points">
@@ -3434,7 +3311,7 @@
                   <span class="deck-card-num">01</span>
                 </div>
                 <div class="deck-card-img-wrap">
-                  <img src="card_thumb_about.jpg" alt="About Me Story" class="deck-card-img" width="115" height="105" loading="eager">
+                  <img src="assets/card_thumb_about.jpg" alt="About Me Story" class="deck-card-img" width="115" height="105" loading="eager">
                 </div>
                 <div class="deck-card-links">
                   <a href="#about" class="deck-sublink" onclick="event.stopPropagation(); playBeep(520, 0.05);">&rarr; My Story</a>
@@ -3451,7 +3328,7 @@
                   <span class="deck-card-num">02</span>
                 </div>
                 <div class="deck-card-img-wrap">
-                  <img src="card_thumb_skills.jpg" alt="Holographic Skills" class="deck-card-img" width="105" height="100" loading="eager">
+                  <img src="assets/card_thumb_skills.jpg" alt="Holographic Skills" class="deck-card-img" width="105" height="100" loading="eager">
                 </div>
                 <div class="deck-card-links">
                   <a href="#skills" class="deck-sublink" onclick="event.stopPropagation(); playBeep(560, 0.05);">&rarr; Technical Skills</a>
@@ -3467,7 +3344,7 @@
                   <span class="deck-card-num">03</span>
                 </div>
                 <div class="deck-card-img-wrap">
-                  <img src="card_thumb_projects.jpg" alt="Autonomous Robotics Deployments" class="deck-card-img" width="95" height="100" loading="eager">
+                  <img src="assets/card_thumb_projects.jpg" alt="Autonomous Robotics Deployments" class="deck-card-img" width="95" height="100" loading="eager">
                 </div>
                 <div class="deck-card-links">
                   <a href="#projects" class="deck-sublink" onclick="event.stopPropagation(); playBeep(600, 0.05);">&rarr; Featured Projects</a>
@@ -3484,7 +3361,7 @@
                   <span class="deck-card-num">04</span>
                 </div>
                 <div class="deck-card-img-wrap">
-                  <img src="card_thumb_journey.jpg" alt="Engineering Milestones Journey" class="deck-card-img" width="88" height="95" loading="eager">
+                  <img src="assets/card_thumb_journey.jpg" alt="Engineering Milestones Journey" class="deck-card-img" width="88" height="95" loading="eager">
                 </div>
                 <div class="deck-card-links">
                   <a href="#journey" class="deck-sublink" onclick="event.stopPropagation(); playBeep(640, 0.05);">&rarr; Timeline</a>
@@ -3501,7 +3378,7 @@
                   <span class="deck-card-num">05</span>
                 </div>
                 <div class="deck-card-img-wrap">
-                  <img src="card_thumb_contact.jpg" alt="Global Communication Link" class="deck-card-img" width="85" height="95" loading="eager">
+                  <img src="assets/card_thumb_contact.jpg" alt="Global Communication Link" class="deck-card-img" width="85" height="95" loading="eager">
                 </div>
                 <div class="deck-card-links">
                   <a href="#contact" class="deck-sublink" onclick="event.stopPropagation(); playBeep(680, 0.05);">&rarr; Let's Work Together</a>
@@ -3517,27 +3394,15 @@
           <div class="hero-visual-col" id="heroVisualCol">
             <div class="robot-stage-viewport" id="robotStageViewport">
               
-              <!-- 3D Robotics Visual: Ultra-smooth GPU Canvas Frame Sequence -->
+              <!-- 3D Robotics Visual: 192-Frame Exploded Mechanical Parts Assembly Canvas -->
               <div class="robot-video-wrapper" id="robotVideoWrapper">
                 <canvas 
                   id="heroCanvas" 
                   class="hero-robot-canvas" 
                   width="1280" 
                   height="720"
-                  aria-label="3D Robotic rover turntable and exploded electronics canvas"
+                  aria-label="3D Robot Mechanical Parts Assembling Interactive Animation"
                 ></canvas>
-                <video 
-                  id="heroVideo" 
-                  class="hero-robot-video" 
-                  src="Robotic_rover_interface_animation_20260926221438.mp4" 
-                  poster="portfolio.png"
-                  playsinline 
-                  muted 
-                  loop 
-                  preload="none"
-                  style="display: none;"
-                  aria-hidden="true"
-                ></video>
               </div>
 
               <!-- Interactive 5-Card Deck Hotspots over Full-Scale Visual -->
@@ -3549,119 +3414,43 @@
                 <a href="#contact" class="deck-hotspot-link" title="Jump to Contact Section" aria-label="Contact" onclick="playBeep(680, 0.06)"></a>
               </div>
 
-              <!-- Stage 4 Exploded CAD Overlay Callout Pins -->
-              <div class="exploded-cad-overlay" id="explodedCadOverlay">
-                <div class="cad-pin pin-mcu">
-                  <div class="cad-dot"></div>
-                  <div class="cad-line"></div>
-                  <div class="cad-card">
-                    <span class="cad-tag">CORE CONTROLLER</span>
-                    <strong>ESP32 240MHz Dual-Core</strong>
-                    <span>FreeRTOS &bull; Wi-Fi &bull; BLE</span>
-                  </div>
-                </div>
-                <div class="cad-pin pin-ultrasonic">
-                  <div class="cad-dot"></div>
-                  <div class="cad-line"></div>
-                  <div class="cad-card">
-                    <span class="cad-tag">RANGE SENSORS</span>
-                    <strong>Dual HC-SR04 Ultrasonic</strong>
-                    <span>Multi-Zone Echo Matrix</span>
-                  </div>
-                </div>
-                <div class="cad-pin pin-camera">
-                  <div class="cad-dot"></div>
-                  <div class="cad-line"></div>
-                  <div class="cad-card">
-                    <span class="cad-tag">VISION PERCEPTION</span>
-                    <strong>ESP32-CAM OV2640</strong>
-                    <span>Edge TinyML &bull; MJPEG</span>
-                  </div>
-                </div>
-                <div class="cad-pin pin-driver">
-                  <div class="cad-dot"></div>
-                  <div class="cad-line"></div>
-                  <div class="cad-card">
-                    <span class="cad-tag">ACTUATION &amp; POWER</span>
-                    <strong>TB6612FNG H-Bridge</strong>
-                    <span>Differential Drive Kinematics</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Telemetry HUD Bar during Stage 3 / 4 -->
-              <div class="stage-telemetry-hud" id="stageTelemetryHud">
-                <div class="telemetry-chip">
-                  <span class="pulse-dot"></span>
-                  <span id="telemetryStatusLabel">ROVER V2 // KINEMATICS ACTIVE</span>
-                </div>
-                <div class="telemetry-specs">
-                  <span>MCU: ESP32-D0WDQ6</span>
-                  <span>BUS: I2C 400kHz</span>
-                  <span>CAM: OV2640 30FPS</span>
-                  <span>PWR: 3S 11.1V LiPo</span>
-                </div>
-              </div>
-
             </div>
           </div>
 
         </div>
-
-        <!-- Mode Toggle Pill -->
-        <button class="video-mode-pill" id="videoModeBtn" onclick="toggleVideoPlaybackMode()" title="Toggle scroll-driven scrub / continuous playback">
-          <span id="videoModeIcon">&#9881;</span>
-          <span id="videoModeLabel">MODE: SCROLL-DRIVEN</span>
-        </button>
       </div>
     </section>
 
     <!-- 02 ABOUT SECTION: EXPLODED ROBOTICS LAB & WORKBENCH -->
-        <!-- 02 ABOUT SECTION: EXPLODED ROBOTICS LAB & WORKBENCH -->
     <section class="section film-section" id="about">
-      <div class="film-grid-layout">
-        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
-        <div class="film-canvas-col">
-          <div class="film-stage-viewport">
-            <div class="film-hud-bar">
-              <div class="film-hud-tag">
+      <!-- Film Content Column -->
+      <div class="film-content-col">
+        <div class="section-tag reveal">01 // ABOUT ME</div>
+        <h2 class="section-title reveal delay-1">Entering Sangeeth's Robotics Lab</h2>
+        <p class="section-desc reveal delay-2">
+          I am Sangeeth Sasikumar K S, a B.Tech Mechatronics Engineering student interested in building real-world systems combining electronics, robotics, IoT, embedded systems, AI and computer vision.
+        </p>
+
+        <div class="about-layout-cinematic">
+          <!-- Interactive Cyber Profile Card -->
+          <div class="vibe-card about-profile-card reveal-left">
+            <div class="profile-card-header">
+              <div style="display: flex; align-items: center; gap: 8px; color: var(--cyan);">
                 <span class="hud-status-indicator"></span>
-                <span>STAGE 02 // ABOUT ROBOTICS LAB</span>
+                <span>HARDWARE BENCH // LIVE LAB</span>
               </div>
-              <div class="film-frame-indicator" id="aboutFrameNum">FR: 01/80</div>
+              <span style="color: var(--text-faint);">ID: SS-MECHATRONICS</span>
             </div>
-            <canvas id="aboutCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D About Robotics Lab sequence"></canvas>
-          </div>
-        </div>
 
-        <!-- Film Content Column -->
-        <div class="film-content-col">
-<div class="section-tag reveal">01 // ABOUT ME</div>
-      <h2 class="section-title reveal delay-1">Entering Sangeeth's Robotics Lab</h2>
-      <p class="section-desc reveal delay-2">
-        I am Sangeeth Sasikumar K S, a B.Tech Mechatronics Engineering student interested in building real-world systems combining electronics, robotics, IoT, embedded systems, AI and computer vision.
-      </p>
-
-      <div class="about-layout-cinematic">
-        <!-- Interactive Cyber Profile Card -->
-        <div class="vibe-card about-profile-card reveal-left">
-          <div class="profile-card-header">
-            <div style="display: flex; align-items: center; gap: 8px; color: var(--cyan);">
-              <span class="hud-status-indicator"></span>
-              <span>HARDWARE BENCH // LIVE LAB</span>
-            </div>
-            <span style="color: var(--text-faint);">ID: SS-MECHATRONICS</span>
-          </div>
-
-          <div class="profile-img-container" onclick="openProjectModal('workbench')" title="Click to inspect hardware workspace">
-            <img 
-              src="sangeeth.jpg" 
-              alt="Sangeeth Sasikumar K S - Mechatronics Engineering student at his hardware workbench assembling autonomous differential rover" 
-              class="profile-img"
-              width="768"
-              height="1024"
-              loading="lazy"
-            />
+            <div class="profile-img-container" onclick="openProjectModal('workbench')" title="Click to inspect hardware workspace">
+              <img 
+                src="assets/sangeeth.jpg" 
+                alt="Sangeeth Sasikumar K S - Mechatronics Engineering student at his hardware workbench assembling autonomous differential rover" 
+                class="profile-img"
+                width="768"
+                height="1024"
+                loading="lazy"
+              />
             <div class="profile-img-overlay">
               <div class="profile-overlay-tag">
                 <span class="tag-icon">&#9889;</span>
@@ -3740,30 +3529,14 @@
             </div>
           </div>
         </div>
-      </div>
         </div>
       </div>
     </section>
 
     <!-- 03 SKILLS SECTION: 3D HOLOGRAPHIC MODULES -->
-        <section class="section film-section" id="skills">
-      <div class="film-grid-layout reverse-desktop">
-        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
-        <div class="film-canvas-col">
-          <div class="film-stage-viewport">
-            <div class="film-hud-bar">
-              <div class="film-hud-tag">
-                <span class="hud-status-indicator"></span>
-                <span>STAGE 03 // HOLOGRAPHIC SKILLS</span>
-              </div>
-              <div class="film-frame-indicator" id="skillsFrameNum">FR: 01/80</div>
-            </div>
-            <canvas id="skillsCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Holographic Skills sequence"></canvas>
-          </div>
-        </div>
-
-        <!-- Film Content Column -->
-        <div class="film-content-col">
+    <section class="section film-section" id="skills">
+      <!-- Film Content Column -->
+      <div class="film-content-col">
 <div class="section-tag reveal">02 // TECHNICAL MODULES</div>
       <h2 class="section-title reveal delay-1">Holographic Skill Domains</h2>
       <p class="section-desc reveal delay-2">
@@ -3915,29 +3688,13 @@
           </div>
         </div>
       </div>
-        </div>
       </div>
     </section>
 
     <!-- 04 PROJECTS SECTION: 3D PROJECT SHOWCASE -->
-        <section class="section film-section" id="projects">
-      <div class="film-grid-layout">
-        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
-        <div class="film-canvas-col">
-          <div class="film-stage-viewport">
-            <div class="film-hud-bar">
-              <div class="film-hud-tag">
-                <span class="hud-status-indicator"></span>
-                <span>STAGE 04 // HARDWARE SHOWCASE</span>
-              </div>
-              <div class="film-frame-indicator" id="projectsFrameNum">FR: 01/80</div>
-            </div>
-            <canvas id="projectsCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Hardware Showcase sequence"></canvas>
-          </div>
-        </div>
-
-        <!-- Film Content Column -->
-        <div class="film-content-col">
+    <section class="section film-section" id="projects">
+      <!-- Film Content Column -->
+      <div class="film-content-col">
 <div class="section-tag reveal">03 // HARDWARE SHOWCASE</div>
       <h2 class="section-title reveal delay-1">Featured Engineering Deployments</h2>
       <p class="section-desc reveal delay-2">
@@ -4091,29 +3848,13 @@
           </div>
         </div>
       </div>
-        </div>
       </div>
     </section>
 
     <!-- 05 JOURNEY SECTION: 3D CIRCUIT PATH TIMELINE -->
-        <section class="section film-section" id="journey">
-      <div class="film-grid-layout reverse-desktop">
-        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
-        <div class="film-canvas-col">
-          <div class="film-stage-viewport">
-            <div class="film-hud-bar">
-              <div class="film-hud-tag">
-                <span class="hud-status-indicator"></span>
-                <span>STAGE 05 // 3D TIMELINE</span>
-              </div>
-              <div class="film-frame-indicator" id="journeyFrameNum">FR: 01/80</div>
-            </div>
-            <canvas id="journeyCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Timeline sequence"></canvas>
-          </div>
-        </div>
-
-        <!-- Film Content Column -->
-        <div class="film-content-col">
+    <section class="section film-section" id="journey">
+      <!-- Film Content Column -->
+      <div class="film-content-col">
 <div class="section-tag reveal">04 // 3D TIMELINE</div>
       <h2 class="section-title reveal delay-1">My Engineering Journey</h2>
       <p class="section-desc reveal delay-2">
@@ -4187,29 +3928,13 @@
           </div>
         </div>
       </div>
-        </div>
       </div>
     </section>
 
     <!-- 06 CONTACT SECTION: HOLOGRAPHIC COMMUNICATION HUB -->
-        <section class="section film-section" id="contact">
-      <div class="film-grid-layout">
-        <!-- Sticky Full-Scale 3D Film Stage (Zero Borders, Max Screen Scale) -->
-        <div class="film-canvas-col">
-          <div class="film-stage-viewport">
-            <div class="film-hud-bar">
-              <div class="film-hud-tag">
-                <span class="hud-status-indicator"></span>
-                <span>STAGE 06 // COMMUNICATION LINK</span>
-              </div>
-              <div class="film-frame-indicator" id="contactFrameNum">FR: 01/80</div>
-            </div>
-            <canvas id="contactCanvas" class="film-fullscreen-canvas" width="1280" height="720" aria-label="3D Communication Link sequence"></canvas>
-          </div>
-        </div>
-
-        <!-- Film Content Column -->
-        <div class="film-content-col">
+    <section class="section film-section" id="contact">
+      <!-- Film Content Column -->
+      <div class="film-content-col">
 <div class="section-tag reveal">05 // COMMUNICATION LINK</div>
       <h2 class="section-title reveal delay-1">Let's Build Something Together</h2>
       <p class="section-desc reveal delay-2">
@@ -4274,9 +3999,8 @@
           </div>
         </div>
       </div>
-        </div>
-      </div>
-    </section>
+    </div>
+  </section>
 
     <!-- Interactive Hardware Cursor Elements (Desktop) -->
     <div class="cyber-cursor-dot" id="cursorDot"></div>
@@ -4805,7 +4529,6 @@
          SCROLL-DRIVEN 3D CINEMATIC CHOREOGRAPHY & VIDEO SCRUBBING
          ------------------------------------------------------------- */
       let progress = 0;
-      let heroProgress = 0;
       let targetCamX = 0, targetCamY = 1.2, targetCamZ = 14;
       let targetRotY = 0, targetRotX = 0;
       let targetExplosion = 0.0;
@@ -4816,156 +4539,6 @@
       const hudIndicator = document.getElementById('hudStatusIndicator');
       const stageItems = document.querySelectorAll('.stage-item');
       let isHeaderScrolled = false;
-
-      // Canvas, Video & Hero Stage DOM Elements
-      const heroCanvas = document.getElementById('heroCanvas');
-      const heroCtx = heroCanvas ? heroCanvas.getContext('2d') : null;
-      const heroVideo = document.getElementById('heroVideo');
-      const heroTrack = document.getElementById('heroTrack');
-      const heroContentCol = document.getElementById('heroContentCol');
-      const robotViewport = document.getElementById('robotStageViewport');
-      const holoHudLeft = document.getElementById('holoHudLeft');
-      const holoDeck = document.getElementById('holoPerspectiveDeck');
-      const explodedCad = document.getElementById('explodedCadOverlay');
-      const stageTelemetry = document.getElementById('stageTelemetryHud');
-      const telemetryLabel = document.getElementById('telemetryStatusLabel');
-
-      // 192-Frame Butter-Smooth GPU Canvas Engine (Optimized Web JPG Architecture)
-      const TOTAL_ROVER_FRAMES = 192;
-      const roverImages = new Array(TOTAL_ROVER_FRAMES);
-      const roverFrameLoaded = new Uint8Array(TOTAL_ROVER_FRAMES);
-      let lastRenderedFrameIdx = -1;
-      let targetFrameIndex = 0;
-      let currentFrameFloat = 0;
-      window.heroPlaybackMode = 'scroll'; // 'scroll' or 'autoplay'
-
-      function getRoverFrameSrc(index) {
-        const pad = String(index + 1).padStart(6, '0');
-        return `frames/frame_${pad}.jpg`;
-      }
-
-      function loadFrame(idx, callback) {
-        if (idx < 0 || idx >= TOTAL_ROVER_FRAMES) {
-          if (callback) callback();
-          return;
-        }
-        if (roverImages[idx]) {
-          if (callback) callback();
-          return;
-        }
-        const img = new Image();
-        roverImages[idx] = img;
-        img.src = getRoverFrameSrc(idx);
-        if ('decode' in img) {
-          img.decode().then(() => {
-            roverFrameLoaded[idx] = 1;
-            if (callback) callback();
-          }).catch(() => {
-            roverFrameLoaded[idx] = 1;
-            if (callback) callback();
-          });
-        } else {
-          img.onload = () => {
-            roverFrameLoaded[idx] = 1;
-            if (callback) callback();
-          };
-          img.onerror = () => {
-            if (callback) callback();
-          };
-        }
-      }
-
-      function drawRoverFrame(idx) {
-        if (!heroCtx || !heroCanvas) return;
-        idx = Math.min(TOTAL_ROVER_FRAMES - 1, Math.max(0, idx));
-
-        // Demand-driven JIT load if not yet requested
-        if (!roverImages[idx]) {
-          loadFrame(idx);
-        }
-
-        // Fast fallback: Find closest loaded frame within small offset window
-        let frameToDraw = idx;
-        if (!roverFrameLoaded[frameToDraw]) {
-          for (let offset = 1; offset < 10; offset++) {
-            if (idx - offset >= 0 && roverFrameLoaded[idx - offset]) {
-              frameToDraw = idx - offset;
-              break;
-            }
-            if (idx + offset < TOTAL_ROVER_FRAMES && roverFrameLoaded[idx + offset]) {
-              frameToDraw = idx + offset;
-              break;
-            }
-          }
-        }
-
-        if (frameToDraw === lastRenderedFrameIdx) return; // Skip redundant draw to save GPU cycles
-
-        const img = roverImages[frameToDraw];
-        if (img && (roverFrameLoaded[frameToDraw] || img.complete)) {
-          heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
-          heroCtx.drawImage(img, 0, 0, heroCanvas.width, heroCanvas.height);
-          lastRenderedFrameIdx = frameToDraw;
-        }
-      }
-
-      // Step 1: Preload frame 0 immediately so visitor sees instant rover turntable visual
-      loadFrame(0, () => {
-        drawRoverFrame(0);
-      });
-
-      // Step 2: High-speed prioritized preloader (Keyframes first, then all remaining)
-      // Pass 1: 48 keyframes (every 4th frame: 0, 4, 8...) — loads in ~300ms total!
-      // Pass 2: Even frames (2, 6, 10...)
-      // Pass 3: All remaining frames to reach full 192-frame fidelity
-      function preloadRoverFrames() {
-        const pass1 = [], pass2 = [], pass3 = [];
-        for (let i = 1; i < TOTAL_ROVER_FRAMES; i++) {
-          if (i % 4 === 0) pass1.push(i);
-          else if (i % 2 === 0) pass2.push(i);
-          else pass3.push(i);
-        }
-        const queue = [...pass1, ...pass2, ...pass3];
-        let active = 0;
-        const maxConcurrent = 8; // Small JPGs allow faster parallel stream
-
-        function pump() {
-          while (active < maxConcurrent && queue.length > 0) {
-            const nextIdx = queue.shift();
-            if (roverImages[nextIdx]) continue;
-            active++;
-            loadFrame(nextIdx, () => {
-              active--;
-              pump();
-            });
-          }
-        }
-        pump();
-      }
-
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(preloadRoverFrames, { timeout: 400 });
-      } else {
-        setTimeout(preloadRoverFrames, 80);
-      }
-
-      window.toggleVideoPlaybackMode = function() {
-        const btn = document.getElementById('videoModeBtn');
-        const label = document.getElementById('videoModeLabel');
-        const icon = document.getElementById('videoModeIcon');
-
-        if (window.heroPlaybackMode === 'scroll') {
-          window.heroPlaybackMode = 'autoplay';
-          if (label) label.textContent = 'MODE: CINEMATIC PLAY';
-          if (icon) icon.innerHTML = '&#9654;';
-          playBeep(640, 0.08);
-        } else {
-          window.heroPlaybackMode = 'scroll';
-          if (label) label.textContent = 'MODE: SCROLL-DRIVEN';
-          if (icon) icon.innerHTML = '&#9881;';
-          playBeep(480, 0.08);
-        }
-      };
 
       function updateScrollTimeline() {
         const scrollTop = window.scrollY || window.pageYOffset || 0;
@@ -5012,7 +4585,10 @@
         });
 
         // Dynamic Top HUD Stage Telemetry sync
-        if (activeStageIndex === 1 && hudText) {
+        if (activeStageIndex === 0 && hudText) {
+          hudText.textContent = 'STAGE 01 // ROBOTICS LAB WORKSTATION // ONLINE';
+          if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
+        } else if (activeStageIndex === 1 && hudText) {
           hudText.textContent = 'STAGE 02 // ABOUT MECHATRONICS LAB // LIVE BENCH';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
         } else if (activeStageIndex === 2 && hudText) {
@@ -5027,142 +4603,6 @@
         } else if (activeStageIndex === 5 && hudText) {
           hudText.textContent = 'STAGE 06 // COMMUNICATION LINK // 115200 BAUD DISPATCH';
           if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
-        }
-
-        // Calculate Hero-specific scroll progress (0.0 to 1.0 within heroTrack)
-        if (heroTrack) {
-          const trackRect = heroTrack.getBoundingClientRect();
-          const trackHeight = heroTrack.offsetHeight - window.innerHeight;
-          if (trackHeight > 0) {
-            heroProgress = Math.min(Math.max(-trackRect.top / trackHeight, 0), 1);
-          } else {
-            heroProgress = 0;
-          }
-        }
-
-        const isDesktop = window.innerWidth > 992;
-
-        /* ============================================================
-           SCROLL-DRIVEN HERO & CANVAS TIMELINE (STAGES 1 TO 3)
-           1st: Full 3D video plays from start to finish (frames 0 to 191)
-           2nd: After full video completes, THEN comes the interactive section
-           ============================================================ */
-        const videoScrubProgress = Math.min(Math.max(heroProgress / 0.48, 0), 1);
-        targetFrameIndex = Math.min(TOTAL_ROVER_FRAMES - 1, Math.max(0, videoScrubProgress * (TOTAL_ROVER_FRAMES - 1)));
-
-        // Proximity JIT Preloader: Prioritize frames right around current scroll position
-        const currentTargetIdx = Math.round(targetFrameIndex);
-        for (let j = 0; j <= 4; j++) {
-          if (currentTargetIdx + j < TOTAL_ROVER_FRAMES) loadFrame(currentTargetIdx + j);
-          if (currentTargetIdx - j >= 0) loadFrame(currentTargetIdx - j);
-        }
-
-        const deckHotspots = document.getElementById('heroDeckHotspots');
-        const heroLeftIntro = document.getElementById('heroLeftIntro');
-        const heroAiHud = document.getElementById('heroAiHud');
-        const heroConveyorDeck = document.getElementById('heroConveyorDeck');
-        const pedestalCreedBand = document.getElementById('pedestalCreedBand');
-        const hero3dHint = document.getElementById('hero3dHint');
-
-        if (heroProgress < 0.48) {
-          // STAGE 01: FULL 3D VIDEO PLAYBACK (FRAMES 0 TO 191)
-          // The 3D video plays in FULL, completely clean and unobstructed (NOT in middle of video!)
-          if (hero3dHint) {
-            hero3dHint.style.opacity = Math.max(0, 1 - heroProgress * 3.5).toString();
-            hero3dHint.style.pointerEvents = heroProgress > 0.25 ? 'none' : 'auto';
-            hero3dHint.style.transform = 'translateX(-50%) translateY(' + (-heroProgress * 30) + 'px)';
-          }
-
-          // Interactive reference section is COMPLETELY HIDDEN while full video is playing
-          if (heroLeftIntro) {
-            heroLeftIntro.style.opacity = '0';
-            heroLeftIntro.style.pointerEvents = 'none';
-            heroLeftIntro.style.transform = 'translateX(-30px)';
-          }
-          if (heroAiHud) {
-            heroAiHud.style.opacity = '0';
-            heroAiHud.style.pointerEvents = 'none';
-            heroAiHud.style.transform = 'scale(0.92)';
-          }
-          if (heroConveyorDeck) {
-            heroConveyorDeck.style.opacity = '0';
-            heroConveyorDeck.style.pointerEvents = 'none';
-            heroConveyorDeck.style.transform = 'translateX(30px)';
-          }
-          if (pedestalCreedBand) {
-            pedestalCreedBand.style.opacity = '0';
-            pedestalCreedBand.style.pointerEvents = 'none';
-          }
-          if (deckHotspots) deckHotspots.style.opacity = '0';
-          if (explodedCad) explodedCad.style.opacity = '0';
-          if (stageTelemetry) stageTelemetry.style.opacity = '0';
-
-          const curFr = Math.round(targetFrameIndex) + 1;
-          if (hudText) hudText.textContent = 'STAGE 01 // 3D ROBOTICS REEL // FULL VIDEO PLAYING (' + curFr + '/192)';
-          if (hudIndicator) hudIndicator.style.background = 'var(--cyan)';
-
-        } else if (heroProgress < 0.84) {
-          // STAGE 02: AFTER THE FULL VIDEO COMPLETES -> NOW COMES THIS INTERACTIVE SECTION!
-          // Full 192 frames finished; rover rests on pedestal; interactive reference UI reveals!
-          if (hero3dHint) {
-            hero3dHint.style.opacity = '0';
-            hero3dHint.style.pointerEvents = 'none';
-          }
-
-          // Smooth reveal from 0.48 to 0.54, solid active through 0.78, then exits to 0.84
-          const enterT = Math.min(Math.max((heroProgress - 0.48) / 0.06, 0), 1);
-          const exitT = Math.min(Math.max((heroProgress - 0.78) / 0.06, 0), 1);
-          const activeOpacity = enterT * (1 - exitT);
-
-          if (heroLeftIntro) {
-            heroLeftIntro.style.opacity = activeOpacity.toString();
-            heroLeftIntro.style.pointerEvents = activeOpacity > 0.4 ? 'auto' : 'none';
-            heroLeftIntro.style.transform = 'translateX(' + (-20 * (1 - enterT)) + 'px)';
-          }
-          if (heroAiHud) {
-            heroAiHud.style.opacity = activeOpacity.toString();
-            heroAiHud.style.pointerEvents = activeOpacity > 0.4 ? 'auto' : 'none';
-            heroAiHud.style.transform = 'scale(' + (0.92 + 0.08 * enterT) + ')';
-          }
-          if (heroConveyorDeck) {
-            heroConveyorDeck.style.opacity = activeOpacity.toString();
-            heroConveyorDeck.style.pointerEvents = activeOpacity > 0.4 ? 'auto' : 'none';
-            heroConveyorDeck.style.transform = 'translateX(' + (20 * (1 - enterT)) + 'px)';
-          }
-          if (pedestalCreedBand) {
-            pedestalCreedBand.style.opacity = activeOpacity.toString();
-          }
-          if (deckHotspots) deckHotspots.style.opacity = activeOpacity.toString();
-          if (explodedCad) explodedCad.style.opacity = '0';
-          if (stageTelemetry) {
-            stageTelemetry.style.opacity = (enterT * 0.8).toString();
-            if (telemetryLabel) telemetryLabel.textContent = 'ROVER V2 // INTERACTIVE WORKSTATION ACTIVE';
-          }
-
-          if (hudText) hudText.textContent = 'STAGE 02 // INTERACTIVE ROBOTICS WORKSTATION // ACTIVE';
-          if (hudIndicator) hudIndicator.style.background = 'var(--neon-mint)';
-
-        } else {
-          // STAGE 03: TRANSITION TO SECTION 02 (ABOUT ME & WORKBENCH)
-          if (hero3dHint) {
-            hero3dHint.style.opacity = '0';
-            hero3dHint.style.pointerEvents = 'none';
-          }
-          if (heroLeftIntro) { heroLeftIntro.style.opacity = '0'; heroLeftIntro.style.pointerEvents = 'none'; }
-          if (heroAiHud) { heroAiHud.style.opacity = '0'; heroAiHud.style.pointerEvents = 'none'; }
-          if (heroConveyorDeck) { heroConveyorDeck.style.opacity = '0'; heroConveyorDeck.style.pointerEvents = 'none'; }
-          if (pedestalCreedBand) pedestalCreedBand.style.opacity = '0';
-          if (deckHotspots) deckHotspots.style.opacity = '0';
-
-          const t = Math.min((heroProgress - 0.84) / 0.16, 1.0);
-          if (explodedCad) explodedCad.style.opacity = (t * 1.2).toString();
-          if (stageTelemetry) {
-            stageTelemetry.style.opacity = '1';
-            if (telemetryLabel) telemetryLabel.textContent = 'EXPLODED CAD // SUB-ASSEMBLY PINOUTS';
-          }
-
-          if (hudText) hudText.textContent = 'STAGE 03 // ABOUT LAB // EXPLODED CAD COMPONENTS';
-          if (hudIndicator) hudIndicator.style.background = 'var(--electric-purple)';
         }
 
         /* 3D WebGL Camera Transitions (Complementary Ambient Starfield & Pedestal) */
@@ -5234,29 +4674,6 @@
       window.addEventListener('scroll', updateScrollTimeline, { passive: true });
       updateScrollTimeline();
 
-      // Ultra-smooth RAF Canvas Scrubbing Loop (60-120fps GPU accelerated)
-      function renderHeroCanvasScrub() {
-        requestAnimationFrame(renderHeroCanvasScrub);
-
-        if (window.heroPlaybackMode === 'autoplay') {
-          // Autoplay mode: continuously cycle frames at smooth ~24fps
-          currentFrameFloat = (currentFrameFloat + 0.4) % TOTAL_ROVER_FRAMES;
-          drawRoverFrame(Math.floor(currentFrameFloat));
-        } else {
-          // Scroll-driven scrubbing with exponential lerp easing (purely user scroll driven, no initial auto-loop)
-          // Handles scrolling down AND scrolling back up with zero lag!
-          const diff = targetFrameIndex - currentFrameFloat;
-          if (Math.abs(diff) > 0.02) {
-            currentFrameFloat += diff * 0.22; // 0.22 gives instant responsive yet velvety glide
-          } else {
-            currentFrameFloat = targetFrameIndex;
-          }
-          const frameToDraw = Math.min(TOTAL_ROVER_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
-          drawRoverFrame(frameToDraw);
-        }
-      }
-      requestAnimationFrame(renderHeroCanvasScrub);
-
       // Interactive 3D tilt on mousemove for skill cards & hero visual
       if (!isMobile) {
         document.querySelectorAll('[data-tilt]').forEach(card => {
@@ -5272,23 +4689,21 @@
         });
 
         // Subtle 3D Parallax Tilt on the Full-Scale Hero Visual
-        if (heroCanvas) {
+        const heroVisual = document.getElementById('heroCanvas') || document.getElementById('robotVideoWrapper');
+        if (heroVisual) {
           window.addEventListener('mousemove', (e) => {
-            if (heroProgress < 0.20) {
+            if (window.scrollY < window.innerHeight) {
               const x = (e.clientX / window.innerWidth) * 2 - 1;
               const y = -(e.clientY / window.innerHeight) * 2 + 1;
-              const tiltX = -y * 2.5;
-              const tiltY = x * 3.5;
-              heroCanvas.style.transform = `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+              const tiltX = -y * 2.0;
+              const tiltY = x * 2.5;
+              heroVisual.style.transform = `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.01)`;
             } else {
-              heroCanvas.style.transform = '';
+              heroVisual.style.transform = '';
             }
           }, { passive: true });
         }
       }
-
-      window.addEventListener('scroll', updateScrollTimeline, { passive: true });
-      updateScrollTimeline();
 
       /* ANIMATION RENDER LOOP */
       const clock = new THREE.Clock();
@@ -5296,9 +4711,6 @@
       function animate() {
         requestAnimationFrame(animate);
         if (document.hidden) return;
-
-        // GPU Optimization: When hero canvas completely covers the viewport, pause Three.js rendering
-        if (progress < 0.12 && heroProgress < 0.95) return;
 
         const delta = Math.min(clock.getDelta(), 0.1);
         const time = clock.getElapsedTime();
@@ -5640,7 +5052,7 @@
       'workbench': {
         title: 'Hardware Workbench & Embedded Lab',
         badge: 'LIVE MECHATRONICS LAB // JYOTHI ENG',
-        image: 'sangeeth.jpg',
+        image: 'assets/sangeeth.jpg',
         desc: 'Inside the engineering workspace of Sangeeth Sasikumar K S — assembling the next-generation autonomous differential rover (Robot V2), writing firmware in C++/FreeRTOS, and benchmarking edge sensors.',
         specs: [
           { label: 'Active Prototype', val: 'Autonomous Differential Rover V2' },
@@ -5745,27 +5157,26 @@
 
 
     /* ==========================================================================
-       8. MODULAR SCROLL FRAME SEQUENCE ENGINE (<canvas> + RAF + INTERSECTION OBSERVER)
-       Optimized Web JPG Architecture with off-thread decode, JIT proximity cache & lerp
+       8. 3D ROBOT MECHANICAL PARTS ASSEMBLING SCROLL SEQUENCE ENGINE (<canvas> + RAF)
+       192 Ultra-Optimized Web Frames with off-thread decode, JIT proximity cache & lerp
        ========================================================================== */
-    class ScrollFrameSequence {
-      constructor(cfg) {
-        this.canvas = document.getElementById(cfg.canvasId);
-        if (!this.canvas) return;
+    class HeroScrollAssemblySequence {
+      constructor() {
+        this.canvas = document.getElementById('heroCanvas');
+        this.track = document.querySelector('.hero-cinematic-track');
+        if (!this.canvas || !this.track) return;
+
         this.ctx = this.canvas.getContext('2d', { alpha: false });
-        this.section = document.getElementById(cfg.sectionId);
-        this.indicator = document.getElementById(cfg.indicatorId);
-        this.frameCount = cfg.frameCount || 80;
-        this.framePrefix = cfg.framePrefix;
-        this.frameExt = cfg.frameExt || '.jpg';
-        this.stageName = cfg.stageName || '';
+        this.frameCount = 192;
+        this.framePrefix = 'assets/frames/frame_';
+        this.frameExt = '.jpg';
 
         this.images = new Array(this.frameCount);
         this.loaded = new Uint8Array(this.frameCount);
         this.currentFrameFloat = 0;
         this.targetFrameIndex = 0;
         this.lastRenderedFrame = -1;
-        this.isVisible = false;
+        this.isVisible = true;
         this.hasPreloaded = false;
         this.rafId = null;
         this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -5775,7 +5186,7 @@
       }
 
       getFrameSrc(idx) {
-        const pad = String(idx + 1).padStart(6, '0');
+        const pad = String(idx).padStart(6, '0');
         return this.framePrefix + pad + this.frameExt;
       }
 
@@ -5822,7 +5233,7 @@
         // Nearest loaded frame fallback to guarantee 0% flicker or blank canvas
         let frameToDraw = idx;
         if (!this.loaded[frameToDraw]) {
-          for (let offset = 1; offset < 10; offset++) {
+          for (let offset = 1; offset < 25; offset++) {
             if (idx - offset >= 0 && this.loaded[idx - offset]) {
               frameToDraw = idx - offset;
               break;
@@ -5840,20 +5251,17 @@
         if (img && (this.loaded[frameToDraw] || img.complete)) {
           this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
           this.lastRenderedFrame = frameToDraw;
-
-          if (this.indicator) {
-            const curPad = String(frameToDraw + 1).padStart(2, '0');
-            const totPad = String(this.frameCount).padStart(2, '0');
-            this.indicator.textContent = 'FR: ' + curPad + '/' + totPad;
-          }
         }
       }
 
       preloadAllFrames() {
-        // Prioritized 3-pass batch preloader (Keyframes first, then even, then all)
+        // Multi-pass prioritized preloader:
+        // Pass 1: Key milestones every 8 frames (instant responsive scrub)
+        // Pass 2: Every 2nd frame (even)
+        // Pass 3: All remaining odd frames
         const pass1 = [], pass2 = [], pass3 = [];
         for (let i = 1; i < this.frameCount; i++) {
-          if (i % 5 === 0) pass1.push(i);
+          if (i % 8 === 0) pass1.push(i);
           else if (i % 2 === 0) pass2.push(i);
           else pass3.push(i);
         }
@@ -5876,20 +5284,22 @@
       }
 
       updateProgress() {
-        if (!this.section) return;
-        const rect = this.section.getBoundingClientRect();
-        const winH = window.innerHeight;
+        if (!this.track) return;
+        const rect = this.track.getBoundingClientRect();
+        const totalScrollable = rect.height - window.innerHeight;
+        if (totalScrollable <= 0) {
+          this.targetFrameIndex = 0;
+          return;
+        }
 
-        // Fullscreen film sequence scrubs across initial full coverage scroll distance
-        const scrubDistance = Math.max(winH * 1.15, 600);
-        let p = -rect.top / scrubDistance;
+        let p = -rect.top / totalScrollable;
         p = Math.min(Math.max(p, 0), 1);
 
         this.targetFrameIndex = p * (this.frameCount - 1);
 
         // Proximity JIT Preloader: prioritize nearby frames immediately
         const targetIdx = Math.round(this.targetFrameIndex);
-        const range = this.isMobile ? 2 : 4;
+        const range = this.isMobile ? 3 : 6;
         for (let j = 0; j <= range; j++) {
           if (targetIdx + j < this.frameCount) this.loadFrame(targetIdx + j);
           if (targetIdx - j >= 0) this.loadFrame(targetIdx - j);
@@ -5905,10 +5315,10 @@
         if (this.isReducedMotion) {
           this.currentFrameFloat = this.targetFrameIndex;
         } else {
-          // Velvety smooth lerp easing for forward and reverse scrubbing
+          // Velvety smooth lerp easing for assembling and disassembling scrub
           const diff = this.targetFrameIndex - this.currentFrameFloat;
           if (Math.abs(diff) > 0.02) {
-            this.currentFrameFloat += diff * 0.20;
+            this.currentFrameFloat += diff * 0.18;
           } else {
             this.currentFrameFloat = this.targetFrameIndex;
           }
@@ -5925,24 +5335,23 @@
         this.canvas.width = 1280;
         this.canvas.height = 720;
 
-        // Instant frame 0 render so visual is immediately present on mount
+        // Instant frame 0 render so mechanical exploded view is immediately present
         this.loadFrame(0, () => {
           this.drawFrame(0);
         });
 
-        // IntersectionObserver: Only scrub & prefetch when user approaches section
+        // Background idle preloader
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => this.preloadAllFrames(), { timeout: 400 });
+        } else {
+          setTimeout(() => this.preloadAllFrames(), 100);
+        }
+
+        // IntersectionObserver: pause rendering loop when scrolled far past hero
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               this.isVisible = true;
-              if (!this.hasPreloaded) {
-                this.hasPreloaded = true;
-                if ('requestIdleCallback' in window) {
-                  requestIdleCallback(() => this.preloadAllFrames(), { timeout: 400 });
-                } else {
-                  setTimeout(() => this.preloadAllFrames(), 100);
-                }
-              }
               this.updateProgress();
               if (!this.rafId) {
                 this.rafId = requestAnimationFrame(() => this.renderLoop());
@@ -5955,68 +5364,24 @@
               }
             }
           });
-        }, { rootMargin: '300px 0px 300px 0px' });
+        }, { rootMargin: '200px 0px 200px 0px' });
 
-        if (this.section) observer.observe(this.section);
+        observer.observe(this.track);
 
         window.addEventListener('scroll', () => {
           if (this.isVisible) this.updateProgress();
         }, { passive: true });
 
+        window.addEventListener('resize', () => {
+          if (this.isVisible) this.updateProgress();
+        }, { passive: true });
+
         this.updateProgress();
+        this.rafId = requestAnimationFrame(() => this.renderLoop());
       }
     }
 
-    /* Instantiate All 5 Cinematic Scroll Frame Sequences */
-    const seqAbout = new ScrollFrameSequence({
-      canvasId: 'aboutCanvas',
-      indicatorId: 'aboutFrameNum',
-      sectionId: 'about',
-      frameCount: 80,
-      framePrefix: 'frames_about/frame_',
-      frameExt: '.jpg',
-      stageName: '02 // ABOUT LAB'
-    });
-
-    const seqSkills = new ScrollFrameSequence({
-      canvasId: 'skillsCanvas',
-      indicatorId: 'skillsFrameNum',
-      sectionId: 'skills',
-      frameCount: 80,
-      framePrefix: 'frames_skills/frame_',
-      frameExt: '.jpg',
-      stageName: '03 // HOLOGRAPHIC SKILLS'
-    });
-
-    const seqProjects = new ScrollFrameSequence({
-      canvasId: 'projectsCanvas',
-      indicatorId: 'projectsFrameNum',
-      sectionId: 'projects',
-      frameCount: 80,
-      framePrefix: 'frames_projects/frame_',
-      frameExt: '.jpg',
-      stageName: '04 // HARDWARE SHOWCASE'
-    });
-
-    const seqJourney = new ScrollFrameSequence({
-      canvasId: 'journeyCanvas',
-      indicatorId: 'journeyFrameNum',
-      sectionId: 'journey',
-      frameCount: 80,
-      framePrefix: 'frames_journey/frame_',
-      frameExt: '.jpg',
-      stageName: '05 // 3D TIMELINE'
-    });
-
-    const seqContact = new ScrollFrameSequence({
-      canvasId: 'contactCanvas',
-      indicatorId: 'contactFrameNum',
-      sectionId: 'contact',
-      frameCount: 80,
-      framePrefix: 'frames_contact/frame_',
-      frameExt: '.jpg',
-      stageName: '06 // COMMUNICATION LINK'
-    });
+    const heroScrollAssembly = new HeroScrollAssemblySequence();
 
     /* ==========================================================================
        9. DESKTOP INTERACTIVE HARDWARE CROSSHAIR / DOT & RING CURSOR
@@ -6107,21 +5472,13 @@
        CINEMATIC SHOWREEL MODAL CONTROLLER
        ========================================================================== */
     window.scrollToInteractiveLab = function() {
-      const heroTrack = document.getElementById('heroTrack');
-      if (heroTrack) {
-        const target = heroTrack.offsetTop + (heroTrack.offsetHeight - window.innerHeight) * 0.56;
-        window.scrollTo({ top: target, behavior: 'smooth' });
-        playBeep(640, 0.08);
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      playBeep(640, 0.08);
     };
 
     window.scrollToWorkstation = function() {
-      const heroTrack = document.getElementById('heroTrack');
-      if (heroTrack) {
-        const targetScroll = heroTrack.offsetTop + (heroTrack.offsetHeight - window.innerHeight) * 0.25;
-        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-        playBeep(640, 0.08);
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      playBeep(640, 0.08);
     };
 
     window.openShowreelModal = function() {
@@ -6169,7 +5526,7 @@
         <button class="showreel-close-btn" onclick="closeShowreelModal()" aria-label="Close Showreel">&times;</button>
       </div>
       <div class="showreel-video-wrapper">
-        <video id="showreelVideoPlayer" src="Robotic_rover_interface_animation_20260926221438.mp4" controls playsinline preload="auto" style="width: 100%; height: 100%; object-fit: contain; background: #000;"></video>
+        <video id="showreelVideoPlayer" src="assets/Robotic_rover_interface_animation_20260926221438.mp4" controls playsinline preload="auto" style="width: 100%; height: 100%; object-fit: contain; background: #000;"></video>
       </div>
       <div class="showreel-modal-footer">
         <span>AUTONOMOUS DIFFERENTIAL ROVER V2 &bull; ESP32 DUAL-CORE &bull; MECHATRONICS LAB</span>
