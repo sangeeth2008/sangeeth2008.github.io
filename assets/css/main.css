@@ -276,7 +276,6 @@ a:hover .roll > span { transform: translateY(-1.3em); }
 }
 .hero__canvas {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: center 50%;
   transform: translateZ(0px);
   will-change: transform;
 }
@@ -286,7 +285,7 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   transform: translateZ(35px);
 }
 .hero__scanner {
-  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  position: absolute; pointer-events: none; z-index: 2;
   overflow: hidden; opacity: 0; transition: opacity .4s ease;
   transform: translateZ(55px);
 }
@@ -298,10 +297,10 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   animation: scanSweep 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 @keyframes scanSweep {
-  0% { top: 10%; opacity: 0; }
+  0% { top: 5%; opacity: 0; }
   15% { opacity: 1; }
   85% { opacity: 1; }
-  100% { top: 90%; opacity: 0; }
+  100% { top: 95%; opacity: 0; }
 }
 
 /* 3D CAD Reticle Target System */
@@ -313,18 +312,32 @@ a:hover .roll > span { transform: translateY(-1.3em); }
 .cad-target {
   position: absolute;
   display: flex; align-items: center; gap: 10px;
-  opacity: 0; transform: scale(0.85) translateZ(20px);
+  opacity: 0; transform: translate(-50%, -50%) scale(0.85) translateZ(20px);
   transition: opacity .45s var(--ease-out), transform .45s var(--ease-out), filter .3s;
   will-change: transform, opacity;
   pointer-events: auto;
   cursor: pointer;
 }
 .cad-target.is-visible {
-  opacity: 1; transform: scale(1) translateZ(45px);
+  opacity: 1; transform: translate(-50%, -50%) scale(1) translateZ(45px);
 }
 .cad-target:hover, .cad-target.is-active {
-  transform: scale(1.08) translateZ(70px);
+  transform: translate(-50%, -50%) scale(1.08) translateZ(70px);
   filter: brightness(1.25);
+}
+
+/* Touch Sonar Ping Ripple */
+.hero__touch-pulse {
+  position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px;
+  border-radius: 50%; pointer-events: none; z-index: 10;
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 0 18px var(--accent), inset 0 0 12px rgba(76, 141, 255, 0.5);
+  animation: touchPulse .95s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+@keyframes touchPulse {
+  0% { transform: scale(0.4); opacity: 1; }
+  50% { opacity: 0.85; }
+  100% { transform: scale(7.5); opacity: 0; }
 }
 .cad-target__ping {
   position: relative; width: 18px; height: 18px; border-radius: 50%;
@@ -815,9 +828,6 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   .nav__burger { display: block; }
 
   .hero__track { height: 360vh; }
-  .hero__canvas {
-    object-position: 50% 36%;
-  }
   .hero__grid3d {
     background-size: 34px 34px;
     transform: rotateX(74deg) translateZ(-120px);
@@ -825,11 +835,7 @@ a:hover .roll > span { transform: translateY(-1.3em); }
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 15%, transparent 75%);
   }
   
-  /* Mobile 3D CAD Reticle Positioning — Calibrated for 50% 36% framing */
-  #cadCam { top: 21%; left: 47%; }
-  #cadSonar { top: 37%; left: 20%; }
-  #cadMcu { top: 31%; left: 55%; }
-  #cadDrive { top: 48%; left: 24%; }
+  /* Mobile 3D CAD Reticle Positioning — Dynamic subpixel coordinates driven by HeroScrubber */
   .cad-target { gap: 6px; }
   .cad-target__box { padding: 4px 8px; border-radius: 5px; }
   .cad-target__tag { font-size: 7.5px; }
@@ -845,7 +851,7 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   .hero__lede { font-size: 15px; }
   .hero__cue { display: none; }
 
-  /* Mobile Chapter HUD: Floating Glassmorphic Pill Cards */
+  /* Mobile Chapter HUD: Floating Glassmorphic Pill Cards with Cybernetic Shimmer */
   .chapter, .chapter--left, .chapter--right {
     left: clamp(14px, 4vw, 24px);
     right: clamp(14px, 4vw, 24px);
@@ -861,9 +867,29 @@ a:hover .roll > span { transform: translateY(-1.3em); }
     padding: 18px 20px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     z-index: 10;
+    overflow: hidden;
+    position: relative;
+  }
+  .chapter::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(105deg, transparent 20%, rgba(76, 141, 255, 0.12) 50%, transparent 80%);
+    background-size: 250% 100%;
+    animation: chapterShimmer 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  @keyframes chapterShimmer {
+    0% { background-position: -250% 0; }
+    50%, 100% { background-position: 250% 0; }
   }
   .chapter__idx { margin-bottom: 10px; font-size: 10px; }
-  .chapter__idx span { width: 22px; height: 22px; font-size: 9px; }
+  .chapter__idx span {
+    width: 22px; height: 22px; font-size: 9px;
+    box-shadow: 0 0 10px rgba(76, 141, 255, 0.4);
+    animation: dialGlow 2.2s ease-in-out infinite alternate;
+  }
+  @keyframes dialGlow {
+    0% { border-color: var(--accent); box-shadow: 0 0 6px rgba(76, 141, 255, 0.3); }
+    100% { border-color: #fff; box-shadow: 0 0 14px rgba(76, 141, 255, 0.8); }
+  }
   .chapter__title { font-size: clamp(22px, 6.4vw, 34px); }
   .chapter__list {
     margin-top: 12px;
@@ -872,6 +898,21 @@ a:hover .roll > span { transform: translateY(-1.3em); }
     column-gap: 12px;
   }
   .chapter__list li { font-size: 9.5px; padding: 6px 0; }
+
+  /* Mobile Capability Cards Animated Glow */
+  .cap {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: transform .35s, border-color .35s, box-shadow .35s;
+  }
+  .cap.is-in-view {
+    border-color: rgba(76, 141, 255, 0.45);
+    box-shadow: 0 8px 30px rgba(76, 141, 255, 0.14), inset 0 0 20px rgba(76, 141, 255, 0.05);
+  }
+  .cap.is-in-view .cap__top svg {
+    transform: rotate(-8deg) scale(1.06);
+    color: var(--accent-2);
+  }
 
   .chapter--final {
     left: 50%; right: auto;
@@ -909,9 +950,22 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   .stack__label { padding-top: 0; }
 
   .work-row > button { grid-template-columns: 40px minmax(0, 1fr) 40px; row-gap: 8px; }
-  .work-row__thumb { display: block; grid-column: 1 / -1; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); margin-bottom: 8px; }
+  .work-row__thumb { display: block; grid-column: 1 / -1; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); margin-bottom: 8px; transition: transform .4s var(--ease-out), box-shadow .4s; }
   .work-row__meta { grid-column: 2 / 3; grid-row: 3; }
   .work-row__arrow { grid-column: 3; grid-row: 2; }
+  .work-row { transition: border-color .4s; }
+  .work-row.is-focused { border-color: rgba(76, 141, 255, 0.4); }
+  .work-row.is-focused .work-row__thumb {
+    box-shadow: 0 10px 30px rgba(76, 141, 255, 0.25);
+    transform: scale(1.02);
+  }
+  .work-row.is-focused .work-row__title { color: #fff; transform: translateX(6px); }
+  .work-row.is-focused .work-row__arrow {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: rotate(45deg);
+  }
 
   .journey__pin { min-height: 0; padding: clamp(80px, 10vh, 110px) 0 40px; }
   .journey__track { flex-direction: column; width: auto; padding: 0 var(--pad); gap: 16px; }

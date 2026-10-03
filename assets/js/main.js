@@ -224,6 +224,7 @@
       this.targetTiltY = 0;
       this.idleClock = 0;
       this.isTouchActive = false;
+      this.frameGeometry = null;
 
       this.initCanvasSize();
       this.bindEvents();
@@ -231,11 +232,96 @@
     }
 
     initCanvasSize() {
-      this.canvas.width = 1280;
-      this.canvas.height = 720;
+      this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.canvas.width = Math.round(window.innerWidth * this.dpr);
+      this.canvas.height = Math.round(window.innerHeight * this.dpr);
       if (this.ctx) {
         this.ctx.imageSmoothingEnabled = true;
         this.ctx.imageSmoothingQuality = 'high';
+      }
+      this.computeFrameGeometry();
+    }
+
+    computeFrameGeometry() {
+      const cw = this.canvas.width;
+      const ch = this.canvas.height;
+      const dpr = this.dpr || 1;
+      const screenAspect = cw / ch;
+      const frameAspect = 1280 / 720; // 1.7778
+
+      let dw, dh, dx, dy;
+
+      if (screenAspect >= frameAspect) {
+        // Ultra-wide or wide desktop screens (21:9, 16:9 desktop):
+        // Match height, position slightly to the right to preserve left editorial text space
+        dh = ch;
+        dw = dh * frameAspect;
+        dx = (cw - dw) * 0.58;
+        dy = 0;
+      } else if (screenAspect >= 1.05) {
+        // Laptops, tablets in landscape, foldables (1.05 to 1.77):
+        // Scale to fill width nicely, centered with subtle upper bias
+        dw = cw * 1.02;
+        dh = dw / frameAspect;
+        dx = (cw - dw) * 0.5;
+        dy = Math.max(0, (ch - dh) * 0.42);
+      } else {
+        // Mobile phones & tall portrait screens (< 1.05):
+        // Never crop! Scale width so 100% of the exploded robot fits on screen
+        // and vertically anchor it in the upper viewport (below header, above floating chapter cards)!
+        const navOffset = 68 * dpr;
+        const availableHeight = ch * 0.52 - navOffset;
+        dw = Math.min(cw * 1.08, availableHeight * frameAspect);
+        dh = dw / frameAspect;
+        dx = (cw - dw) * 0.5;
+        dy = navOffset + Math.max(10 * dpr, (availableHeight - dh) * 0.5);
+      }
+
+      this.frameGeometry = {
+        dx, dy, dw, dh,
+        cssDx: dx / dpr,
+        cssDy: dy / dpr,
+        cssDw: dw / dpr,
+        cssDh: dh / dpr
+      };
+
+      this.updateReticlePositions();
+      return this.frameGeometry;
+    }
+
+    updateReticlePositions() {
+      if (!this.frameGeometry) return;
+      const { cssDx, cssDy, cssDw, cssDh } = this.frameGeometry;
+
+      // Exact normalized physical hardware coordinates on the 1280x720 robot frame:
+      // Camera OV2640 Optics:     (52.5% X, 30.0% Y)
+      // Sonar HC-SR04 Transducer: (38.5% X, 44.0% Y)
+      // MCU ESP32 Dual-Core Chip: (57.5% X, 41.5% Y)
+      // Drive Motor TB6612FNG:   (36.0% X, 67.0% Y)
+
+      if (this.targetCam) {
+        this.targetCam.style.left = `${(cssDx + cssDw * 0.525).toFixed(1)}px`;
+        this.targetCam.style.top  = `${(cssDy + cssDh * 0.300).toFixed(1)}px`;
+      }
+      if (this.targetSonar) {
+        this.targetSonar.style.left = `${(cssDx + cssDw * 0.385).toFixed(1)}px`;
+        this.targetSonar.style.top  = `${(cssDy + cssDh * 0.440).toFixed(1)}px`;
+      }
+      if (this.targetMcu) {
+        this.targetMcu.style.left = `${(cssDx + cssDw * 0.575).toFixed(1)}px`;
+        this.targetMcu.style.top  = `${(cssDy + cssDh * 0.415).toFixed(1)}px`;
+      }
+      if (this.targetDrive) {
+        this.targetDrive.style.left = `${(cssDx + cssDw * 0.360).toFixed(1)}px`;
+        this.targetDrive.style.top  = `${(cssDy + cssDh * 0.670).toFixed(1)}px`;
+      }
+
+      // Constrain scanner beam to the actual robot bounds
+      if (this.scanner) {
+        this.scanner.style.left = `${Math.max(0, cssDx).toFixed(1)}px`;
+        this.scanner.style.top = `${Math.max(0, cssDy).toFixed(1)}px`;
+        this.scanner.style.width = `${cssDw.toFixed(1)}px`;
+        this.scanner.style.height = `${cssDh.toFixed(1)}px`;
       }
     }
 
@@ -295,7 +381,9 @@
 
       const img = this.images[drawIdx];
       if (img && (this.loaded[drawIdx] || img.complete)) {
-        this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+        const geo = this.frameGeometry || this.computeFrameGeometry();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(img, geo.dx, geo.dy, geo.dw, geo.dh);
         this.lastDrawn = drawIdx;
 
         if (this.hudFrame) {
@@ -486,7 +574,25 @@
       requestAnimationFrame(() => this.renderLoop());
 
       window.addEventListener('resize', () => {
+        this.initCanvasSize();
         this.draw(this.currentFrame);
+      }, { passive: true });
+
+      window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+          this.initCanvasSize();
+          this.draw(this.currentFrame);
+        }, 120);
+      }, { passive: true });
+
+      // Dynamic Scroll Inertia Momentum
+      let lastScrollY = window.scrollY;
+      window.addEventListener('scroll', () => {
+        const curScrollY = window.scrollY;
+        const delta = curScrollY - lastScrollY;
+        const vel = Math.max(-8, Math.min(8, delta * 0.22));
+        this.targetTiltX = Math.max(-12, Math.min(12, this.targetTiltX + vel * 0.3));
+        lastScrollY = curScrollY;
       }, { passive: true });
 
       // Desktop Mouse 3D Perspective Tilt with extended depth range
@@ -498,10 +604,20 @@
         this.targetTiltY = nx * 9.5;  // yaw
       }, { passive: true });
 
-      // Mobile Touchscreen Pan/Swipe 3D Tilt
+      // Mobile Touchscreen Pan/Swipe 3D Tilt & Interactive Sonar Ping Ripple
       window.addEventListener('touchstart', (e) => {
         if (e.touches && e.touches[0]) {
           this.isTouchActive = true;
+          const touch = e.touches[0];
+          // Interactive touch sonar ripple on hero stage
+          if (this.stage && touch.clientY < window.innerHeight * 0.85) {
+            const ripple = document.createElement('div');
+            ripple.className = 'hero__touch-pulse';
+            ripple.style.left = `${touch.clientX}px`;
+            ripple.style.top = `${touch.clientY}px`;
+            this.stage.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 1000);
+          }
         }
       }, { passive: true });
 
@@ -909,6 +1025,26 @@
           if (this.lblC) this.lblC.textContent = cfg.c;
         });
       });
+
+      // Mobile Touchscreen Frequency Modulation
+      this.canvas.addEventListener('touchmove', (e) => {
+        if (!e.touches || !e.touches[0]) return;
+        const rect = this.canvas.getBoundingClientRect();
+        const touchX = e.touches[0].clientX - rect.left;
+        const norm = Math.max(0, Math.min(1, touchX / rect.width));
+        this.phase += (norm - 0.5) * 0.45;
+        if (this.lblB) {
+          const baseFreq = parseInt(this.modes[this.mode].b, 10) || 400;
+          const modFreq = Math.round(baseFreq * (0.4 + norm * 1.2));
+          this.lblB.textContent = `${modFreq} kHz (MOD)`;
+        }
+      }, { passive: true });
+
+      this.canvas.addEventListener('touchend', () => {
+        if (this.lblB && this.modes[this.mode]) {
+          this.lblB.textContent = this.modes[this.mode].b;
+        }
+      }, { passive: true });
     }
 
     start() {
@@ -1454,6 +1590,17 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
         if (isOpen) lenis.stop();
         else lenis.start();
       }
+
+      if (isOpen && typeof gsap !== 'undefined') {
+        gsap.fromTo(menu.querySelectorAll('.menu__links a'),
+          { y: 35, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: 'power3.out' }
+        );
+        gsap.fromTo(menu.querySelector('.menu__foot'),
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.5, delay: 0.28, ease: 'power2.out' }
+        );
+      }
     };
 
     menuBtn.addEventListener('click', toggleMenu);
@@ -1693,6 +1840,45 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
   }
 
   /* ==========================================================================
+     16. MOBILE-SPECIFIC SCROLL & INTERACTIVE ANIMATIONS
+     ========================================================================== */
+  function initMobileInteractions() {
+    if (window.innerWidth >= 900) return;
+
+    // 1. Mobile Capabilities Card In-View Border Tracer
+    const caps = document.querySelectorAll('.cap');
+    if ('IntersectionObserver' in window && caps.length) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in-view');
+          } else {
+            entry.target.classList.remove('is-in-view');
+          }
+        });
+      }, { threshold: 0.4 });
+
+      caps.forEach(c => observer.observe(c));
+    }
+
+    // 2. Mobile Project Rows Active Glow
+    const rows = document.querySelectorAll('.work-row');
+    if ('IntersectionObserver' in window && rows.length) {
+      const rowObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-focused');
+          } else {
+            entry.target.classList.remove('is-focused');
+          }
+        });
+      }, { threshold: 0.55 });
+
+      rows.forEach(r => rowObserver.observe(r));
+    }
+  }
+
+  /* ==========================================================================
      INITIALIZATION ORCHESTRATION
      ========================================================================== */
   window.addEventListener('DOMContentLoaded', () => {
@@ -1708,6 +1894,7 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
     initEmailCopy();
     initMagneticAndCursor();
     initMobileMenu();
+    initMobileInteractions();
     initMarquee();
   });
 
