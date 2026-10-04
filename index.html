@@ -95,13 +95,13 @@
   <!-- First hero frame is the LCP candidate -->
   <link rel="preload" as="image" href="assets/frames/frame_00001.jpg" fetchpriority="high">
 
-  <link rel="stylesheet" href="assets/css/main.css?v=6.5.0">
+  <link rel="stylesheet" href="assets/css/main.css?v=6.6.0">
 
   <!-- Motion stack -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script defer src="assets/js/main.js?v=6.5.0"></script>
+  <script defer src="assets/js/main.js?v=6.6.0"></script>
 </head>
 
 <body class="is-loading">
@@ -126,9 +126,21 @@
   </div>
 
   <div class="grain" aria-hidden="true"></div>
-  <div class="cursor" aria-hidden="true">
+  <!-- Ambient Cursor Spotlight Glow -->
+  <div class="cursor-spotlight" id="cursorSpotlight" aria-hidden="true"></div>
+  <!-- Kinetic Signal Particle Trail Canvas -->
+  <canvas class="cursor-trail" id="cursorTrail" aria-hidden="true"></canvas>
+  <!-- Flagship Mechatronics Kinetic Cursor -->
+  <div class="cursor" id="customCursor" aria-hidden="true">
     <div class="cursor__dot"></div>
-    <div class="cursor__ring"><span class="cursor__label"></span></div>
+    <div class="cursor__ring">
+      <span class="cursor__reticle cursor__reticle--tl"></span>
+      <span class="cursor__reticle cursor__reticle--tr"></span>
+      <span class="cursor__reticle cursor__reticle--bl"></span>
+      <span class="cursor__reticle cursor__reticle--br"></span>
+      <span class="cursor__label"></span>
+    </div>
+    <div class="cursor__ripple"></div>
   </div>
 
   <!-- ============ NAV ============ -->
@@ -1067,6 +1079,7 @@
         <div class="cmd-item" data-action="theme"><span>Switch <b>Theme (Graphite / Bone)</b></span><span class="mono">T</span></div>
         <div class="cmd-item" data-action="sfx"><span>Toggle <b>Synthesizer Audio SFX</b></span><span class="mono">S</span></div>
         <div class="cmd-item" data-action="view-cv"><span>View <b>Curriculum Vitae (Online Preview)</b></span><span class="mono">VIEW CV</span></div>
+        <div class="cmd-item" data-action="cursor-tour"><span>Play <b>Automated Cursor Tour (Showcase)</b></span><span class="mono">TOUR</span></div>
         <div class="cmd-item" data-action="resume"><span>Download <b>Resume (PDF)</b></span><span class="mono">CV</span></div>
       </div>
     </div>

@@ -338,6 +338,11 @@
       } else if (action === 'view-cv') {
         if (typeof openCvModalGlobal === 'function') openCvModalGlobal();
         playSfx('click');
+      } else if (action === 'cursor-tour') {
+        if (typeof window.startCursorTour === 'function') {
+          window.startCursorTour();
+        }
+        playSfx('click');
       }
     });
   }
@@ -1703,6 +1708,7 @@
   <span class="t-accent">contact</span>         — Direct email dispatch &amp; social profiles
   <span class="t-accent">theme</span>           — Toggle theme (Dark Graphite / Light Bone)
   <span class="t-accent">sfx</span>             — Toggle Web Audio parametric synthesizer
+  <span class="t-accent">tour</span>            — Play automated kinetic cursor showcase sequence
   <span class="t-accent">matrix</span>          — Telemetry hardware matrix readout
   <span class="t-accent">bench</span>           — Live ESP32 Rover V2 hardware status
   <span class="t-accent">estop</span>           — Emergency hardware stop trigger
@@ -1753,6 +1759,13 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
       'sfx': () => {
         toggleSfx();
         print(`<span class="t-ok">Audio SFX state updated.</span>`);
+      },
+      'tour': () => {
+        print(`<span class="t-ok">▶ Initiating automated kinetic cursor showcase sequence...</span>`);
+        if (typeof window.startCursorTour === 'function') window.startCursorTour();
+      },
+      'cursor': () => {
+        commands.tour();
       },
       'resume': () => {
         print(`<span class="t-ok">Dispatching Curriculum Vitae PDF (Sangeeth_Sasikumar_CV.pdf)...</span>`);
@@ -1863,91 +1876,371 @@ SAFETY CONE: &gt; 25cm all zones clear`);
   }
 
   /* ==========================================================================
-     11. MAGNETIC BUTTONS & FULLY FLEDGED ANIMATED CURSOR
+     11. FLAGSHIP MECHATRONICS KINETIC CURSOR (VELOCITY DEFORMATION & TRAIL)
      ========================================================================== */
   function initMagneticAndCursor() {
-    if (isMobile()) return; // Don't run on touch devices
+    if (isMobile()) return; // Touch devices use touch sonar
 
-    const cursor = document.querySelector('.cursor');
-    const dot = document.querySelector('.cursor__dot');
-    const ring = document.querySelector('.cursor__ring');
-    const label = document.querySelector('.cursor__label');
+    const cursor = document.getElementById('customCursor') || document.querySelector('.cursor');
+    const dot = cursor ? cursor.querySelector('.cursor__dot') : null;
+    const ring = cursor ? cursor.querySelector('.cursor__ring') : null;
+    const label = cursor ? cursor.querySelector('.cursor__label') : null;
+    const ripple = cursor ? cursor.querySelector('.cursor__ripple') : null;
+    const spotlight = document.getElementById('cursorSpotlight');
+    const trailCanvas = document.getElementById('cursorTrail');
 
     if (!cursor || !dot || !ring) return;
 
-    let mouseX = -100;
-    let mouseY = -100;
-    let ringX = -100;
-    let ringY = -100;
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let ringX = targetX;
+    let ringY = targetY;
+    let prevTargetX = targetX;
+    let prevTargetY = targetY;
+    let spotlightX = targetX;
+    let spotlightY = targetY;
+    let currentVelocity = 0;
+    let currentAngle = 0;
+    let isPressed = false;
     let hasMoved = false;
+    let isHidden = false;
+    let activeMagnetic = null;
+    let tourActive = false;
+    let tourTimeline = null;
 
-    const onFirstMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      ringX = mouseX;
-      ringY = mouseY;
-      hasMoved = true;
-      document.documentElement.classList.add('has-animated-cursor');
-      cursor.classList.remove('is-hidden');
-      cursor.style.display = 'block';
-      dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-      ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
-      window.removeEventListener('mousemove', onFirstMove);
-      window.addEventListener('mousemove', onMouseMove, { passive: true });
-    };
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const onMouseMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-    };
+    // Particle spark trail setup
+    let ctx = null;
+    const particles = [];
+    const maxParticles = 32;
 
-    window.addEventListener('mousemove', onFirstMove, { passive: true });
+    if (trailCanvas && !prefersReducedMotion) {
+      ctx = trailCanvas.getContext('2d');
+      const resizeCanvas = () => {
+        trailCanvas.width = window.innerWidth;
+        trailCanvas.height = window.innerHeight;
+      };
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas, { passive: true });
+    }
 
-    const tick = () => {
-      if (hasMoved) {
-        ringX += (mouseX - ringX) * 0.18;
-        ringY += (mouseY - ringY) * 0.18;
-        ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    class Particle {
+      constructor(x, y, vx, vy) {
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.size = Math.random() * 2.2 + 1.2;
+        this.life = 1.0;
+        this.decay = Math.random() * 0.04 + 0.025;
+        this.isCyan = Math.random() > 0.82;
       }
-      requestAnimationFrame(tick);
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vx *= 0.94;
+        this.vy *= 0.94;
+        this.life -= this.decay;
+      }
+      draw(c) {
+        if (this.life <= 0) return;
+        c.save();
+        c.globalAlpha = Math.max(0, this.life);
+        c.fillStyle = this.isCyan ? '#06b6d4' : '#f59e0b';
+        c.shadowColor = this.isCyan ? 'rgba(6,182,212,0.8)' : 'rgba(245,158,11,0.8)';
+        c.shadowBlur = 6;
+        c.beginPath();
+        c.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
+        c.fill();
+        c.restore();
+      }
+    }
+
+    const spawnSparks = (x, y, dx, dy, speed) => {
+      if (!ctx || prefersReducedMotion || speed < 2.5) return;
+      const count = Math.min(Math.floor(speed / 9) + 1, 3);
+      for (let i = 0; i < count; i++) {
+        if (particles.length >= maxParticles) particles.shift();
+        const spread = (Math.random() - 0.5) * 1.6;
+        const pVx = -dx * 0.14 + spread;
+        const pVy = -dy * 0.14 + spread;
+        particles.push(new Particle(x, y, pVx, pVy));
+      }
     };
-    tick();
 
-    // Hover & Label triggers on all interactive elements
-    const attachHover = (el) => {
-      el.addEventListener('mouseenter', () => {
-        const text = el.dataset.cursor;
-        if (text) {
-          cursor.classList.add('is-label');
-          if (label) label.textContent = text;
-        } else {
-          cursor.classList.add('is-hover');
-        }
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('is-hover', 'is-label');
-        if (label) label.textContent = '';
-      });
+    const activateCursor = () => {
+      if (!hasMoved) {
+        hasMoved = true;
+        document.documentElement.classList.add('has-animated-cursor');
+        cursor.classList.remove('is-hidden');
+        cursor.style.display = 'block';
+        if (spotlight) spotlight.style.opacity = '1';
+        if (trailCanvas) trailCanvas.style.opacity = '1';
+      }
     };
 
-    document.querySelectorAll('a, button, input, textarea, .chip, .feature, .glass-orb, .topic-pill, [data-cursor]').forEach(attachHover);
+    const onPointerMove = (e) => {
+      if (tourActive) {
+        stopTour();
+      }
+      activateCursor();
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (isHidden) {
+        isHidden = false;
+        cursor.classList.remove('is-hidden');
+        if (spotlight) spotlight.classList.remove('is-hidden');
+        if (trailCanvas) trailCanvas.classList.remove('is-hidden');
+      }
+    };
 
-    document.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'));
-    document.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
+    window.addEventListener('mousemove', onPointerMove, { passive: true });
+
+    // Click Shockwave Burst
+    const triggerClickPulse = (x, y) => {
+      if (!ripple) return;
+      ripple.style.setProperty('--rip-x', `${x}px`);
+      ripple.style.setProperty('--rip-y', `${y}px`);
+      ripple.classList.remove('is-firing');
+      void ripple.offsetWidth; // Force reflow
+      ripple.classList.add('is-firing');
+    };
+
+    window.addEventListener('mousedown', (e) => {
+      if (tourActive) stopTour();
+      activateCursor();
+      isPressed = true;
+      cursor.classList.add('is-pressed');
+      triggerClickPulse(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('mouseup', () => {
+      isPressed = false;
+      cursor.classList.remove('is-pressed');
+    });
+
+    document.addEventListener('mouseleave', () => {
+      isHidden = true;
+      cursor.classList.add('is-hidden');
+      if (spotlight) spotlight.classList.add('is-hidden');
+      if (trailCanvas) trailCanvas.classList.add('is-hidden');
+    });
+
+    document.addEventListener('mouseenter', () => {
+      isHidden = false;
+      cursor.classList.remove('is-hidden');
+      if (spotlight) spotlight.classList.remove('is-hidden');
+      if (trailCanvas) trailCanvas.classList.remove('is-hidden');
+    });
+
+    // Event delegation for interactive hover states (works for static & dynamic items)
+    document.addEventListener('mouseover', (e) => {
+      const target = e.target.closest('a, button, input, textarea, .chip, .feature, .glass-orb, .topic-pill, .cmd-item, [data-cursor]');
+      if (!target) return;
+      const text = target.dataset.cursor;
+      if (text) {
+        cursor.classList.add('is-label');
+        if (label) label.textContent = text;
+      } else {
+        cursor.classList.add('is-hover');
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      const target = e.target.closest('a, button, input, textarea, .chip, .feature, .glass-orb, .topic-pill, .cmd-item, [data-cursor]');
+      if (!target) return;
+      const related = e.relatedTarget ? e.relatedTarget.closest('a, button, input, textarea, .chip, .feature, .glass-orb, .topic-pill, .cmd-item, [data-cursor]') : null;
+      if (related === target) return;
+      cursor.classList.remove('is-hover', 'is-label');
+      if (label) label.textContent = '';
+    });
 
     // Magnetic physics on buttons
     document.querySelectorAll('.magnetic').forEach(btn => {
       btn.addEventListener('mousemove', (e) => {
         const rect = btn.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) * 0.35;
-        const y = (e.clientY - rect.top - rect.height / 2) * 0.35;
-        btn.style.transform = `translate(${x}px, ${y}px)`;
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const deltaX = e.clientX - centerX;
+        const deltaY = e.clientY - centerY;
+        btn.style.transform = `translate(${deltaX * 0.32}px, ${deltaY * 0.32}px)`;
+        activeMagnetic = { x: centerX, y: centerY };
       });
       btn.addEventListener('mouseleave', () => {
         btn.style.transform = '';
+        activeMagnetic = null;
       });
     });
+
+    // Main 60fps / 120fps Animation Loop
+    const render = () => {
+      if (hasMoved && !isHidden) {
+        // Dot tracks target with zero latency (instant hardware sync)
+        dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+
+        // Ring follows with smooth spring inertia
+        let targetRingX = targetX;
+        let targetRingY = targetY;
+
+        // If magnetizing towards an element, apply magnetic pull
+        if (activeMagnetic) {
+          targetRingX = activeMagnetic.x + (targetX - activeMagnetic.x) * 0.45;
+          targetRingY = activeMagnetic.y + (targetY - activeMagnetic.y) * 0.45;
+        }
+
+        const lerpFactor = 0.18;
+        ringX += (targetRingX - ringX) * lerpFactor;
+        ringY += (targetRingY - ringY) * lerpFactor;
+
+        // Calculate velocity & movement delta
+        const dx = targetX - prevTargetX;
+        const dy = targetY - prevTargetY;
+        prevTargetX = targetX;
+        prevTargetY = targetY;
+        const instantSpeed = Math.hypot(dx, dy);
+
+        currentVelocity += (instantSpeed - currentVelocity) * 0.22;
+
+        // Dynamic directional stretch angle & rotation
+        if (instantSpeed > 1.2 && !prefersReducedMotion) {
+          const targetAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+          let diff = targetAngle - currentAngle;
+          while (diff < -180) diff += 360;
+          while (diff > 180) diff -= 360;
+          currentAngle += diff * 0.32;
+        }
+
+        const stretch = prefersReducedMotion ? 0 : Math.min(currentVelocity * 0.0035, 0.42);
+        const pressScale = isPressed ? 0.78 : 1;
+        const scaleX = (1 + stretch) * pressScale;
+        const scaleY = (1 - stretch * 0.52) * pressScale;
+
+        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) rotate(${currentAngle}deg) scale(${scaleX}, ${scaleY})`;
+
+        // Keep label horizontal and upright
+        if (label) {
+          label.style.transform = `rotate(${-currentAngle}deg)`;
+        }
+
+        // Spotlight follows smoothly
+        if (spotlight) {
+          spotlightX += (targetX - spotlightX) * 0.09;
+          spotlightY += (targetY - spotlightY) * 0.09;
+          spotlight.style.transform = `translate3d(${spotlightX}px, ${spotlightY}px, 0)`;
+        }
+
+        // Generate spark trail
+        spawnSparks(targetX, targetY, dx, dy, instantSpeed);
+      }
+
+      // Render particle trail on canvas
+      if (ctx && trailCanvas) {
+        ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.update();
+          p.draw(ctx);
+          if (p.life <= 0) particles.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(render);
+    };
+    requestAnimationFrame(render);
+
+    // ========================================================================
+    // OPTIONAL AUTOMATED CURSOR SHOWCASE TOUR (Triggerable via Ctrl+K or Terminal)
+    // ========================================================================
+    const stopTour = () => {
+      if (!tourActive) return;
+      tourActive = false;
+      if (tourTimeline) {
+        tourTimeline.kill();
+        tourTimeline = null;
+      }
+      cursor.classList.remove('is-hover', 'is-label');
+      if (label) label.textContent = '';
+      showToast('Cursor control returned to manual');
+    };
+
+    window.stopCursorTour = stopTour;
+
+    window.startCursorTour = () => {
+      activateCursor();
+      tourActive = true;
+      showToast('Automated Cursor Tour initiated. Move mouse to resume manual.');
+
+      const targets = [
+        { sel: 'a[href="#work"]', label: 'Explore Builds' },
+        { sel: '#reelBtn', label: 'Watch Reel' },
+        { sel: 'a.btn--resume', label: 'Curriculum Vitae' },
+        { sel: 'a[href="#skills"]', label: 'Telemetry' },
+        { sel: 'a[href="#about"]', label: 'Workbench' }
+      ];
+
+      if (typeof gsap === 'undefined') {
+        setTimeout(stopTour, 3000);
+        return;
+      }
+
+      tourTimeline = gsap.timeline({
+        onComplete: () => {
+          stopTour();
+        }
+      });
+
+      const virtualPos = { x: targetX, y: targetY };
+
+      targets.forEach((item) => {
+        const el = document.querySelector(item.sel);
+        if (!el) return;
+
+        tourTimeline.add(() => {
+          if (!tourActive) return;
+          const rect = el.getBoundingClientRect();
+          if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+
+        tourTimeline.to(virtualPos, {
+          duration: 1.2,
+          ease: 'power2.inOut',
+          onUpdate: () => {
+            if (!tourActive) return;
+            targetX = virtualPos.x;
+            targetY = virtualPos.y;
+          },
+          x: () => {
+            const r = el.getBoundingClientRect();
+            return r.left + r.width / 2;
+          },
+          y: () => {
+            const r = el.getBoundingClientRect();
+            return r.top + r.height / 2;
+          }
+        });
+
+        // Hover & pulse
+        tourTimeline.add(() => {
+          if (!tourActive) return;
+          cursor.classList.add('is-label');
+          if (label) label.textContent = item.label;
+          triggerClickPulse(targetX, targetY);
+          playSfx('key');
+        });
+
+        tourTimeline.to({}, { duration: 0.8 });
+
+        tourTimeline.add(() => {
+          if (!tourActive) return;
+          cursor.classList.remove('is-label');
+          if (label) label.textContent = '';
+        });
+      });
+    };
   }
 
   /* ==========================================================================

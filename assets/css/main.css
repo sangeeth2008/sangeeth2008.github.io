@@ -210,7 +210,44 @@ em { font-style: normal; }
   60% { transform: translate(-3%, 5%); } 80% { transform: translate(6%, 2%); } 100% { transform: translate(0, 0); }
 }
 
-/* ---------- Small Round Animated Cursor with Center Dot ---------- */
+/* ---------- Flagship Mechatronics Kinetic Animated Cursor System ---------- */
+.cursor-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 440px;
+  height: 440px;
+  margin: -220px 0 0 -220px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, rgba(6, 182, 212, 0.03) 42%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  will-change: transform, opacity;
+}
+.has-animated-cursor .cursor-spotlight {
+  opacity: 1;
+}
+[data-theme="bone"] .cursor-spotlight {
+  background: radial-gradient(circle, rgba(217, 119, 6, 0.08) 0%, rgba(8, 145, 178, 0.03) 42%, transparent 70%);
+}
+
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999990;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.has-animated-cursor .cursor-trail {
+  opacity: 1;
+}
+
 .cursor {
   display: none;
   pointer-events: none;
@@ -218,64 +255,127 @@ em { font-style: normal; }
 .has-animated-cursor .cursor {
   display: block;
 }
-.cursor__dot, .cursor__ring {
+
+.cursor__dot,
+.cursor__ring,
+.cursor__ripple {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999999;
   pointer-events: none;
   border-radius: 50%;
   will-change: transform;
 }
+
 .cursor__dot {
   width: 6px;
   height: 6px;
   margin: -3px 0 0 -3px;
   background: var(--sig-power);
-  box-shadow: 0 0 8px var(--sig-power);
-  transition: opacity .2s, transform .08s ease-out;
+  box-shadow: 0 0 10px var(--sig-power), 0 0 18px rgba(245, 158, 11, 0.6);
+  z-index: 999999;
+  transition: opacity 0.2s, background-color 0.25s, box-shadow 0.25s;
 }
+.cursor.is-pressed .cursor__dot {
+  background: #ffffff;
+  box-shadow: 0 0 12px #ffffff, 0 0 24px var(--sig-power);
+}
+
 .cursor__ring {
   width: 38px;
   height: 38px;
   margin: -19px 0 0 -19px;
-  border: 1.5px solid rgba(245, 158, 11, 0.45);
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+  border: 1.5px solid rgba(245, 158, 11, 0.55);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.2), inset 0 0 8px rgba(245, 158, 11, 0.06);
   display: grid;
   place-items: center;
-  transition: width .35s var(--ease-out), height .35s var(--ease-out), margin .35s var(--ease-out),
-              background-color .35s var(--ease-out), border-color .35s var(--ease-out), opacity .25s,
-              box-shadow .35s var(--ease-out);
+  z-index: 999998;
+  transform-origin: center center;
+  transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease,
+              opacity 0.25s ease;
 }
+
+/* Mechatronics HUD Reticle Ticks */
+.cursor__reticle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-color: var(--sig-power);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.cursor.is-hover .cursor__reticle,
+.cursor.is-label .cursor__reticle {
+  opacity: 0.9;
+}
+.cursor__reticle--tl { top: 6px; left: 6px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.cursor__reticle--tr { top: 6px; right: 6px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.cursor__reticle--bl { bottom: 6px; left: 6px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.cursor__reticle--br { bottom: 6px; right: 6px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+/* Click Ripple Shockwave */
+.cursor__ripple {
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1.5px solid var(--sig-power);
+  z-index: 999997;
+  opacity: 0;
+}
+.cursor__ripple.is-firing {
+  animation: cursorPulse 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes cursorPulse {
+  0% {
+    opacity: 0.95;
+    transform: translate3d(var(--rip-x), var(--rip-y), 0) scale(0.65);
+    border-color: #fff;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--rip-x), var(--rip-y), 0) scale(2.4);
+    border-color: var(--sig-power);
+  }
+}
+
 .cursor__label {
   font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: .06em;
+  font-size: 10px;
+  letter-spacing: .08em;
   text-transform: uppercase;
   color: #fff;
   opacity: 0;
   transform: scale(.6);
-  transition: opacity .3s, transform .35s var(--ease-out);
+  transition: opacity .25s ease, transform .3s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
 }
+
 .cursor.is-hover .cursor__ring {
-  width: 60px;
-  height: 60px;
-  margin: -30px 0 0 -30px;
+  width: 58px;
+  height: 58px;
+  margin: -29px 0 0 -29px;
   border-color: var(--sig-power);
-  box-shadow: 0 0 18px var(--sig-power-glow);
+  box-shadow: 0 0 20px var(--sig-power-glow);
   background: rgba(245, 158, 11, 0.08);
 }
 .cursor.is-hover .cursor__dot {
-  transform: scale(1.1);
-  background: var(--sig-power);
-  box-shadow: 0 0 10px var(--sig-power);
+  background: #ffffff;
+  box-shadow: 0 0 10px #ffffff;
 }
+
 .cursor.is-label .cursor__ring {
-  width: 92px;
-  height: 92px;
-  margin: -46px 0 0 -46px;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
   background: var(--sig-power);
   border-color: var(--sig-power);
   box-shadow: 0 0 28px var(--sig-power-glow);
@@ -287,9 +387,22 @@ em { font-style: normal; }
 .cursor.is-label .cursor__dot {
   opacity: 0;
 }
+.cursor.is-label .cursor__reticle {
+  opacity: 0.4;
+  border-color: #ffffff;
+}
+
+.cursor.is-pressed .cursor__ring {
+  border-color: #ffffff;
+  background: rgba(245, 158, 11, 0.16);
+}
+
 .cursor.is-hidden .cursor__ring,
-.cursor.is-hidden .cursor__dot {
-  opacity: 0;
+.cursor.is-hidden .cursor__dot,
+.cursor.is-hidden .cursor__ripple,
+.cursor-spotlight.is-hidden,
+.cursor-trail.is-hidden {
+  opacity: 0 !important;
 }
 
 .has-animated-cursor:not(.is-locked) body,
@@ -302,6 +415,15 @@ em { font-style: normal; }
 .has-animated-cursor input,
 .has-animated-cursor textarea {
   cursor: text !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-trail {
+    display: none !important;
+  }
+  .cursor__ring {
+    transition: none !important;
+  }
 }
 
 /* ---------- Nav ---------- */
