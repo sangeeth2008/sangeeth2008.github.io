@@ -392,12 +392,7 @@
       triggerSonar(e.clientX, e.clientY);
     }, { passive: true });
 
-    // Touch dragging on mobile produces continuous stream of yellow light dots
-    window.addEventListener('touchmove', (e) => {
-      if (e.touches && e.touches[0]) {
-        triggerTouchDot(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: true });
+    // Note: 'touchmove' particle generation was removed to prevent severe scroll lag on Android.
   }
 
   /* Toast Notification Helper */
@@ -521,14 +516,12 @@
         dy = Math.max(0, (ch - dh) * 0.42);
       } else {
         // Mobile phones & tall portrait screens (< 1.05):
-        // Never crop! Scale width so 100% of the exploded robot fits on screen
-        // and vertically anchor it in the upper viewport (below header, above floating chapter cards)!
-        const navOffset = 68 * dpr;
-        const availableHeight = ch * 0.52 - navOffset;
-        dw = Math.min(cw * 1.08, availableHeight * frameAspect);
+        // Scale to 140% of width to ensure the robot is prominent and fills nicely
+        // Anchor it slightly offset from the top to prevent clipping into the navbar
+        dw = cw * 1.45;
         dh = dw / frameAspect;
         dx = (cw - dw) * 0.5;
-        dy = navOffset + Math.max(10 * dpr, (availableHeight - dh) * 0.5);
+        dy = ch * 0.12; // nicely spaced 12% from the top
       }
 
       this.frameGeometry = {
@@ -983,20 +976,17 @@
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis Smooth Scroll
+    // Initialize Lenis Smooth Scroll ONLY for Desktop
+    // Native momentum scrolling on Android/iOS is much smoother and prevents touch-hijacking lag
     const mobileUser = isMobile();
-    if (typeof Lenis !== 'undefined') {
+    if (typeof Lenis !== 'undefined' && !mobileUser) {
       lenis = new Lenis({
         duration: 1.15,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: 'vertical',
         gestureOrientation: 'vertical',
         smoothWheel: true,
-        wheelMultiplier: 1.05,
-        touchMultiplier: mobileUser ? 1.0 : 1.5,
-        syncTouch: mobileUser ? true : false,
-        smoothTouch: false,
-        infinite: false
+        wheelMultiplier: 1.05
       });
 
       lenis.on('scroll', ScrollTrigger.update);
@@ -1281,7 +1271,26 @@
 
       this.resize();
       this.bindButtons();
-      this.start();
+      
+      this.isVisible = true;
+      if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            this.isVisible = e.isIntersecting;
+            if (this.isVisible) {
+              if (!this.rafId) this.start();
+            } else {
+              if (this.rafId) {
+                cancelAnimationFrame(this.rafId);
+                this.rafId = null;
+              }
+            }
+          });
+        }, { threshold: 0.01 });
+        obs.observe(this.canvas.parentElement || this.canvas);
+      } else {
+        this.start();
+      }
 
       window.addEventListener('resize', () => this.resize(), { passive: true });
     }
@@ -1336,7 +1345,9 @@
     }
 
     start() {
+      if (this.rafId) cancelAnimationFrame(this.rafId);
       const render = () => {
+        if (!this.isVisible && 'IntersectionObserver' in window) return;
         this.draw();
         this.rafId = requestAnimationFrame(render);
       };
@@ -1855,6 +1866,8 @@ SAFETY CONE: &gt; 25cm all zones clear`);
      11. MAGNETIC BUTTONS & FULLY FLEDGED ANIMATED CURSOR
      ========================================================================== */
   function initMagneticAndCursor() {
+    if (isMobile()) return; // Don't run on touch devices
+
     const cursor = document.querySelector('.cursor');
     const dot = document.querySelector('.cursor__dot');
     const ring = document.querySelector('.cursor__ring');
