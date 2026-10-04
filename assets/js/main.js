@@ -157,7 +157,8 @@
      2. GLOBAL STATE & HELPERS (AUDIO SYNTH, DUAL THEME, COMMAND PALETTE, SONAR)
      ========================================================================== */
   let lenis = null;
-  const isMobile = () => window.innerWidth < 900 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  let openCvModalGlobal = null;
+  const isMobile = () => window.innerWidth < 768;
   const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* Live Clock (IST) */
@@ -334,18 +335,26 @@
       } else if (action === 'resume') {
         window.open('assets/Sangeeth_Sasikumar_CV.pdf', '_blank');
         playSfx('click');
+      } else if (action === 'view-cv') {
+        if (typeof openCvModalGlobal === 'function') openCvModalGlobal();
+        playSfx('click');
       }
     });
   }
 
   /* --------------------------------------------------------------------------
-     TOUCH SONAR RIPPLES (SUPERCHARGED FOR PHONES & TOUCHSCREENS)
+     TOUCH SONAR & YELLOW LIGHT PARTICLES (FOR PHONES & TOUCHSCREENS)
      -------------------------------------------------------------------------- */
   function initTouchSonar() {
     const container = document.getElementById('sonarContainer');
     if (!container) return;
 
+    let lastDotTime = 0;
+
     const triggerSonar = (x, y) => {
+      if (x == null || y == null) return;
+
+      // 1. Expanding yellow sonar wave
       const ripple = document.createElement('div');
       ripple.className = 'sonar-ripple';
       ripple.style.left = `${x}px`;
@@ -353,11 +362,41 @@
       container.appendChild(ripple);
       playSfx('click');
       setTimeout(() => ripple.remove(), 750);
+
+      // 2. Yellow glowing center dot light
+      const dot = document.createElement('div');
+      dot.className = 'sonar-dot';
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      container.appendChild(dot);
+      setTimeout(() => dot.remove(), 650);
     };
 
+    const triggerTouchDot = (x, y) => {
+      if (x == null || y == null) return;
+      const now = performance.now();
+      if (now - lastDotTime < 22) return; // ~45fps particle generation
+      lastDotTime = now;
+
+      const dot = document.createElement('div');
+      dot.className = 'sonar-dot';
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      container.appendChild(dot);
+      setTimeout(() => dot.remove(), 600);
+    };
+
+    // Tap/touch down creates sonar ping & yellow core light
     window.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('button, a, input, select, textarea, canvas, .case, .reel, .cmd-dialog')) return;
+      if (e.target.closest('button, a, input, select, textarea, canvas, .case, .reel, .cmd-dialog, .cv-dialog')) return;
       triggerSonar(e.clientX, e.clientY);
+    }, { passive: true });
+
+    // Touch dragging on mobile produces continuous stream of yellow light dots
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        triggerTouchDot(e.touches[0].clientX, e.touches[0].clientY);
+      }
     }, { passive: true });
   }
 
@@ -1648,6 +1687,8 @@
   <span class="t-accent">about</span>           — Sangeeth's discipline, university &amp; engineering creed
   <span class="t-accent">skills</span>          — Core technical firmware &amp; hardware capabilities
   <span class="t-accent">resume</span>          — Download official Curriculum Vitae (PDF)
+  <span class="t-accent">view cv</span>         — View Curriculum Vitae online without download
+  <span class="t-accent">transmit</span>        — Jump to direct Google Form / Spreadsheet dispatch
   <span class="t-accent">contact</span>         — Direct email dispatch &amp; social profiles
   <span class="t-accent">theme</span>           — Toggle theme (Dark Graphite / Light Bone)
   <span class="t-accent">sfx</span>             — Toggle Web Audio parametric synthesizer
@@ -1708,6 +1749,22 @@ LinkedIn: <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/
       },
       'cv': () => {
         commands.resume();
+      },
+      'view cv': () => {
+        print(`<span class="t-ok">Launching in-browser Curriculum Vitae viewer...</span>`);
+        if (typeof openCvModalGlobal === 'function') openCvModalGlobal();
+      },
+      'view-cv': () => {
+        commands['view cv']();
+      },
+      'download cv': () => {
+        commands.resume();
+      },
+      'transmit': () => {
+        print(`<span class="t-ok">Redirecting to transmission dispatch console...</span>`);
+        const el = document.getElementById('transmissionConsole');
+        if (el && lenis) lenis.scrollTo(el);
+        else if (el) el.scrollIntoView({ behavior: 'smooth' });
       },
       'matrix': () => {
         print(`<span class="t-accent">=== CORE TELEMETRY MATRIX ===</span>
@@ -1795,7 +1852,7 @@ SAFETY CONE: &gt; 25cm all zones clear`);
   }
 
   /* ==========================================================================
-     11. MAGNETIC BUTTONS & CUSTOM CURSOR
+     11. MAGNETIC BUTTONS & FULLY FLEDGED ANIMATED CURSOR
      ========================================================================== */
   function initMagneticAndCursor() {
     const cursor = document.querySelector('.cursor');
@@ -1803,29 +1860,49 @@ SAFETY CONE: &gt; 25cm all zones clear`);
     const ring = document.querySelector('.cursor__ring');
     const label = document.querySelector('.cursor__label');
 
-    if (!cursor || !dot || !ring || isMobile()) return;
+    if (!cursor || !dot || !ring) return;
 
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let hasMoved = false;
 
-    window.addEventListener('mousemove', (e) => {
+    const onFirstMove = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      ringX = mouseX;
+      ringY = mouseY;
+      hasMoved = true;
+      document.documentElement.classList.add('has-animated-cursor');
+      cursor.classList.remove('is-hidden');
+      cursor.style.display = 'block';
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+      ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+      window.removeEventListener('mousemove', onFirstMove);
+      window.addEventListener('mousemove', onMouseMove, { passive: true });
+    };
+
+    const onMouseMove = (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
       dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-    }, { passive: true });
+    };
+
+    window.addEventListener('mousemove', onFirstMove, { passive: true });
 
     const tick = () => {
-      ringX += (mouseX - ringX) * 0.16;
-      ringY += (mouseY - ringY) * 0.16;
-      ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+      if (hasMoved) {
+        ringX += (mouseX - ringX) * 0.18;
+        ringY += (mouseY - ringY) * 0.18;
+        ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+      }
       requestAnimationFrame(tick);
     };
     tick();
 
-    // Hover & Label triggers
-    document.querySelectorAll('a, button, input, .chip, .feature, [data-cursor]').forEach(el => {
+    // Hover & Label triggers on all interactive elements
+    const attachHover = (el) => {
       el.addEventListener('mouseenter', () => {
         const text = el.dataset.cursor;
         if (text) {
@@ -1839,7 +1916,9 @@ SAFETY CONE: &gt; 25cm all zones clear`);
         cursor.classList.remove('is-hover', 'is-label');
         if (label) label.textContent = '';
       });
-    });
+    };
+
+    document.querySelectorAll('a, button, input, textarea, .chip, .feature, .glass-orb, .topic-pill, [data-cursor]').forEach(attachHover);
 
     document.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'));
     document.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
@@ -1853,7 +1932,7 @@ SAFETY CONE: &gt; 25cm all zones clear`);
         btn.style.transform = `translate(${x}px, ${y}px)`;
       });
       btn.addEventListener('mouseleave', () => {
-        btn.style.transform = 'translate(0px, 0px)';
+        btn.style.transform = '';
       });
     });
   }
@@ -2168,6 +2247,226 @@ SAFETY CONE: &gt; 25cm all zones clear`);
   }
 
   /* ==========================================================================
+     17. CURRICULUM VITAE MODAL VIEWER & DIRECT DOWNLOAD CONTROLLER
+     ========================================================================== */
+  function initCvModal() {
+    const dialog = document.getElementById('cvDialog');
+    const frame = document.getElementById('cvFrame');
+    const closeBtn = document.getElementById('cvClose');
+    const fallback = document.getElementById('cvFallback');
+
+    if (!dialog) return;
+
+    // Guarantee dialog is closed and not rendered on initial page load
+    dialog.removeAttribute('open');
+    if (typeof dialog.close === 'function') {
+      try { dialog.close(); } catch(e) {}
+    }
+
+    const openModal = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      if (frame && (!frame.src || frame.src === 'about:blank' || !frame.src.includes('Sangeeth_Sasikumar_CV.pdf'))) {
+        frame.src = 'assets/Sangeeth_Sasikumar_CV.pdf#toolbar=1&navpanes=0';
+      }
+      if (typeof dialog.showModal === 'function') {
+        try {
+          dialog.showModal();
+        } catch(err) {
+          dialog.setAttribute('open', '');
+        }
+      } else {
+        dialog.setAttribute('open', '');
+      }
+      document.documentElement.classList.add('is-locked');
+      if (lenis) lenis.stop();
+      playSfx('click');
+    };
+
+    const closeModal = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      dialog.classList.add('is-closing');
+      setTimeout(() => {
+        try { dialog.close(); } catch(err) {}
+        dialog.removeAttribute('open');
+        dialog.classList.remove('is-closing');
+        document.documentElement.classList.remove('is-locked');
+        if (lenis) lenis.start();
+        playSfx('click');
+      }, 180);
+    };
+
+    openCvModalGlobal = openModal;
+
+    // Trigger on "View CV Online" button, link, and CV glass orb ball
+    const viewBtns = document.querySelectorAll('#openCvModalBtn, #openCvModalLink, .cv-btn-view, #cvGlassBall, .glass-orb--cv, #mobileCvViewBtn');
+    viewBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openModal(e);
+      });
+    });
+
+    // Dedicated Direct Download Handler - saves file directly to computer folder without modal
+    const triggerDirectDownload = (e) => {
+      playSfx('click');
+      showToast('Downloading Sangeeth_Sasikumar_CV.pdf to your file explorer...');
+
+      const tempLink = document.createElement('a');
+      tempLink.href = 'assets/Sangeeth_Sasikumar_CV.pdf';
+      tempLink.download = 'Sangeeth_Sasikumar_CV.pdf';
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      setTimeout(() => tempLink.remove(), 100);
+
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const downloadCvBtns = document.querySelectorAll('#downloadCvBtn, a.cv-btn-download, a[download="Sangeeth_Sasikumar_CV.pdf"]');
+    downloadCvBtns.forEach(btn => {
+      btn.addEventListener('click', triggerDirectDownload);
+    });
+
+    // Direct Close Button
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeModal);
+      closeBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+    }
+
+    // Click outside on the backdrop closes the modal
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        closeModal(e);
+      }
+    });
+
+    // Escape key closes modal
+    dialog.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      closeModal(e);
+    });
+
+    if (frame) {
+      frame.onerror = () => {
+        if (fallback) fallback.hidden = false;
+      };
+    }
+  }
+
+  /* ==========================================================================
+     18. ANIMATED TRANSMISSION CONSOLE (GOOGLE FORM → GOOGLE SHEETS)
+     ========================================================================== */
+  function initTransmissionForm() {
+    const form = document.getElementById('transmissionForm');
+    const submitBtn = document.getElementById('transmissionSubmitBtn');
+    const successHud = document.getElementById('transmissionSuccess');
+    const resetBtn = document.getElementById('transmissionResetBtn');
+    const nameInput = document.getElementById('formName');
+    const emailInput = document.getElementById('formEmail');
+    const messageInput = document.getElementById('formMessage');
+    const messageCounter = document.getElementById('messageCounter');
+    const topicInput = document.getElementById('formTopic');
+    const topicPills = document.querySelectorAll('.topic-pill');
+
+    const confirmedSender = document.getElementById('confirmedSender');
+    const confirmedEmail = document.getElementById('confirmedEmail');
+    const confirmedScope = document.getElementById('confirmedScope');
+    const confirmedTime = document.getElementById('confirmedTime');
+    const confirmedTxId = document.getElementById('confirmedTxId');
+
+    if (!form) return;
+
+    // Handle topic pill selection
+    topicPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        topicPills.forEach(p => p.classList.remove('is-active'));
+        pill.classList.add('is-active');
+        const selectedTopic = pill.dataset.topic || pill.textContent.trim();
+        if (topicInput) topicInput.value = selectedTopic;
+        playSfx('click');
+        showToast(`Scope Selected: ${selectedTopic}`);
+      });
+    });
+
+    // Message character counter
+    if (messageInput && messageCounter) {
+      messageInput.addEventListener('input', () => {
+        const len = messageInput.value.length;
+        messageCounter.textContent = `${len} / 1000`;
+      });
+    }
+
+    // Submission handler
+    form.addEventListener('submit', () => {
+      submitBtn?.classList.add('is-submitting');
+      playSfx('tone');
+
+      // Capture inputs for confirmation receipt
+      const senderName = nameInput?.value?.trim() || 'Colleague';
+      const senderEmail = emailInput?.value?.trim() || 'your email';
+      const selectedTopic = topicInput?.value || 'Autonomous Robotics';
+
+      const now = new Date();
+      const timeStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' +
+                      now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + ' IST';
+      const txHash = 'TX-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      // Prepend selected project scope into the comments/messages field for clean Google Sheets logging
+      if (messageInput && !messageInput.value.startsWith('[Scope:')) {
+        messageInput.value = `[Scope: ${selectedTopic}]\n\n${messageInput.value}`;
+      }
+
+      // Allow natural HTML form POST into target="googleFormIframe" (prevents CORS & page refresh)
+      setTimeout(() => {
+        submitBtn?.classList.remove('is-submitting');
+
+        // Populate personalized confirmation message
+        if (confirmedSender) confirmedSender.textContent = senderName;
+        if (confirmedEmail) confirmedEmail.textContent = senderEmail;
+        if (confirmedScope) confirmedScope.textContent = selectedTopic;
+        if (confirmedTime) confirmedTime.textContent = timeStr;
+        if (confirmedTxId) confirmedTxId.textContent = txHash;
+
+        form.hidden = true;
+        if (successHud) {
+          successHud.hidden = false;
+          setTimeout(() => {
+            successHud.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 80);
+        }
+
+        playSfx('boot');
+        showToast(`✓ Transmission Confirmed! Message from ${senderName} logged to Google Sheets.`);
+      }, 900);
+    });
+
+    // Reset button
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        form.reset();
+        if (messageCounter) messageCounter.textContent = '0 / 1000';
+        topicPills.forEach((p, idx) => p.classList.toggle('is-active', idx === 0));
+        if (topicInput) topicInput.value = 'Autonomous Robotics';
+        if (successHud) successHud.hidden = true;
+        form.hidden = false;
+        playSfx('click');
+        setTimeout(() => {
+          form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      });
+    }
+  }
+
+  /* ==========================================================================
      INITIALIZATION ORCHESTRATION
      ========================================================================== */
   window.addEventListener('DOMContentLoaded', () => {
@@ -2191,7 +2490,9 @@ SAFETY CONE: &gt; 25cm all zones clear`);
     initProjectShowcase();
     initCaseStudyModal();
     initShowreel();
+    initCvModal();
     initTerminal();
+    initTransmissionForm();
     initEmailCopy();
     initMagneticAndCursor();
     initMobileMenu();
