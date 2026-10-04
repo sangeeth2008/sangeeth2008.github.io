@@ -300,7 +300,6 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   position: absolute; inset: 0; width: 100%; height: 100%;
   transform-style: preserve-3d;
   will-change: transform;
-  transition: transform .14s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .hero__grid3d {
   position: absolute; inset: -45% -45% -15% -45%;
@@ -314,12 +313,13 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   opacity: 0.7;
   mask-image: radial-gradient(ellipse 65% 55% at 50% 62%, black 20%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 62%, black 20%, transparent 75%);
-  transition: transform .18s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .hero__canvas {
   position: absolute; inset: 0; width: 100%; height: 100%;
   transform: translateZ(0px);
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .hero__particles {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -870,18 +870,28 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   .nav__burger { display: block; }
 
   .hero__track { height: 360vh; }
+  .hero__sticky { perspective: none; }
+  .hero__stage { transform-style: flat; will-change: auto; }
+  .hero__particles { display: none !important; }
   .hero__grid3d {
-    background-size: 34px 34px;
-    transform: rotateX(74deg) translateZ(-120px);
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 15%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 15%, transparent 75%);
+    background-size: 28px 28px;
+    transform: none !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    opacity: 0.35;
   }
   
   /* Mobile 3D CAD Reticle Positioning — Dynamic subpixel coordinates driven by HeroScrubber */
-  .cad-target { gap: 6px; }
-  .cad-target__box { padding: 4px 8px; border-radius: 5px; }
+  .cad-target { gap: 6px; transition: opacity .3s ease; }
+  .cad-target__box {
+    padding: 4px 8px; border-radius: 5px;
+    background: rgba(10, 12, 16, 0.95);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
   .cad-target__tag { font-size: 7.5px; }
   .cad-target__val { font-size: 9px; }
+  .cad-target__ping::after { animation: none; }
 
   .hero__intro { top: calc(var(--nav-h) + 16px); bottom: auto; }
   .hero__title { font-size: clamp(52px, 16vw, 110px); }
@@ -893,7 +903,7 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   .hero__lede { font-size: 15px; }
   .hero__cue { display: none; }
 
-  /* Mobile Chapter HUD: Floating Glassmorphic Pill Cards with Cybernetic Shimmer */
+  /* Mobile Chapter HUD: Floating Solid-Glass Cards without heavy GPU blur */
   .chapter, .chapter--left, .chapter--right {
     left: clamp(14px, 4vw, 24px);
     right: clamp(14px, 4vw, 24px);
@@ -901,26 +911,19 @@ a:hover .roll > span { transform: translateY(-1.3em); }
     top: auto;
     bottom: clamp(14px, 3vh, 26px);
     transform: none;
-    background: rgba(12, 12, 16, 0.88);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    background: rgba(14, 17, 22, 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(76, 141, 255, 0.24);
     border-radius: 16px;
     padding: 18px 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     z-index: 10;
     overflow: hidden;
     position: relative;
   }
   .chapter::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(105deg, transparent 20%, rgba(76, 141, 255, 0.12) 50%, transparent 80%);
-    background-size: 250% 100%;
-    animation: chapterShimmer 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-  @keyframes chapterShimmer {
-    0% { background-position: -250% 0; }
-    50%, 100% { background-position: 250% 0; }
+    display: none;
   }
   .chapter__idx { margin-bottom: 10px; font-size: 10px; }
   .chapter__idx span {
@@ -961,13 +964,13 @@ a:hover .roll > span { transform: translateY(-1.3em); }
     width: calc(100vw - clamp(28px, 8vw, 48px));
     transform: translateX(-50%);
     bottom: clamp(16px, 3.5vh, 32px);
-    background: rgba(12, 12, 16, 0.94);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    background: rgba(14, 17, 22, 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(76, 141, 255, 0.28);
     border-radius: 18px;
     padding: 22px 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.88);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
     gap: 16px;
     z-index: 10;
   }

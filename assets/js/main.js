@@ -388,12 +388,14 @@
       this.ext = '.jpg';
       this.images = new Array(this.totalFrames);
       this.loaded = new Uint8Array(this.totalFrames);
+      this.isMobile = isMobile();
 
       this.currentFrame = 0;
       this.targetFrame = 0;
       this.lastDrawn = -1;
       this.progress = 0;
       this.isScrubbing = false;
+      this.isHeroVisible = true;
 
       this.preCount = document.getElementById('preCount');
       this.preBar = document.getElementById('preBar');
@@ -423,18 +425,34 @@
       this.isTouchActive = false;
       this.frameGeometry = null;
 
+      // Observe visibility to suspend renderLoop when hero is offscreen
+      if ('IntersectionObserver' in window && this.track) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const was = this.isHeroVisible;
+            this.isHeroVisible = entry.isIntersecting;
+            if (!was && this.isHeroVisible) {
+              requestAnimationFrame(() => this.renderLoop());
+            }
+          });
+        }, { threshold: 0.01 });
+        observer.observe(this.track);
+      }
+
       this.initCanvasSize();
       this.bindEvents();
       this.startInitialLoad();
     }
 
     initCanvasSize() {
-      this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.isMobile = isMobile();
+      // On mobile screens, cap DPR to 1 (or max 1.25) so the GPU isn't forced to upscale 720p to 3K
+      this.dpr = this.isMobile ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2);
       this.canvas.width = Math.round(window.innerWidth * this.dpr);
       this.canvas.height = Math.round(window.innerHeight * this.dpr);
       if (this.ctx) {
         this.ctx.imageSmoothingEnabled = true;
-        this.ctx.imageSmoothingQuality = 'high';
+        this.ctx.imageSmoothingQuality = this.isMobile ? 'medium' : 'high';
       }
       this.computeFrameGeometry();
     }
@@ -554,7 +572,12 @@
     }
 
     draw(frameIndex) {
-      const idx = Math.min(this.totalFrames - 1, Math.max(0, Math.round(frameIndex)));
+      let idx = Math.min(this.totalFrames - 1, Math.max(0, Math.round(frameIndex)));
+      if (this.isMobile) {
+        // Snap to even frames on mobile for 2x faster decode and 50% memory footprint
+        idx = Math.min(this.totalFrames - 1, Math.max(0, Math.round(idx / 2) * 2));
+      }
+
       if (!this.images[idx]) {
         this.loadFrame(idx);
       }
@@ -562,13 +585,15 @@
       // Fallback to nearest loaded frame to eliminate flicker
       let drawIdx = idx;
       if (!this.loaded[drawIdx]) {
+        const step = this.isMobile ? 2 : 1;
         for (let offset = 1; offset < 30; offset++) {
-          if (idx - offset >= 0 && this.loaded[idx - offset]) {
-            drawIdx = idx - offset;
+          const o = offset * step;
+          if (idx - o >= 0 && this.loaded[idx - o]) {
+            drawIdx = idx - o;
             break;
           }
-          if (idx + offset < this.totalFrames && this.loaded[idx + offset]) {
-            drawIdx = idx + offset;
+          if (idx + o < this.totalFrames && this.loaded[idx + o]) {
+            drawIdx = idx + o;
             break;
           }
         }
@@ -592,10 +617,13 @@
     startInitialLoad() {
       // First pass: load key milestone frames to get instant responsiveness
       let loadedCount = 0;
-      const initialBatch = 24; // Every 10th frame + first 10 frames
-      const keysToLoad = new Set([0, 1, 2, 3, 4, 5, 239]);
-      for (let i = 0; i < this.totalFrames; i += 10) keysToLoad.add(i);
-      const queue = Array.from(keysToLoad);
+      const step = this.isMobile ? 2 : 1;
+      const keysToLoad = new Set([0, 2, 4, 6, 238]);
+      const stride = this.isMobile ? 16 : 10;
+      for (let i = 0; i < this.totalFrames; i += stride) {
+        keysToLoad.add(this.isMobile ? Math.round(i / 2) * 2 : i);
+      }
+      const queue = Array.from(keysToLoad).filter(i => i < this.totalFrames);
 
       const updatePreloader = () => {
         loadedCount++;
@@ -653,20 +681,21 @@
 
     streamRemainingFrames() {
       // Background idle stream of remaining frames with proximity priority
+      const step = this.isMobile ? 2 : 1;
       let idx = 0;
       const streamNext = () => {
         if (idx >= this.totalFrames) return;
         if (!this.loaded[idx]) {
           this.loadFrame(idx, () => {
-            idx++;
+            idx += step;
             if ('requestIdleCallback' in window) {
-              requestIdleCallback(streamNext, { timeout: 120 });
+              requestIdleCallback(streamNext, { timeout: this.isMobile ? 240 : 120 });
             } else {
-              setTimeout(streamNext, 20);
+              setTimeout(streamNext, this.isMobile ? 80 : 20);
             }
           });
         } else {
-          idx++;
+          idx += step;
           streamNext();
         }
       };
@@ -681,10 +710,14 @@
 
       // Predictive preloading: prioritize direction of scroll
       const current = Math.round(this.targetFrame);
-      const ahead = dir > 0 ? 8 : 4;
-      const behind = dir > 0 ? 3 : 7;
+      const step = this.isMobile ? 2 : 1;
+      const ahead = dir > 0 ? (this.isMobile ? 6 : 8) : 4;
+      const behind = dir > 0 ? 2 : (this.isMobile ? 6 : 7);
       for (let offset = -behind; offset <= ahead; offset++) {
-        const target = current + offset;
+        let target = current + offset * step;
+        if (this.isMobile) {
+          target = Math.round(target / 2) * 2;
+        }
         if (target >= 0 && target < this.totalFrames) {
           this.loadFrame(target);
         }
@@ -731,6 +764,8 @@
     }
 
     renderLoop() {
+      if (!this.isHeroVisible || document.hidden) return;
+
       this.idleClock++;
 
       if (prefersReduced()) {
@@ -738,27 +773,47 @@
       } else {
         const diff = this.targetFrame - this.currentFrame;
         if (Math.abs(diff) > 0.005) {
-          // Ultra-smooth critically damped spring damping
-          const factor = Math.min(0.24, 0.12 + Math.abs(diff) * 0.006);
+          // On mobile, use snappy, tactile responsiveness so frames track the thumb instantly with zero lag
+          const factor = this.isMobile
+            ? Math.min(0.75, 0.40 + Math.abs(diff) * 0.015)
+            : Math.min(0.24, 0.12 + Math.abs(diff) * 0.006);
           this.currentFrame += diff * factor;
         } else {
           this.currentFrame = this.targetFrame;
         }
 
-        // Smooth 3D tilt interpolation with subtle idle breathing
+        // 3D tilt interpolation
         if (this.stage) {
-          const isMoving = Math.abs(diff) > 0.04 || this.isTouchActive;
-          const idleBreathX = isMoving ? 0 : Math.sin(this.idleClock * 0.024) * 0.65;
-          const idleBreathY = isMoving ? 0 : Math.cos(this.idleClock * 0.018) * 0.85;
+          if (this.isMobile) {
+            // On mobile: bypass continuous 3D stage rotation during active scroll to allow hardware-accelerated 2D canvas blitting
+            const isActivelyScrolling = Math.abs(diff) > 0.08 || this.isTouchActive;
+            if (isActivelyScrolling) {
+              this.tiltX += (0 - this.tiltX) * 0.25;
+              this.tiltY += (0 - this.tiltY) * 0.25;
+            } else {
+              this.tiltX += (this.targetTiltX - this.tiltX) * 0.1;
+              this.tiltY += (this.targetTiltY - this.tiltY) * 0.1;
+            }
 
-          this.tiltX += (this.targetTiltX + idleBreathX - this.tiltX) * 0.085;
-          this.tiltY += (this.targetTiltY + idleBreathY - this.tiltY) * 0.085;
-          this.stage.style.transform = `rotateX(${this.tiltX.toFixed(2)}deg) rotateY(${this.tiltY.toFixed(2)}deg)`;
+            if (Math.abs(this.tiltX) > 0.05 || Math.abs(this.tiltY) > 0.05) {
+              this.stage.style.transform = `rotateX(${this.tiltX.toFixed(2)}deg) rotateY(${this.tiltY.toFixed(2)}deg)`;
+            } else if (this.stage.style.transform !== '') {
+              this.stage.style.transform = '';
+            }
+          } else {
+            const isMoving = Math.abs(diff) > 0.04 || this.isTouchActive;
+            const idleBreathX = isMoving ? 0 : Math.sin(this.idleClock * 0.024) * 0.65;
+            const idleBreathY = isMoving ? 0 : Math.cos(this.idleClock * 0.018) * 0.85;
 
-          if (this.gyroReadout && (this.idleClock % 3 === 0)) {
-            const signX = this.tiltX >= 0 ? '+' : '';
-            const signY = this.tiltY >= 0 ? '+' : '';
-            this.gyroReadout.textContent = `P: ${signX}${this.tiltX.toFixed(1)}° Y: ${signY}${this.tiltY.toFixed(1)}°`;
+            this.tiltX += (this.targetTiltX + idleBreathX - this.tiltX) * 0.085;
+            this.tiltY += (this.targetTiltY + idleBreathY - this.tiltY) * 0.085;
+            this.stage.style.transform = `rotateX(${this.tiltX.toFixed(2)}deg) rotateY(${this.tiltY.toFixed(2)}deg)`;
+
+            if (this.gyroReadout && (this.idleClock % 3 === 0)) {
+              const signX = this.tiltX >= 0 ? '+' : '';
+              const signY = this.tiltY >= 0 ? '+' : '';
+              this.gyroReadout.textContent = `P: ${signX}${this.tiltX.toFixed(1)}° Y: ${signY}${this.tiltY.toFixed(1)}°`;
+            }
           }
         }
       }
@@ -782,9 +837,10 @@
         }, 120);
       }, { passive: true });
 
-      // Dynamic Scroll Inertia Momentum
+      // Dynamic Scroll Inertia Momentum (Desktop only)
       let lastScrollY = window.scrollY;
       window.addEventListener('scroll', () => {
+        if (this.isMobile) return;
         const curScrollY = window.scrollY;
         const delta = curScrollY - lastScrollY;
         const vel = Math.max(-8, Math.min(8, delta * 0.22));
@@ -794,31 +850,23 @@
 
       // Desktop Mouse 3D Perspective Tilt with extended depth range
       window.addEventListener('mousemove', (e) => {
-        if (window.innerWidth < 900) return;
+        if (this.isMobile || window.innerWidth < 900) return;
         const nx = (e.clientX / window.innerWidth) - 0.5;
         const ny = (e.clientY / window.innerHeight) - 0.5;
         this.targetTiltX = -ny * 7.5; // pitch
         this.targetTiltY = nx * 9.5;  // yaw
       }, { passive: true });
 
-      // Mobile Touchscreen Pan/Swipe 3D Tilt & Interactive Sonar Ping Ripple
+      // Mobile Touchscreen Pan/Swipe Tracking
       window.addEventListener('touchstart', (e) => {
         if (e.touches && e.touches[0]) {
           this.isTouchActive = true;
-          const touch = e.touches[0];
-          // Interactive touch sonar ripple on hero stage
-          if (this.stage && touch.clientY < window.innerHeight * 0.85) {
-            const ripple = document.createElement('div');
-            ripple.className = 'hero__touch-pulse';
-            ripple.style.left = `${touch.clientX}px`;
-            ripple.style.top = `${touch.clientY}px`;
-            this.stage.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 1000);
-          }
         }
       }, { passive: true });
 
       window.addEventListener('touchmove', (e) => {
+        // Touch gestures are for scrolling on mobile — don't tilt the 3D stage on touchmove to avoid scroll hitching
+        if (this.isMobile) return;
         if (!e.touches || !e.touches[0]) return;
         const touch = e.touches[0];
         const nx = (touch.clientX / window.innerWidth) - 0.5;
@@ -897,6 +945,7 @@
     gsap.registerPlugin(ScrollTrigger);
 
     // Initialize Lenis Smooth Scroll
+    const mobileUser = isMobile();
     if (typeof Lenis !== 'undefined') {
       lenis = new Lenis({
         duration: 1.15,
@@ -905,7 +954,9 @@
         gestureOrientation: 'vertical',
         smoothWheel: true,
         wheelMultiplier: 1.05,
-        touchMultiplier: 1.5,
+        touchMultiplier: mobileUser ? 1.0 : 1.5,
+        syncTouch: mobileUser ? true : false,
+        smoothTouch: false,
         infinite: false
       });
 
@@ -914,7 +965,7 @@
       gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
       });
-      gsap.ticker.lagSmoothing(0);
+      gsap.ticker.lagSmoothing(500, 33);
     }
 
     // 1. Hero Scrubber Timeline
@@ -927,7 +978,7 @@
         trigger: heroTrack,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: true,
+        scrub: mobileUser ? 0.2 : true,
         onUpdate: (self) => {
           if (scrubber) scrubber.updateScroll(self.progress);
         }
@@ -1875,6 +1926,11 @@ SAFETY CONE: &gt; 25cm all zones clear`);
       this.scrubber = scrubber;
       this.canvas = document.getElementById('heroParticles');
       if (!this.canvas) return;
+      // On mobile devices, disable the secondary particle canvas entirely to save 100% of second-canvas fill rate and CPU distance loops
+      if (isMobile()) {
+        this.canvas.style.display = 'none';
+        return;
+      }
       this.ctx = this.canvas.getContext('2d');
       if (!this.ctx) return;
 
