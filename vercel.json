@@ -25,7 +25,7 @@
       ]
     },
     {
-      "source": "/assets/(frames|img)/(.*)",
+      "source": "/assets/img/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

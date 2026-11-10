@@ -123,16 +123,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- First hero frame is the LCP candidate -->
-  <link rel="preload" as="image" href="assets/frames/frame_00001.jpg" fetchpriority="high">
+  <!-- Hero portrait is the LCP candidate -->
+  <link rel="preload" as="image" href="assets/img/hero/sangeeth-portrait.webp" type="image/webp" fetchpriority="high">
 
-  <link rel="stylesheet" href="assets/css/main.css?v=6.6.0">
+  <link rel="stylesheet" href="assets/css/main.css?v=6.7.0">
 
   <!-- Motion stack -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script defer src="assets/js/main.js?v=6.6.0"></script>
+  <script defer src="assets/js/main.js?v=6.7.0"></script>
 </head>
 
 <body class="is-loading">
@@ -143,14 +143,14 @@
     <div class="preloader__inner">
       <div class="preloader__row mono">
         <span>SS / Portfolio — 2026</span>
-        <span>Rover V2 · Boot sequence</span>
+        <span>Portfolio · 2026</span>
       </div>
       <div class="preloader__count">
         <span id="preCount">000</span>
       </div>
       <div class="preloader__bar"><span id="preBar"></span></div>
       <div class="preloader__row mono">
-        <span id="preStatus">Loading assembly frames</span>
+        <span id="preStatus">Lighting the stage</span>
         <span>Kerala, India</span>
       </div>
     </div>
@@ -223,7 +223,7 @@
   </header>
 
   <!-- ============ MOBILE MENU ============ -->
-  <div class="menu" id="menu" data-lenis-prevent>
+  <div class="menu" id="menu" aria-hidden="true" data-lenis-prevent>
     <nav class="menu__links" aria-label="Mobile">
       <a href="#about"><span class="mono">01</span>About</a>
       <a href="#skills"><span class="mono">02</span>Capabilities</a>
@@ -246,125 +246,40 @@
 
   <main id="main">
 
-    <!-- ============ HERO: SCROLL-DRIVEN ASSEMBLY ============ -->
-    <section class="hero" id="top" aria-label="Introduction">
-      <div class="hero__track" id="heroTrack">
-        <div class="hero__sticky" id="heroSticky">
-          <div class="hero__stage" id="hero3DStage">
-            <div class="hero__grid3d" id="heroGrid3D" aria-hidden="true"></div>
-            <canvas class="hero__canvas" id="heroCanvas" aria-label="Rover V2 assembling from exploded components as you scroll" role="img"></canvas>
-            <canvas class="hero__particles" id="heroParticles" aria-hidden="true"></canvas>
-            <div class="hero__scanner" id="heroScanner" aria-hidden="true"><div class="hero__scanner-beam"></div></div>
+    <!-- ============ HERO: AMBER BURN ============ -->
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="hero__scene" id="heroScene">
+        <h1 class="hero__burn" id="heroTitle" data-text="Sangeeth" aria-label="Sangeeth Sasikumar K S">Sangeeth</h1>
 
-            <!-- 3D HUD CAD Reticle Target System -->
-            <div class="hero__targets" id="heroTargets" aria-hidden="true">
-              <div class="cad-target" id="cadCam">
-                <span class="cad-target__ping"></span>
-                <div class="cad-target__box">
-                  <span class="cad-target__tag mono">SEN-01 // OPTICS</span>
-                  <span class="cad-target__val mono">OV2640 · 68° FOV</span>
-                </div>
-              </div>
-              <div class="cad-target" id="cadSonar">
-                <span class="cad-target__ping"></span>
-                <div class="cad-target__box">
-                  <span class="cad-target__tag mono">SEN-02 // SONAR</span>
-                  <span class="cad-target__val mono">HC-SR04 · 3-ZONE ECHO</span>
-                </div>
-              </div>
-              <div class="cad-target" id="cadMcu">
-                <span class="cad-target__ping"></span>
-                <div class="cad-target__box">
-                  <span class="cad-target__tag mono">CPU-01 // BRAIN</span>
-                  <span class="cad-target__val mono">ESP32 · 240MHz FREERTOS</span>
-                </div>
-              </div>
-              <div class="cad-target" id="cadDrive">
-                <span class="cad-target__ping"></span>
-                <div class="cad-target__box">
-                  <span class="cad-target__tag mono">ACT-01 // DRIVE</span>
-                  <span class="cad-target__val mono">TB6612FNG · DIFF-DRIVE</span>
-                </div>
-              </div>
-            </div>
+        <div class="hero__subject" id="heroSubject">
+          <div class="hero__actor" id="heroActor">
+            <img
+              class="hero__figure"
+              id="heroFigure"
+              src="assets/img/hero/sangeeth-portrait.webp"
+              width="900"
+              height="1200"
+              fetchpriority="high"
+              decoding="async"
+              alt="Sangeeth Sasikumar in aviator sunglasses, lit by warm amber light"
+            >
+            <div class="hero__rim" id="heroRim" aria-hidden="true"></div>
+            <div class="hero__glint" aria-hidden="true"></div>
           </div>
+        </div>
+      </div>
 
-          <div class="hero__shade" aria-hidden="true"></div>
-
-          <div class="hero__intro" id="heroIntro">
-            <p class="eyebrow mono" data-intro><span class="pulse" aria-hidden="true"></span>Mechatronics Engineer — Kerala, India</p>
-            <h1 class="hero__title" aria-label="Sangeeth Sasikumar K S">
-              <span class="line"><span>Sangeeth</span></span>
-              <span class="line"><span><em class="serif">Sasikumar</em> K S</span></span>
-            </h1>
-            <div class="hero__bottom">
-              <p class="hero__lede" data-intro>Engineering portfolio of <strong>Sangeeth Sasikumar K S</strong>: designing and building robots that <em>sense</em>, <em>compute</em> and <em>act</em> in the real world, from ESP32 firmware to on-device AI.</p>
-              <div class="hero__ctas" data-intro>
-                <a class="btn btn--primary magnetic" href="#work" data-cursor="Explore">
-                  <span class="btn__label">Selected work</span>
-                  <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-                </a>
-                <button class="btn btn--ghost magnetic" type="button" id="reelBtn" data-cursor="Play">
-                  <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>
-                  <span class="btn__label">Watch showreel [0:42]</span>
-                </button>
-                <a class="btn btn--ghost magnetic" href="assets/Sangeeth_Sasikumar_CV.pdf" download="Sangeeth_Sasikumar_CV.pdf" target="_blank" rel="noopener noreferrer" data-cursor="CV PDF">
-                  <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M14 10v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-3M4 6l4 4 4-4M8 1v9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-                  <span class="btn__label">Resume (PDF)</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Scroll chapters -->
-          <div class="chapter chapter--left" data-chapter>
-            <p class="chapter__idx mono"><span>01</span> Sense</p>
-            <p class="chapter__title">It starts with <em class="serif">perception.</em></p>
-            <ul class="chapter__list mono">
-              <li>HC-SR04 ultrasonic array</li>
-              <li>PIR thermal intrusion trigger</li>
-              <li>ESP32-CAM · OV2640 vision</li>
-              <li>MPU6050 6-DoF IMU</li>
-            </ul>
-          </div>
-          <div class="chapter chapter--right" data-chapter>
-            <p class="chapter__idx mono"><span>02</span> Compute</p>
-            <p class="chapter__title">A dual-core brain, <em class="serif">deterministic</em> by design.</p>
-            <ul class="chapter__list mono">
-              <li>ESP32 @ 240 MHz</li>
-              <li>FreeRTOS task scheduling</li>
-              <li>Non-blocking state machine</li>
-              <li>10 ms control cycle, zero delay()</li>
-            </ul>
-          </div>
-          <div class="chapter chapter--left" data-chapter>
-            <p class="chapter__idx mono"><span>03</span> Actuate</p>
-            <p class="chapter__title">Then it moves, <em class="serif">precisely.</em></p>
-            <ul class="chapter__list mono">
-              <li>TB6612FNG dual H-bridge</li>
-              <li>LEDC PWM acceleration ramps</li>
-              <li>Differential-drive kinematics</li>
-              <li>Tilt &gt; 45° automatic E-stop</li>
-            </ul>
-          </div>
-          <div class="chapter chapter--final" data-chapter>
-            <p class="chapter__idx mono"><span>04</span> Assembled</p>
-            <p class="chapter__title chapter__title--xl">Ideas → Circuits → Robots → <em class="serif">Impact.</em></p>
-            <a class="btn btn--primary magnetic" href="#about" data-cursor="Continue">
-              <span class="btn__label">Meet the engineer</span>
-              <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-            </a>
-          </div>
-
-          <div class="hero__hud mono" aria-hidden="true">
-            <span>Frame <b id="hudFrame">001</b> / 240</span>
-            <span class="hero__hud-bar"><i id="hudBar"></i></span>
-            <span class="hero__hud-telemetry" id="heroTelemetry"><span class="pulse"></span><span id="gyroReadout">P: +0.0° Y: +0.0°</span></span>
-            <span id="hudStage">Exploded view</span>
-          </div>
-          <div class="hero__cue mono" id="heroCue" aria-hidden="true">
-            <span class="hero__cue-line"></span>Scroll to assemble
-          </div>
+      <div class="hero__copy" id="heroIntro">
+        <p class="hero__name" data-intro>Sasikumar K S, Kerala</p>
+        <p class="hero__statement" data-intro>Mechatronics engineer. I build machines like craft, not decoration.</p>
+        <div class="hero__ctas" data-intro>
+          <a class="btn btn--primary magnetic" href="#work" data-cursor="Explore">
+            <span class="btn__label">Selected work</span>
+            <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </a>
+          <button class="hero__link magnetic" type="button" id="reelBtn" data-cursor="Play">
+            <span>Watch showreel (0:42)</span>
+          </button>
         </div>
       </div>
     </section>
@@ -1056,7 +971,7 @@
     <button type="button" class="reel__close" id="reelClose" aria-label="Close showreel">
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5"/></svg>
     </button>
-    <video id="reelVideo" controls playsinline preload="none" data-src="assets/Robotic_rover_interface_animation_20260926221438.mp4" poster="assets/frames/frame_00240.jpg"></video>
+    <video id="reelVideo" controls playsinline preload="none" data-src="assets/Robotic_rover_interface_animation_20260926221438.mp4" poster="assets/img/reel-poster.jpg"></video>
     <p class="reel__caption mono">Autonomous differential rover V2 · ESP32 dual-core · Mechatronics lab</p>
   </dialog>
 

@@ -413,571 +413,287 @@
   }
 
   /* ==========================================================================
-     3. PRELOADER & HERO CANVAS FRAME SCRUBBER (240 FRAMES)
+     3. PRELOADER & AMBER BURN HERO LIGHT CONTROLLER
      ========================================================================== */
-  class HeroScrubber {
+  class Preloader {
     constructor() {
-      this.canvas = document.getElementById('heroCanvas');
-      this.track = document.getElementById('heroTrack');
-      if (!this.canvas || !this.track) return;
-
-      this.ctx = this.canvas.getContext('2d', { alpha: false });
-      this.totalFrames = 240;
-      this.prefix = 'assets/frames/frame_';
-      this.ext = '.jpg';
-      this.images = new Array(this.totalFrames);
-      this.loaded = new Uint8Array(this.totalFrames);
-      this.isMobile = isMobile();
-
-      this.currentFrame = 0;
-      this.targetFrame = 0;
-      this.lastDrawn = -1;
-      this.progress = 0;
-      this.isScrubbing = false;
-      this.isHeroVisible = true;
-
+      this.preloader = document.getElementById('preloader');
       this.preCount = document.getElementById('preCount');
       this.preBar = document.getElementById('preBar');
-      this.preStatus = document.getElementById('preStatus');
-      this.preloader = document.getElementById('preloader');
-
-      this.hudFrame = document.getElementById('hudFrame');
-      this.hudBar = document.getElementById('hudBar');
-      this.hudStage = document.getElementById('hudStage');
-      this.hudWrap = document.querySelector('.hero__hud');
-      this.cue = document.getElementById('heroCue');
-      this.gyroReadout = document.getElementById('gyroReadout');
-
-      // 3D Stage & CAD Reticle Elements
-      this.stage = document.getElementById('hero3DStage');
-      this.scanner = document.getElementById('heroScanner');
-      this.targetCam = document.getElementById('cadCam');
-      this.targetSonar = document.getElementById('cadSonar');
-      this.targetMcu = document.getElementById('cadMcu');
-      this.targetDrive = document.getElementById('cadDrive');
-
-      this.tiltX = 0;
-      this.tiltY = 0;
-      this.targetTiltX = 0;
-      this.targetTiltY = 0;
-      this.idleClock = 0;
-      this.isTouchActive = false;
-      this.frameGeometry = null;
-
-      // Observe visibility to suspend renderLoop when hero is offscreen
-      if ('IntersectionObserver' in window && this.track) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            const was = this.isHeroVisible;
-            this.isHeroVisible = entry.isIntersecting;
-            if (!was && this.isHeroVisible) {
-              requestAnimationFrame(() => this.renderLoop());
-            }
-          });
-        }, { threshold: 0.01 });
-        observer.observe(this.track);
-      }
-
-      this.initCanvasSize();
-      this.bindEvents();
-      this.startInitialLoad();
+      this.figure = document.getElementById('heroFigure');
+      this.dismissed = false;
+      this.start();
     }
 
-    initCanvasSize() {
-      this.isMobile = isMobile();
-      // On mobile screens, cap DPR to 1 (or max 1.25) so the GPU isn't forced to upscale 720p to 3K
-      this.dpr = this.isMobile ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2);
-      this.canvas.width = Math.round(window.innerWidth * this.dpr);
-      this.canvas.height = Math.round(window.innerHeight * this.dpr);
-      if (this.ctx) {
-        this.ctx.imageSmoothingEnabled = true;
-        this.ctx.imageSmoothingQuality = this.isMobile ? 'medium' : 'high';
-      }
-      this.computeFrameGeometry();
-    }
-
-    computeFrameGeometry() {
-      const cw = this.canvas.width;
-      const ch = this.canvas.height;
-      const dpr = this.dpr || 1;
-      const screenAspect = cw / ch;
-      const frameAspect = 1280 / 720; // 1.7778
-
-      let dw, dh, dx, dy;
-
-      if (screenAspect >= frameAspect) {
-        // Ultra-wide or wide desktop screens (21:9, 16:9 desktop):
-        // Match height, position slightly to the right to preserve left editorial text space
-        dh = ch;
-        dw = dh * frameAspect;
-        dx = (cw - dw) * 0.58;
-        dy = 0;
-      } else if (screenAspect >= 1.05) {
-        // Laptops, tablets in landscape, foldables (1.05 to 1.77):
-        // Scale to fill width nicely, centered with subtle upper bias
-        dw = cw * 1.02;
-        dh = dw / frameAspect;
-        dx = (cw - dw) * 0.5;
-        dy = Math.max(0, (ch - dh) * 0.42);
-      } else {
-        // Mobile phones & tall portrait screens (< 1.05):
-        // Scale to 140% of width to ensure the robot is prominent and fills nicely
-        // Anchor it slightly offset from the top to prevent clipping into the navbar
-        dw = cw * 1.45;
-        dh = dw / frameAspect;
-        dx = (cw - dw) * 0.5;
-        dy = ch * 0.12; // nicely spaced 12% from the top
-      }
-
-      this.frameGeometry = {
-        dx, dy, dw, dh,
-        cssDx: dx / dpr,
-        cssDy: dy / dpr,
-        cssDw: dw / dpr,
-        cssDh: dh / dpr
-      };
-
-      this.updateReticlePositions();
-      return this.frameGeometry;
-    }
-
-    updateReticlePositions() {
-      if (!this.frameGeometry) return;
-      const { cssDx, cssDy, cssDw, cssDh } = this.frameGeometry;
-
-      // Exact normalized physical hardware coordinates on the 1280x720 robot frame:
-      // Camera OV2640 Optics:     (52.5% X, 30.0% Y)
-      // Sonar HC-SR04 Transducer: (38.5% X, 44.0% Y)
-      // MCU ESP32 Dual-Core Chip: (57.5% X, 41.5% Y)
-      // Drive Motor TB6612FNG:   (36.0% X, 67.0% Y)
-
-      if (this.targetCam) {
-        this.targetCam.style.left = `${(cssDx + cssDw * 0.525).toFixed(1)}px`;
-        this.targetCam.style.top  = `${(cssDy + cssDh * 0.300).toFixed(1)}px`;
-      }
-      if (this.targetSonar) {
-        this.targetSonar.style.left = `${(cssDx + cssDw * 0.385).toFixed(1)}px`;
-        this.targetSonar.style.top  = `${(cssDy + cssDh * 0.440).toFixed(1)}px`;
-      }
-      if (this.targetMcu) {
-        this.targetMcu.style.left = `${(cssDx + cssDw * 0.575).toFixed(1)}px`;
-        this.targetMcu.style.top  = `${(cssDy + cssDh * 0.415).toFixed(1)}px`;
-      }
-      if (this.targetDrive) {
-        this.targetDrive.style.left = `${(cssDx + cssDw * 0.360).toFixed(1)}px`;
-        this.targetDrive.style.top  = `${(cssDy + cssDh * 0.670).toFixed(1)}px`;
-      }
-
-      // Constrain scanner beam to the actual robot bounds
-      if (this.scanner) {
-        this.scanner.style.left = `${Math.max(0, cssDx).toFixed(1)}px`;
-        this.scanner.style.top = `${Math.max(0, cssDy).toFixed(1)}px`;
-        this.scanner.style.width = `${cssDw.toFixed(1)}px`;
-        this.scanner.style.height = `${cssDh.toFixed(1)}px`;
-      }
-    }
-
-    getFrameSrc(i) {
-      const pad = String(i + 1).padStart(5, '0');
-      return `${this.prefix}${pad}${this.ext}`;
-    }
-
-    loadFrame(i, callback) {
-      if (i < 0 || i >= this.totalFrames) {
-        if (callback) callback();
+    start() {
+      if (prefersReduced()) {
+        if (this.preCount) this.preCount.textContent = '100';
+        if (this.preBar) this.preBar.style.transform = 'scaleX(1)';
+        this.dismiss(true);
         return;
       }
-      if (this.images[i]) {
-        if (callback) callback();
-        return;
-      }
-      const img = new Image();
-      this.images[i] = img;
-      img.src = this.getFrameSrc(i);
 
-      const markLoaded = () => {
-        this.loaded[i] = 1;
-        if (callback) callback();
-      };
+      const startTime = performance.now();
+      const minDuration = 60;
+      let imgReady = !this.figure || this.figure.complete;
 
-      if ('decode' in img) {
-        img.decode().then(markLoaded).catch(markLoaded);
-      } else {
-        img.onload = markLoaded;
-        img.onerror = markLoaded;
-      }
-    }
-
-    draw(frameIndex) {
-      let idx = Math.min(this.totalFrames - 1, Math.max(0, Math.round(frameIndex)));
-      if (this.isMobile) {
-        // Snap to even frames on mobile for 2x faster decode and 50% memory footprint
-        idx = Math.min(this.totalFrames - 1, Math.max(0, Math.round(idx / 2) * 2));
-      }
-
-      if (!this.images[idx]) {
-        this.loadFrame(idx);
-      }
-
-      // Fallback to nearest loaded frame to eliminate flicker
-      let drawIdx = idx;
-      if (!this.loaded[drawIdx]) {
-        const step = this.isMobile ? 2 : 1;
-        for (let offset = 1; offset < 30; offset++) {
-          const o = offset * step;
-          if (idx - o >= 0 && this.loaded[idx - o]) {
-            drawIdx = idx - o;
-            break;
-          }
-          if (idx + o < this.totalFrames && this.loaded[idx + o]) {
-            drawIdx = idx + o;
-            break;
-          }
+      if (this.figure && !imgReady) {
+        if ('decode' in this.figure) {
+          this.figure.decode().then(() => { imgReady = true; }).catch(() => { imgReady = true; });
+        } else {
+          this.figure.addEventListener('load', () => { imgReady = true; }, { once: true });
+          this.figure.addEventListener('error', () => { imgReady = true; }, { once: true });
         }
       }
 
-      if (drawIdx === this.lastDrawn) return;
-
-      const img = this.images[drawIdx];
-      if (img && (this.loaded[drawIdx] || img.complete)) {
-        const geo = this.frameGeometry || this.computeFrameGeometry();
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.drawImage(img, geo.dx, geo.dy, geo.dw, geo.dh);
-        this.lastDrawn = drawIdx;
-
-        if (this.hudFrame) {
-          this.hudFrame.textContent = String(drawIdx + 1).padStart(3, '0');
-        }
-      }
-    }
-
-    startInitialLoad() {
-      // First pass: load key milestone frames to get instant responsiveness
-      let loadedCount = 0;
-      const step = this.isMobile ? 2 : 1;
-      const keysToLoad = new Set([0, 2, 4, 6, 238]);
-      const stride = this.isMobile ? 16 : 10;
-      for (let i = 0; i < this.totalFrames; i += stride) {
-        keysToLoad.add(this.isMobile ? Math.round(i / 2) * 2 : i);
-      }
-      const queue = Array.from(keysToLoad).filter(i => i < this.totalFrames);
-
-      const updatePreloader = () => {
-        loadedCount++;
-        const pct = Math.min(100, Math.round((loadedCount / queue.length) * 100));
+      const tick = (now) => {
+        if (this.dismissed) return;
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / minDuration);
+        const pct = Math.round(t * (imgReady ? 100 : 95));
         if (this.preCount) this.preCount.textContent = String(pct).padStart(3, '0');
         if (this.preBar) this.preBar.style.transform = `scaleX(${pct / 100})`;
 
-        if (loadedCount >= queue.length) {
-          this.draw(0);
-          this.dismissPreloader();
-          this.streamRemainingFrames();
+        if ((t >= 1 && imgReady) || elapsed > 180) {
+          if (this.preCount) this.preCount.textContent = '100';
+          if (this.preBar) this.preBar.style.transform = 'scaleX(1)';
+          this.dismiss(false);
+        } else {
+          requestAnimationFrame(tick);
         }
       };
 
-      // Safety timeout: ensure site becomes interactive within 2.2s even on slow connections
-      setTimeout(() => {
-        if (!this.dismissed) {
-          this.draw(0);
-          this.dismissPreloader();
-        }
-      }, 2200);
-
-      queue.forEach(idx => {
-        this.loadFrame(idx, updatePreloader);
-      });
+      requestAnimationFrame(tick);
     }
 
-    dismissPreloader() {
+    dismiss(instant) {
       if (this.dismissed) return;
       this.dismissed = true;
 
-      setTimeout(() => {
-        if (this.preloader) {
-          if (typeof gsap !== 'undefined') {
-            gsap.to(this.preloader, {
-              clipPath: 'inset(0 0 100% 0)',
-              duration: 0.9,
-              ease: 'power4.inOut',
-              onComplete: () => {
-                this.preloader.style.display = 'none';
-                document.body.classList.remove('is-loading');
-                if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-                animateHeroEntrance();
-              }
-            });
-          } else {
-            this.preloader.style.display = 'none';
-            document.body.classList.remove('is-loading');
-          }
-        } else {
-          document.body.classList.remove('is-loading');
-        }
-      }, 200);
-    }
-
-    streamRemainingFrames() {
-      // Background idle stream of remaining frames with proximity priority
-      const step = this.isMobile ? 2 : 1;
-      let idx = 0;
-      const streamNext = () => {
-        if (idx >= this.totalFrames) return;
-        if (!this.loaded[idx]) {
-          this.loadFrame(idx, () => {
-            idx += step;
-            if ('requestIdleCallback' in window) {
-              requestIdleCallback(streamNext, { timeout: this.isMobile ? 240 : 120 });
-            } else {
-              setTimeout(streamNext, this.isMobile ? 80 : 20);
-            }
-          });
-        } else {
-          idx += step;
-          streamNext();
-        }
-      };
-      streamNext();
-    }
-
-    updateScroll(progress) {
-      const prevProgress = this.progress || 0;
-      const dir = progress >= prevProgress ? 1 : -1;
-      this.progress = progress;
-      this.targetFrame = progress * (this.totalFrames - 1);
-
-      // Predictive preloading: prioritize direction of scroll
-      const current = Math.round(this.targetFrame);
-      const step = this.isMobile ? 2 : 1;
-      const ahead = dir > 0 ? (this.isMobile ? 6 : 8) : 4;
-      const behind = dir > 0 ? 2 : (this.isMobile ? 6 : 7);
-      for (let offset = -behind; offset <= ahead; offset++) {
-        let target = current + offset * step;
-        if (this.isMobile) {
-          target = Math.round(target / 2) * 2;
-        }
-        if (target >= 0 && target < this.totalFrames) {
-          this.loadFrame(target);
-        }
+      if (!this.preloader) {
+        document.body.classList.remove('is-loading');
+        animateHeroEntrance();
+        return;
       }
 
-      // HUD updates
-      if (this.hudBar) {
-        this.hudBar.style.transform = `scaleX(${progress})`;
-      }
-      if (this.hudWrap) {
-        if (progress > 0.02 && progress < 0.98) {
-          this.hudWrap.classList.add('is-on');
-        } else {
-          this.hudWrap.classList.remove('is-on');
-        }
-      }
-      if (this.cue) {
-        this.cue.style.opacity = progress > 0.04 ? '0' : '1';
+      if (instant || typeof gsap === 'undefined') {
+        this.preloader.style.display = 'none';
+        document.body.classList.remove('is-loading');
+        animateHeroEntrance();
+        return;
       }
 
-      // Scanner beam activation during mechanical state transitions
-      if (this.scanner) {
-        if (progress > 0.08 && progress < 0.94) {
-          this.scanner.classList.add('is-active');
-        } else {
-          this.scanner.classList.remove('is-active');
-        }
-      }
-
-      // 3D CAD Reticle Targets illumination
-      if (this.targetCam) this.targetCam.classList.toggle('is-visible', progress >= 0.16 && progress <= 0.38);
-      if (this.targetSonar) this.targetSonar.classList.toggle('is-visible', progress >= 0.20 && progress <= 0.38);
-      if (this.targetMcu) this.targetMcu.classList.toggle('is-visible', progress >= 0.39 && progress <= 0.60);
-      if (this.targetDrive) this.targetDrive.classList.toggle('is-visible', progress >= 0.61 && progress <= 0.82);
-
-      // HUD stage label
-      if (this.hudStage) {
-        if (progress < 0.25) this.hudStage.textContent = 'Exploded components';
-        else if (progress < 0.52) this.hudStage.textContent = 'Sense / Ultrasonic & Vision';
-        else if (progress < 0.78) this.hudStage.textContent = 'Compute / Dual-Core ESP32';
-        else if (progress < 0.95) this.hudStage.textContent = 'Actuate / Kinematic Chassis';
-        else this.hudStage.textContent = 'Fully Assembled Rover V2';
-      }
-    }
-
-    renderLoop() {
-      if (!this.isHeroVisible || document.hidden) return;
-
-      this.idleClock++;
-
-      if (prefersReduced()) {
-        this.currentFrame = this.targetFrame;
-      } else {
-        const diff = this.targetFrame - this.currentFrame;
-        if (Math.abs(diff) > 0.005) {
-          // On mobile, use snappy, tactile responsiveness so frames track the thumb instantly with zero lag
-          const factor = this.isMobile
-            ? Math.min(0.75, 0.40 + Math.abs(diff) * 0.015)
-            : Math.min(0.24, 0.12 + Math.abs(diff) * 0.006);
-          this.currentFrame += diff * factor;
-        } else {
-          this.currentFrame = this.targetFrame;
-        }
-
-        // 3D tilt interpolation
-        if (this.stage) {
-          if (this.isMobile) {
-            // On mobile: bypass continuous 3D stage rotation during active scroll to allow hardware-accelerated 2D canvas blitting
-            const isActivelyScrolling = Math.abs(diff) > 0.08 || this.isTouchActive;
-            if (isActivelyScrolling) {
-              this.tiltX += (0 - this.tiltX) * 0.25;
-              this.tiltY += (0 - this.tiltY) * 0.25;
-            } else {
-              this.tiltX += (this.targetTiltX - this.tiltX) * 0.1;
-              this.tiltY += (this.targetTiltY - this.tiltY) * 0.1;
-            }
-
-            if (Math.abs(this.tiltX) > 0.05 || Math.abs(this.tiltY) > 0.05) {
-              this.stage.style.transform = `rotateX(${this.tiltX.toFixed(2)}deg) rotateY(${this.tiltY.toFixed(2)}deg)`;
-            } else if (this.stage.style.transform !== '') {
-              this.stage.style.transform = '';
-            }
-          } else {
-            const isMoving = Math.abs(diff) > 0.04 || this.isTouchActive;
-            const idleBreathX = isMoving ? 0 : Math.sin(this.idleClock * 0.024) * 0.65;
-            const idleBreathY = isMoving ? 0 : Math.cos(this.idleClock * 0.018) * 0.85;
-
-            this.tiltX += (this.targetTiltX + idleBreathX - this.tiltX) * 0.085;
-            this.tiltY += (this.targetTiltY + idleBreathY - this.tiltY) * 0.085;
-            this.stage.style.transform = `rotateX(${this.tiltX.toFixed(2)}deg) rotateY(${this.tiltY.toFixed(2)}deg)`;
-
-            if (this.gyroReadout && (this.idleClock % 3 === 0)) {
-              const signX = this.tiltX >= 0 ? '+' : '';
-              const signY = this.tiltY >= 0 ? '+' : '';
-              this.gyroReadout.textContent = `P: ${signX}${this.tiltX.toFixed(1)}° Y: ${signY}${this.tiltY.toFixed(1)}°`;
-            }
-          }
-        }
-      }
-
-      this.draw(this.currentFrame);
-      requestAnimationFrame(() => this.renderLoop());
-    }
-
-    bindEvents() {
-      requestAnimationFrame(() => this.renderLoop());
-
-      window.addEventListener('resize', () => {
-        this.initCanvasSize();
-        this.draw(this.currentFrame);
-      }, { passive: true });
-
-      window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-          this.initCanvasSize();
-          this.draw(this.currentFrame);
-        }, 120);
-      }, { passive: true });
-
-      // Dynamic Scroll Inertia Momentum (Desktop only)
-      let lastScrollY = window.scrollY;
-      window.addEventListener('scroll', () => {
-        if (this.isMobile) return;
-        const curScrollY = window.scrollY;
-        const delta = curScrollY - lastScrollY;
-        const vel = Math.max(-8, Math.min(8, delta * 0.22));
-        this.targetTiltX = Math.max(-12, Math.min(12, this.targetTiltX + vel * 0.3));
-        lastScrollY = curScrollY;
-      }, { passive: true });
-
-      // Desktop Mouse 3D Perspective Tilt with extended depth range
-      window.addEventListener('mousemove', (e) => {
-        if (this.isMobile || window.innerWidth < 900) return;
-        const nx = (e.clientX / window.innerWidth) - 0.5;
-        const ny = (e.clientY / window.innerHeight) - 0.5;
-        this.targetTiltX = -ny * 7.5; // pitch
-        this.targetTiltY = nx * 9.5;  // yaw
-      }, { passive: true });
-
-      // Mobile Touchscreen Pan/Swipe Tracking
-      window.addEventListener('touchstart', (e) => {
-        if (e.touches && e.touches[0]) {
-          this.isTouchActive = true;
-        }
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (e) => {
-        // Touch gestures are for scrolling on mobile — don't tilt the 3D stage on touchmove to avoid scroll hitching
-        if (this.isMobile) return;
-        if (!e.touches || !e.touches[0]) return;
-        const touch = e.touches[0];
-        const nx = (touch.clientX / window.innerWidth) - 0.5;
-        const ny = (touch.clientY / window.innerHeight) - 0.5;
-        this.targetTiltY = nx * 10.0;
-        this.targetTiltX = -ny * 7.5;
-      }, { passive: true });
-
-      window.addEventListener('touchend', () => {
-        this.isTouchActive = false;
-        this.targetTiltX = 0;
-        this.targetTiltY = 0;
-      }, { passive: true });
-
-      // Mobile Device Orientation Gyroscope with Low-Pass Filtering
-      const handleOrientation = (e) => {
-        if (this.isTouchActive || e.gamma == null || e.beta == null) return;
-        const rawGamma = Math.max(-28, Math.min(28, e.gamma));
-        const rawBeta = Math.max(-28, Math.min(28, e.beta - 45));
-        const targetY = (rawGamma / 28) * 8.5;
-        const targetX = (rawBeta / 28) * -6.5;
-        this.targetTiltY += (targetY - this.targetTiltY) * 0.25;
-        this.targetTiltX += (targetX - this.targetTiltX) * 0.25;
-      };
-
-      if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        const reqGyro = () => {
-          DeviceOrientationEvent.requestPermission()
-            .then(res => {
-              if (res === 'granted') {
-                window.addEventListener('deviceorientation', handleOrientation, { passive: true });
-              }
-            }).catch(() => {});
-          window.removeEventListener('touchstart', reqGyro);
-        };
-        window.addEventListener('touchstart', reqGyro, { passive: true });
-      } else if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', handleOrientation, { passive: true });
-      }
-
-      // Interactive CAD Reticles Clicks & Taps
-      [this.targetCam, this.targetSonar, this.targetMcu, this.targetDrive].forEach(target => {
-        if (!target) return;
-        target.addEventListener('click', (e) => {
-          e.stopPropagation();
-          target.classList.add('is-active');
-          setTimeout(() => target.classList.remove('is-active'), 1800);
-        });
-      });
+      this.preloader.style.display = 'none';
+      document.body.classList.remove('is-loading');
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+      animateHeroEntrance();
     }
   }
 
-  /* Hero Intro Text Animation */
-  function animateHeroEntrance() {
-    if (typeof gsap === 'undefined') return;
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1.1 } });
+  class HeroLight {
+    constructor() {
+      this.hero = document.querySelector('.hero');
+      this.subject = document.getElementById('heroSubject');
+      this.actor = document.getElementById('heroActor');
+      this.rim = document.getElementById('heroRim');
+      this.burn = document.getElementById('heroTitle');
+      this.copy = document.getElementById('heroIntro');
+      if (!this.hero) return;
 
-    tl.from('.hero__title .line > span', {
-      yPercent: 110,
-      stagger: 0.12,
-      duration: 1.2
-    })
+      this.curX = 30;
+      this.curY = 30;
+      this.targetX = 30;
+      this.targetY = 30;
+
+      this.rimX = 26;
+      this.rimY = 24;
+      this.targetRimX = 26;
+      this.targetRimY = 24;
+
+      // Normalized pointer (-0.5 .. +0.5) for 3D figure parallax & tilt
+      this.nx = -0.15;
+      this.ny = -0.15;
+      this.curNx = -0.15;
+      this.curNy = -0.15;
+
+      this.hasPointer = false;
+      this.hasGyro = false;
+      this.isVisible = true;
+      this.startTime = performance.now();
+
+      this.bind();
+    }
+
+    bind() {
+      if (prefersReduced()) return;
+
+      if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const was = this.isVisible;
+            this.isVisible = entry.isIntersecting;
+            if (!was && this.isVisible) {
+              requestAnimationFrame((t) => this.tick(t));
+            }
+          });
+        }, { threshold: 0.01 });
+        obs.observe(this.hero);
+      }
+
+      window.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') return;
+        const rect = this.hero.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+        this.hasPointer = true;
+        const w = Math.max(1, rect.width);
+        const h = Math.max(1, rect.height);
+        const xPct = ((e.clientX - rect.left) / w) * 100;
+        const yPct = ((e.clientY - rect.top) / h) * 100;
+        this.targetX = Math.max(4, Math.min(96, xPct));
+        this.targetY = Math.max(6, Math.min(92, yPct));
+
+        this.nx = Math.max(-0.5, Math.min(0.5, (e.clientX - rect.left) / w - 0.5));
+        this.ny = Math.max(-0.5, Math.min(0.5, (e.clientY - rect.top) / h - 0.5));
+
+        if (this.subject) {
+          const sRect = this.subject.getBoundingClientRect();
+          const rx = ((e.clientX - sRect.left) / Math.max(1, sRect.width)) * 100;
+          const ry = ((e.clientY - sRect.top) / Math.max(1, sRect.height)) * 100;
+          this.targetRimX = Math.max(-15, Math.min(115, rx));
+          this.targetRimY = Math.max(-10, Math.min(105, ry));
+        }
+      }, { passive: true });
+
+      if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission !== 'function') {
+        window.addEventListener('deviceorientation', (e) => {
+          if (e.gamma == null || e.beta == null) return;
+          this.hasGyro = true;
+          const gx = Math.max(-30, Math.min(30, e.gamma)) / 30;
+          const gy = Math.max(-30, Math.min(30, e.beta - 45)) / 30;
+          this.targetX = 50 + gx * 34;
+          this.targetY = 32 + gy * 22;
+          this.targetRimX = 45 + gx * 42;
+          this.targetRimY = 26 + gy * 24;
+          this.nx = gx * 0.45;
+          this.ny = gy * 0.45;
+        }, { passive: true });
+      }
+
+      requestAnimationFrame((t) => this.tick(t));
+    }
+
+    tick(now) {
+      if (!this.isVisible || document.hidden || prefersReduced()) return;
+
+      const elapsed = (now - this.startTime) * 0.001;
+
+      if (!this.hasPointer && !this.hasGyro) {
+        const phase = (elapsed * Math.PI * 2) / 14;
+        this.targetX = 36 + Math.sin(phase) * 22;
+        this.targetY = 28 + Math.cos(phase * 0.7) * 10;
+        this.targetRimX = 32 + Math.sin(phase) * 28;
+        this.targetRimY = 24 + Math.cos(phase * 0.7) * 12;
+        this.nx = Math.sin(phase) * 0.28;
+        this.ny = Math.cos(phase * 0.7) * 0.2;
+      }
+
+      // Smoothly interpolate light & 3D figure coordinates
+      const prevRimX = this.rimX;
+      const prevRimY = this.rimY;
+      this.curX += (this.targetX - this.curX) * 0.085;
+      this.curY += (this.targetY - this.curY) * 0.085;
+      this.rimX += (this.targetRimX - this.rimX) * 0.095;
+      this.rimY += (this.targetRimY - this.rimY) * 0.095;
+      this.curNx += (this.nx - this.curNx) * 0.065;
+      this.curNy += (this.ny - this.curNy) * 0.065;
+
+      this.hero.style.setProperty('--lx', `${this.curX.toFixed(2)}%`);
+      this.hero.style.setProperty('--ly', `${this.curY.toFixed(2)}%`);
+      this.hero.style.setProperty('--rx', `${this.rimX.toFixed(2)}%`);
+      this.hero.style.setProperty('--ry', `${this.rimY.toFixed(2)}%`);
+
+      // Continuous organic breathing wave + counter-parallax + 3D micro-tilt on the hero portrait
+      const breathY = Math.sin(elapsed * 1.15) * 6.5;
+      const breathX = Math.cos(elapsed * 0.75) * 3.5;
+      const breathScale = 1 + (Math.sin(elapsed * 0.9) + 1) * 0.012;
+      const breathRotZ = Math.sin(elapsed * 0.65) * 0.45;
+
+      // Scroll-linked receding hero (under 8% travel, linear with scroll)
+      const heroH = Math.max(1, this.hero.offsetHeight);
+      const scrollP = Math.max(0, Math.min(1, window.scrollY / heroH));
+      const scrollSinkY = scrollP * 44;
+      const scrollScale = scrollP * 0.04;
+
+      if (this.actor) {
+        const figX = -this.curNx * 26 + breathX;
+        const figY = -this.curNy * 14 + breathY + scrollSinkY;
+        const rotX = -this.curNy * 6.0;
+        const rotY = this.curNx * 8.5;
+        const totalScale = breathScale + scrollScale;
+        this.actor.style.transform =
+          `translate3d(${figX.toFixed(2)}px, ${figY.toFixed(2)}px, 0) ` +
+          `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) rotateZ(${breathRotZ.toFixed(2)}deg) ` +
+          `scale(${totalScale.toFixed(4)})`;
+      }
+
+      // Dynamic rim pulse: rim intensifies subtly with light velocity and breathing
+      if (this.rim) {
+        const vel = Math.hypot(this.rimX - prevRimX, this.rimY - prevRimY);
+        const rimAlpha = Math.min(1, 0.82 + Math.sin(elapsed * 1.6) * 0.08 + vel * 0.06);
+        this.rim.style.opacity = rimAlpha.toFixed(3);
+      }
+
+      // Deeper parallax plane for the burning SANGEETH display type behind the figure
+      if (this.burn) {
+        const burnX = this.curNx * 18;
+        const burnY = this.curNy * 9 - scrollP * 28;
+        this.burn.style.transform = `translate3d(${burnX.toFixed(2)}px, ${burnY.toFixed(2)}px, 0)`;
+      }
+
+      if (this.copy && scrollP > 0) {
+        const copyLiftY = -scrollP * 32;
+        this.copy.style.transform = `translate3d(0, ${copyLiftY.toFixed(2)}px, 0)`;
+      } else if (this.copy && this.copy.style.transform) {
+        this.copy.style.transform = '';
+      }
+
+      requestAnimationFrame((t) => this.tick(t));
+    }
+  }
+
+  /* Hero Burn-In & Portrait Shutter-Settle Entrance Animation */
+  function animateHeroEntrance() {
+    if (typeof gsap === 'undefined' || prefersReduced()) return;
+
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+    tl.fromTo('.hero',
+      { '--burn': '14vmax' },
+      { '--burn': '44vmax', duration: 1.25 },
+      0
+    )
+    .fromTo('#heroFigure',
+      { y: 28, scale: 1.07 },
+      { y: 0, scale: 1, duration: 1.15, clearProps: 'transform' },
+      0
+    )
+    .fromTo('#heroRim',
+      { opacity: 0.15 },
+      { opacity: 0.9, duration: 1.15 },
+      0.08
+    )
     .from('[data-intro]', {
-      opacity: 0,
-      y: 24,
-      stagger: 0.1,
-      duration: 0.9
-    }, '-=0.7');
+      y: 16,
+      stagger: 0.07,
+      duration: 0.85
+    }, 0.12);
   }
 
   /* ==========================================================================
      4. GSAP & SCROLLTRIGGER SETUP
      ========================================================================== */
-  function initScrollExperience(scrubber) {
+  function initScrollExperience() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -1000,107 +716,6 @@
         lenis.raf(time * 1000);
       });
       gsap.ticker.lagSmoothing(500, 33);
-    }
-
-    // 1. Hero Scrubber Timeline
-    const heroTrack = document.getElementById('heroTrack');
-    const heroIntro = document.getElementById('heroIntro');
-    const chapters = gsap.utils.toArray('[data-chapter]');
-
-    if (heroTrack) {
-      ScrollTrigger.create({
-        trigger: heroTrack,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: mobileUser ? 0.2 : true,
-        onUpdate: (self) => {
-          if (scrubber) scrubber.updateScroll(self.progress);
-        }
-      });
-
-      // Hero Intro fade out
-      if (heroIntro) {
-        gsap.to(heroIntro, {
-          opacity: 0,
-          y: -40,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: heroTrack,
-            start: 'top top',
-            end: '18% top',
-            scrub: true
-          }
-        });
-      }
-
-      // Chapters choreography across the 240 frames
-      const isMob = window.innerWidth < 900;
-      const ch1From = isMob ? { autoAlpha: 0, y: 24, x: 0 } : { autoAlpha: 0, x: -32, y: 0 };
-      const ch1To   = isMob ? { autoAlpha: 1, y: 0, x: 0, duration: 1 } : { autoAlpha: 1, x: 0, y: 0, duration: 1 };
-      const ch1Out  = isMob ? { autoAlpha: 0, y: -16, x: 0, duration: 1 } : { autoAlpha: 0, x: -32, y: 0, duration: 1 };
-
-      const ch2From = isMob ? { autoAlpha: 0, y: 24, x: 0 } : { autoAlpha: 0, x: 32, y: 0 };
-      const ch2To   = isMob ? { autoAlpha: 1, y: 0, x: 0, duration: 1 } : { autoAlpha: 1, x: 0, y: 0, duration: 1 };
-      const ch2Out  = isMob ? { autoAlpha: 0, y: -16, x: 0, duration: 1 } : { autoAlpha: 0, x: 32, y: 0, duration: 1 };
-
-      const ch3From = isMob ? { autoAlpha: 0, y: 24, x: 0 } : { autoAlpha: 0, x: -32, y: 0 };
-      const ch3To   = isMob ? { autoAlpha: 1, y: 0, x: 0, duration: 1 } : { autoAlpha: 1, x: 0, y: 0, duration: 1 };
-      const ch3Out  = isMob ? { autoAlpha: 0, y: -16, x: 0, duration: 1 } : { autoAlpha: 0, x: -32, y: 0, duration: 1 };
-
-      // Chapter 1: Sense (frames ~40-80 => progress 0.18 - 0.38)
-      if (chapters[0]) {
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: heroTrack,
-            start: '16% top',
-            end: '38% top',
-            scrub: true
-          }
-        })
-        .fromTo(chapters[0], ch1From, ch1To)
-        .to(chapters[0], ch1Out, '+=1');
-      }
-
-      // Chapter 2: Compute (frames ~90-130 => progress 0.38 - 0.58)
-      if (chapters[1]) {
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: heroTrack,
-            start: '38% top',
-            end: '60% top',
-            scrub: true
-          }
-        })
-        .fromTo(chapters[1], ch2From, ch2To)
-        .to(chapters[1], ch2Out, '+=1');
-      }
-
-      // Chapter 3: Actuate (frames ~140-180 => progress 0.60 - 0.80)
-      if (chapters[2]) {
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: heroTrack,
-            start: '60% top',
-            end: '82% top',
-            scrub: true
-          }
-        })
-        .fromTo(chapters[2], ch3From, ch3To)
-        .to(chapters[2], ch3Out, '+=1');
-      }
-
-      // Chapter 4: Fully Assembled (frames ~190-240 => progress 0.82 - 1.0)
-      if (chapters[3]) {
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: heroTrack,
-            start: '83% top',
-            end: '99% top',
-            scrub: true
-          }
-        })
-        .fromTo(chapters[3], { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 1 });
-      }
     }
 
     // 2. Nav Header Scroll states
@@ -2254,6 +1869,7 @@ SAFETY CONE: &gt; 25cm all zones clear`);
     const toggleMenu = () => {
       const isOpen = menu.classList.toggle('is-open');
       menuBtn.setAttribute('aria-expanded', String(isOpen));
+      menu.setAttribute('aria-hidden', String(!isOpen));
       document.documentElement.classList.toggle('is-locked', isOpen);
       if (lenis) {
         if (isOpen) lenis.stop();
@@ -2304,163 +1920,7 @@ SAFETY CONE: &gt; 25cm all zones clear`);
   }
 
   /* ==========================================================================
-     14. 3D HERO CYBERNETIC PARTICLE CONSTELLATION
-     ========================================================================== */
-  class HeroParticleConstellation {
-    constructor(scrubber) {
-      this.scrubber = scrubber;
-      this.canvas = document.getElementById('heroParticles');
-      if (!this.canvas) return;
-      // On mobile devices, disable the secondary particle canvas entirely to save 100% of second-canvas fill rate and CPU distance loops
-      if (isMobile()) {
-        this.canvas.style.display = 'none';
-        return;
-      }
-      this.ctx = this.canvas.getContext('2d');
-      if (!this.ctx) return;
-
-      this.track = document.getElementById('heroTrack');
-      this.particles = [];
-      this.width = 0;
-      this.height = 0;
-      this.dpr = Math.min(window.devicePixelRatio || 1, 2);
-      this.isHeroVisible = true;
-
-      this.init();
-      this.bind();
-      this.animate();
-    }
-
-    init() {
-      this.resize();
-      const count = window.innerWidth < 900 ? 22 : 46;
-      this.particles = [];
-
-      for (let i = 0; i < count; i++) {
-        this.particles.push({
-          x: Math.random() * this.width,
-          y: Math.random() * this.height,
-          z: 0.3 + Math.random() * 1.5, // 3D depth layer
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          baseRadius: 1.2 + Math.random() * 1.8,
-          alpha: 0.25 + Math.random() * 0.55,
-          pulseSpeed: 0.015 + Math.random() * 0.02,
-          pulseVal: Math.random() * Math.PI * 2,
-          color: Math.random() > 0.4 ? 'rgba(76, 141, 255,' : (Math.random() > 0.5 ? 'rgba(156, 192, 255,' : 'rgba(255, 255, 255,')
-        });
-      }
-    }
-
-    resize() {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
-      this.canvas.width = this.width * this.dpr;
-      this.canvas.height = this.height * this.dpr;
-      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-      this.ctx.scale(this.dpr, this.dpr);
-    }
-
-    bind() {
-      window.addEventListener('resize', () => {
-        this.resize();
-      }, { passive: true });
-
-      // Observe visibility to throttle rendering when offscreen
-      if ('IntersectionObserver' in window && this.track) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            this.isHeroVisible = entry.isIntersecting;
-          });
-        }, { threshold: 0.01 });
-        observer.observe(this.track);
-      }
-    }
-
-    animate() {
-      if (this.isHeroVisible && !document.hidden && !prefersReduced()) {
-        this.ctx.clearRect(0, 0, this.width, this.height);
-
-        // 3D Parallax offset linked to scrubber tilt
-        const tiltX = this.scrubber ? this.scrubber.tiltX : 0;
-        const tiltY = this.scrubber ? this.scrubber.tiltY : 0;
-        const offsetX = tiltY * 3.5;
-        const offsetY = -tiltX * 3.5;
-
-        const pts = this.particles;
-        const len = pts.length;
-
-        // Draw connective constellation lines
-        const maxDist = window.innerWidth < 900 ? 70 : 95;
-        for (let i = 0; i < len; i++) {
-          const p1 = pts[i];
-          const px1 = p1.x + offsetX * p1.z;
-          const py1 = p1.y + offsetY * p1.z;
-
-          for (let j = i + 1; j < len; j++) {
-            const p2 = pts[j];
-            const px2 = p2.x + offsetX * p2.z;
-            const py2 = p2.y + offsetY * p2.z;
-
-            const dx = px1 - px2;
-            const dy = py1 - py2;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < maxDist) {
-              const lineAlpha = (1 - dist / maxDist) * 0.18 * Math.min(p1.alpha, p2.alpha);
-              this.ctx.beginPath();
-              this.ctx.moveTo(px1, py1);
-              this.ctx.lineTo(px2, py2);
-              this.ctx.strokeStyle = `rgba(76, 141, 255, ${lineAlpha})`;
-              this.ctx.lineWidth = 0.75;
-              this.ctx.stroke();
-            }
-          }
-        }
-
-        // Draw glowing particles
-        for (let i = 0; i < len; i++) {
-          const p = pts[i];
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < -20) p.x = this.width + 20;
-          else if (p.x > this.width + 20) p.x = -20;
-          if (p.y < -20) p.y = this.height + 20;
-          else if (p.y > this.height + 20) p.y = -20;
-
-          p.pulseVal += p.pulseSpeed;
-          const dynamicAlpha = Math.max(0.1, p.alpha * (0.7 + Math.sin(p.pulseVal) * 0.3));
-          const dynamicRadius = p.baseRadius * (0.85 + Math.sin(p.pulseVal * 0.8) * 0.2) * p.z;
-
-          const px = p.x + offsetX * p.z;
-          const py = p.y + offsetY * p.z;
-
-          // Glowing halo
-          const grad = this.ctx.createRadialGradient(px, py, 0, px, py, dynamicRadius * 2.8);
-          grad.addColorStop(0, `${p.color} ${dynamicAlpha})`);
-          grad.addColorStop(0.5, `${p.color} ${dynamicAlpha * 0.4})`);
-          grad.addColorStop(1, `${p.color} 0)`);
-
-          this.ctx.beginPath();
-          this.ctx.arc(px, py, dynamicRadius * 2.8, 0, Math.PI * 2);
-          this.ctx.fillStyle = grad;
-          this.ctx.fill();
-
-          // Particle core
-          this.ctx.beginPath();
-          this.ctx.arc(px, py, Math.max(0.8, dynamicRadius * 0.7), 0, Math.PI * 2);
-          this.ctx.fillStyle = `${p.color} ${Math.min(1, dynamicAlpha * 1.5)})`;
-          this.ctx.fill();
-        }
-      }
-
-      requestAnimationFrame(() => this.animate());
-    }
-  }
-
-  /* ==========================================================================
-     15. 3D CARD PERSPECTIVE TILT WITH DYNAMIC SPECULAR GLARE
+     14. 3D CARD PERSPECTIVE TILT WITH DYNAMIC SPECULAR GLARE
      ========================================================================== */
   function init3DCardTilt() {
     const cards = document.querySelectorAll('.cap, .feature__media, .about__photo-frame');
@@ -2788,9 +2248,9 @@ SAFETY CONE: &gt; 25cm all zones clear`);
     window.addEventListener('click', () => initAudio(), { once: true });
     window.addEventListener('touchstart', () => initAudio(), { once: true });
 
-    const scrubber = new HeroScrubber();
-    initScrollExperience(scrubber);
-    new HeroParticleConstellation(scrubber);
+    new Preloader();
+    new HeroLight();
+    initScrollExperience();
     new SignalOscilloscope();
     init3DCardTilt();
     initProjectShowcase();

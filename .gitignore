@@ -14,3 +14,6 @@ Thumbs.db
 # Large archives (exceed GitHub 100MB per-file limit)
 *.zip
 
+# Temporary test and inspector output
+.taste-skill/
+
