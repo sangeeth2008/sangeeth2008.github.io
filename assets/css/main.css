@@ -1383,7 +1383,7 @@ a:hover .roll > span { transform: translateY(-1.3em); }
     bottom: 0;
     max-width: none;
     padding: 48px var(--pad) clamp(24px, 4vh, 40px);
-    background: linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.92) 58%, transparent 100%);
+    background: linear-gradient(to top, #070908 0%, rgba(7, 9, 8, 0.9) 55%, rgba(7, 9, 8, 0.4) 82%, transparent 100%);
     gap: 12px;
   }
 
@@ -3451,3 +3451,146 @@ body.is-loading .mag-dock-wrap {
 
 
 
+
+/* ==========================================================================
+   PERFORMANCE "LITE" PROFILE (phones, tablets, touch, low-core devices)
+   html.is-lite is set by main.js before first paint of animated content.
+   ========================================================================== */
+.is-lite .grain,
+.is-lite .cursor-spotlight,
+.is-lite .cursor-trail,
+.is-lite .cursor {
+  display: none !important;
+}
+
+/* Screen-blending over a solid ink ground is visually identical to normal blending,
+   but forces an extra compositing pass every frame — drop it on lite devices. */
+.is-lite .hero__glow-canvas,
+.is-lite .gather__canvas {
+  mix-blend-mode: normal;
+}
+
+/* Calmer, smoother liquid wash in the hero instead of hot spots */
+.is-lite .hero__glow-canvas {
+  opacity: calc(0.45 + var(--p, 0) * 0.3);
+}
+
+.is-lite .hero__scene::before {
+  background: radial-gradient(
+    ellipse 90% 70% at 40% 28%,
+    rgba(245, 158, 11, 0.1) 0%,
+    rgba(228, 75, 60, 0.035) 45%,
+    transparent 75%
+  );
+}
+
+/* Backdrop blur is the single most expensive effect on mobile GPUs — keep one light blur on the dock only */
+.is-lite .nav.is-scrolled {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(10, 12, 12, 0.94);
+}
+
+.is-lite .mag-dock {
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(18, 22, 21, 0.78) 100%);
+}
+
+.is-lite .mag-dock__item,
+.is-lite .mag-dock__label,
+.is-lite .glass-orb,
+.is-lite .btn--ghost,
+.is-lite .bubble-menu__backdrop {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.is-lite .bubble-menu__backdrop {
+  background: rgba(7, 9, 8, 0.96);
+}
+
+html.is-lite[data-theme="light"] .bubble-menu__backdrop {
+  background: rgba(242, 239, 232, 0.97);
+}
+
+html.is-lite[data-theme="light"] .mag-dock {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(232, 228, 218, 0.88) 100%);
+}
+
+/* Release GPU layers that only matter for desktop hover effects */
+.is-lite .atom-wi,
+.is-lite [data-rev],
+.is-lite .cap,
+.is-lite .cap > *,
+.is-lite .hero__actor,
+.is-lite .about__photo img,
+.is-lite .btn,
+.is-lite .wipe__text--fill,
+.is-lite .wipe__rule-fill {
+  will-change: auto;
+}
+
+.is-lite .cap {
+  transform-style: flat;
+}
+
+.is-lite .glass-orb,
+.is-lite .stage__cue-line i {
+  animation: none;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET TYPOGRAPHY — larger, more legible reading sizes
+   ========================================================================== */
+@media (max-width: 1024px) {
+  body { font-size: 17px; }
+
+  .mono {
+    font-size: 12.5px;
+    letter-spacing: 0.05em;
+  }
+
+  .about__body p,
+  .caps__desc,
+  .cap__desc,
+  .feature__desc,
+  .mile__desc,
+  .contact__lede,
+  .scope__desc,
+  .gather__lede {
+    font-size: 17px;
+    line-height: 1.62;
+  }
+
+  .about__body p.about__lead { font-size: clamp(21px, 4.6vw, 26px); }
+  .cap__title { font-size: 24px; }
+  .work-row__title { font-size: clamp(22px, 5.4vw, 32px); }
+  .facts dd { font-size: 18px; }
+
+  .hero__name { font-size: 17px; }
+  .hero__statement { font-size: clamp(20px, 5vw, 26px); line-height: 1.34; }
+
+  .wipe__text { font-size: clamp(1.9rem, 7.4vw, 3.8rem); }
+  .curve__title { font-size: clamp(1.8rem, 6.4vw, 2.8rem); }
+  .gather__title { font-size: clamp(2.2rem, 8.6vw, 4.2rem); }
+
+  .curve__val { font-size: 1.25rem; }
+  .curve__label { font-size: 16px; }
+  .curve__note { font-size: 14px; }
+
+  .tape__word { font-size: clamp(2.4rem, 9vw, 5rem); }
+  .tape__accent { font-size: clamp(2.8rem, 10.5vw, 6rem); }
+
+  .btn { font-size: 15px; }
+  .footer li a { font-size: 17px; }
+
+  /* 16px+ inputs prevent iOS auto-zoom on focus */
+  .form-input,
+  .form-textarea { font-size: 16px; }
+}
+
+@media (max-width: 560px) {
+  .btn { --h: 50px; padding: 0 20px; font-size: 15px; }
+  .curve__row { grid-template-columns: 96px 1fr; }
+}

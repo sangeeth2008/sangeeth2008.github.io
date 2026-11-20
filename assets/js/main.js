@@ -161,6 +161,12 @@
   const isMobile = () => window.innerWidth < 768;
   const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* Performance profile: touch devices, tablets & phones, or low-core machines run "lite"
+     (no hover-light loop, low-res glow canvases at 24fps, no grain/cursor/blur stacks). */
+  const IS_TOUCH = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  const LITE = IS_TOUCH || window.innerWidth < 1025 || (navigator.hardwareConcurrency || 8) <= 2;
+  if (LITE) document.documentElement.classList.add('is-lite');
+
   /* Live Clock (IST) */
   function updateClock() {
     try {
@@ -525,7 +531,8 @@
     }
 
     bind() {
-      if (prefersReduced()) return;
+      // Lite devices keep the static amber composition — no per-frame mask repaints
+      if (prefersReduced() || LITE) return;
 
       if ('IntersectionObserver' in window) {
         const obs = new IntersectionObserver((entries) => {
@@ -670,6 +677,12 @@
       this.visible = { hero: true, curve: false, gather: false };
       this.scrollTicking = false;
       this.startTime = performance.now();
+      this.lite = LITE;
+      this.glowScale = LITE ? 0.3 : 0.5;     // soft gradients upscale smoothly — big fill-rate savings
+      this.gatherScale = LITE ? 0.5 : 1;
+      this.loopRunning = false;
+      this.lastVw = window.innerWidth;
+      this.lastVh = window.innerHeight;
 
       // Canvas references
       this.heroCanvas = document.getElementById('heroEmberCanvas');
@@ -696,6 +709,17 @@
         { x: 0.30, y: 0.78, r: 0.40, a: 0.26, sx: 0.33, sy: 0.22, ax: 0.15, ay: 0.11, ph: 5.2, c: [228, 75, 60] }
       ];
 
+      // Mobile/tablet: fewer, larger, softer, slower orbs → a calm liquid wash instead of hot spots
+      if (this.lite) {
+        this.emberOrbs = [this.emberOrbs[0], this.emberOrbs[1], this.emberOrbs[4]].map((o) => ({
+          ...o,
+          a: o.a * 0.6,
+          r: o.r * 1.3,
+          sx: o.sx * 0.55,
+          sy: o.sy * 0.55
+        }));
+      }
+
       this.resizeCanvases();
       this.bindScroll();
       this.bindVisibility();
@@ -716,17 +740,22 @@
     }
 
     resizeCanvases() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const fit = (canvas) => {
+      const dpr = Math.min(window.devicePixelRatio || 1, this.lite ? 1.5 : 2);
+      // clientWidth ignores CSS transforms (the gather canvas is scaled on scroll)
+      const fit = (canvas, scale) => {
         if (!canvas) return;
-        const rect = canvas.getBoundingClientRect();
-        if (rect.width < 1 || rect.height < 1) return;
-        canvas.width = Math.round(rect.width * dpr);
-        canvas.height = Math.round(rect.height * dpr);
+        const cw = canvas.clientWidth;
+        const ch = canvas.clientHeight;
+        if (cw < 1 || ch < 1) return;
+        const w = Math.max(1, Math.round(cw * scale));
+        const h = Math.max(1, Math.round(ch * scale));
+        if (canvas.width === w && canvas.height === h) return;
+        canvas.width = w;
+        canvas.height = h;
       };
-      fit(this.heroCanvas);
-      fit(this.curveCanvas);
-      fit(this.gatherCanvas);
+      fit(this.heroCanvas, this.glowScale);
+      fit(this.curveCanvas, dpr);
+      fit(this.gatherCanvas, this.gatherScale);
     }
 
     bindScroll() {
@@ -740,9 +769,23 @@
       };
 
       window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Debounced; ignore mobile URL-bar height wobble so canvases aren't reallocated mid-scroll
+      let resizeTimer = null;
       window.addEventListener('resize', () => {
-        this.resizeCanvases();
-        this.updateStages();
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          const widthChanged = vw !== this.lastVw;
+          const heightJump = Math.abs(vh - this.lastVh) > 140;
+          if (widthChanged || heightJump || !this.lite) {
+            this.lastVw = vw;
+            this.lastVh = vh;
+            this.resizeCanvases();
+          }
+          this.updateStages();
+        }, 150);
       }, { passive: true });
     }
 
@@ -756,7 +799,10 @@
           const key = entry.target.dataset.pinStage;
           if (key && key in this.visible) {
             this.visible[key] = entry.isIntersecting;
-            if (entry.isIntersecting) this.resizeCanvases();
+            if (entry.isIntersecting) {
+              this.resizeCanvases();
+              this.ensureLoop();
+            }
           }
         });
       }, { threshold: 0.01 });
@@ -815,14 +861,38 @@
     }
 
     startCanvasLoop() {
+      this.ensureLoop();
+    }
+
+    // Single loop that sleeps entirely when no canvas stage is on screen.
+    // Glow fields redraw at 24–30fps (slow drift needs no more); the curve keeps 60fps on desktop.
+    ensureLoop() {
+      if (this.loopRunning || prefersReduced()) return;
+      this.loopRunning = true;
+      let lastGlow = 0;
+      let lastCurve = 0;
+      const glowInterval = 1000 / (this.lite ? 24 : 30);
+      const curveInterval = this.lite ? 1000 / 30 : 0;
+
       const tick = (now) => {
-        if (!document.hidden) {
-          const t = (now - this.startTime) * 0.001;
-          if (this.visible.hero) this.drawHeroEmbers(t);
-          if (this.visible.curve) this.drawCurve(this.progress.curve, t);
-          if (this.visible.gather) this.drawGatherForms(t);
+        const anyVisible = this.visible.hero || this.visible.curve || this.visible.gather;
+        if (!anyVisible) {
+          this.loopRunning = false;
+          return;
         }
         requestAnimationFrame(tick);
+        if (document.hidden) return;
+
+        const t = (now - this.startTime) * 0.001;
+        if (now - lastGlow >= glowInterval) {
+          lastGlow = now;
+          if (this.visible.hero) this.drawHeroEmbers(t);
+          if (this.visible.gather) this.drawGatherForms(t);
+        }
+        if (this.visible.curve && now - lastCurve >= curveInterval) {
+          lastCurve = now;
+          this.drawCurve(this.progress.curve, t);
+        }
       };
       requestAnimationFrame(tick);
     }
@@ -860,7 +930,7 @@
       const canvas = this.curveCanvas;
       if (!ctx || !canvas || canvas.width === 0) return;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = canvas.width / Math.max(1, canvas.clientWidth);
       const w = canvas.width;
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
@@ -947,7 +1017,7 @@
       const canvas = this.gatherCanvas;
       if (!ctx || !canvas || canvas.width === 0) return;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = canvas.width / Math.max(1, canvas.clientWidth);
       const w = canvas.width;
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
@@ -963,7 +1033,7 @@
       ];
 
       ctx.globalCompositeOperation = 'screen';
-      const steps = 128;
+      const steps = this.lite ? 72 : 128;
 
       layers.forEach((layer) => {
         const R = baseUnit * layer.scale;
@@ -1291,9 +1361,9 @@
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis Smooth Scroll ONLY for Desktop
-    // Native momentum scrolling on Android/iOS is much smoother and prevents touch-hijacking lag
-    const mobileUser = isMobile();
+    // Initialize Lenis Smooth Scroll ONLY for Desktop (fine pointer)
+    // Native momentum scrolling on phones/tablets is smoother and prevents touch-hijacking lag
+    const mobileUser = isMobile() || IS_TOUCH;
     if (typeof Lenis !== 'undefined' && !mobileUser) {
       lenis = new Lenis({
         duration: 1.15,
@@ -1615,10 +1685,15 @@
 
     start() {
       if (this.rafId) cancelAnimationFrame(this.rafId);
-      const render = () => {
-        if (!this.isVisible && 'IntersectionObserver' in window) return;
-        this.draw();
+      let last = 0;
+      const interval = LITE ? 1000 / 30 : 0;
+      const render = (now) => {
+        if (!this.isVisible && 'IntersectionObserver' in window) { this.rafId = null; return; }
         this.rafId = requestAnimationFrame(render);
+        if (document.hidden) return;
+        if (interval && now - last < interval) return;
+        last = now;
+        this.draw();
       };
       this.rafId = requestAnimationFrame(render);
     }
@@ -1659,7 +1734,7 @@
       ctx.lineWidth = 2 * (window.devicePixelRatio || 1);
       ctx.strokeStyle = '#4c8dff';
       ctx.shadowColor = 'rgba(76, 141, 255, 0.65)';
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = LITE ? 0 : 10;
       ctx.beginPath();
 
       const step = 2;
@@ -2143,7 +2218,7 @@ SAFETY CONE: &gt; 25cm all zones clear`);
      11. FLAGSHIP MECHATRONICS KINETIC CURSOR (VELOCITY DEFORMATION & TRAIL)
      ========================================================================== */
   function initMagneticAndCursor() {
-    if (isMobile()) return; // Touch devices use touch sonar
+    if (isMobile() || IS_TOUCH) return; // Touch devices use touch sonar
 
     const cursor = document.getElementById('customCursor') || document.querySelector('.cursor');
     const dot = cursor ? cursor.querySelector('.cursor__dot') : null;
@@ -2677,25 +2752,58 @@ SAFETY CONE: &gt; 25cm all zones clear`);
     const track = document.getElementById('marqueeTrack');
     if (!track) return;
 
+    // Time-based, width cached (no per-frame layout reads), sleeps when off-screen
     let x = 0;
-    const speed = 0.85;
+    let groupW = 0;
+    let running = false;
+    let visible = true;
+    let last = 0;
+    const speed = 51; // px per second (~0.85px @ 60fps)
 
-    const tick = () => {
-      x -= speed;
-      const firstGroup = track.children[0];
-      if (firstGroup && -x >= firstGroup.offsetWidth) {
-        x = 0;
-      }
-      track.style.transform = `translateX(${x}px)`;
+    const measure = () => {
+      const g = track.children[0];
+      groupW = g ? g.offsetWidth : 0;
+    };
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+    const tick = (now) => {
+      if (!visible || document.hidden || prefersReduced()) { running = false; return; }
+      const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
+      last = now;
+      x -= speed * dt;
+      if (groupW && -x >= groupW) x += groupW;
+      track.style.transform = `translate3d(${x.toFixed(2)}px, 0, 0)`;
       requestAnimationFrame(tick);
     };
-    tick();
+
+    const start = () => {
+      if (running) return;
+      running = true;
+      last = 0;
+      requestAnimationFrame(tick);
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          visible = e.isIntersecting;
+          if (visible) start();
+        });
+      }).observe(track.parentElement || track);
+    } else {
+      start();
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
   }
 
   /* ==========================================================================
      14. 3D CARD PERSPECTIVE TILT WITH DYNAMIC SPECULAR GLARE
      ========================================================================== */
   function init3DCardTilt() {
+    // Tilt on touch fights native scrolling and forces per-frame 3D recomposites — desktop only
+    if (IS_TOUCH || LITE) return;
     const cards = document.querySelectorAll('.cap, .feature__media, .about__photo-frame');
     if (!cards.length) return;
 
