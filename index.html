@@ -121,18 +121,18 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@600&display=swap" rel="stylesheet">
 
   <!-- Hero portrait is the LCP candidate -->
   <link rel="preload" as="image" href="assets/img/hero/sangeeth-portrait.webp" type="image/webp" fetchpriority="high">
 
-  <link rel="stylesheet" href="assets/css/main.css?v=6.7.0">
+  <link rel="stylesheet" href="assets/css/main.css?v=7.4.0">
 
   <!-- Motion stack -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script defer src="assets/js/main.js?v=6.7.0"></script>
+  <script defer src="assets/js/main.js?v=7.4.0"></script>
 </head>
 
 <body class="is-loading">
@@ -216,70 +216,97 @@
         <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
       </a>
 
-      <button class="nav__burger" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
-        <span></span><span></span>
+      <button class="nav__burger bubble-toggle" id="menuBtn" aria-expanded="false" aria-controls="menu" aria-label="Toggle bubble navigation menu" data-cursor="Menu">
+        <span class="bubble-toggle__line"></span>
+        <span class="bubble-toggle__line"></span>
       </button>
     </div>
   </header>
 
-  <!-- ============ MOBILE MENU ============ -->
-  <div class="menu" id="menu" aria-hidden="true" data-lenis-prevent>
-    <nav class="menu__links" aria-label="Mobile">
-      <a href="#about"><span class="mono">01</span>About</a>
-      <a href="#skills"><span class="mono">02</span>Capabilities</a>
-      <a href="#work"><span class="mono">03</span>Work</a>
-      <a href="#journey"><span class="mono">04</span>Journey</a>
-      <a href="#contact"><span class="mono">05</span>Contact</a>
-    </nav>
-    <div class="menu__foot mono">
-      <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
-        <a href="assets/Sangeeth_Sasikumar_CV.pdf" download="Sangeeth_Sasikumar_CV.pdf" class="btn btn--pill btn--resume" style="width: 100%;">Download Resume (PDF)</a>
-        <button type="button" class="btn btn--ghost cv-btn-view" id="mobileCvViewBtn" style="width: 100%;">View CV Online (No Download)</button>
-      </div>
-      <a href="mailto:sangeethcherur@gmail.com">sangeethcherur@gmail.com</a>
-      <div class="menu__social">
-        <a href="https://github.com/sangeeth2008" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-        <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-      </div>
+  <!-- ============ BUBBLE MENU OVERLAY ============ -->
+  <div class="bubble-menu-items" id="menu" aria-hidden="true" data-lenis-prevent>
+    <div class="bubble-menu__backdrop" id="bubbleBackdrop" aria-hidden="true"></div>
+    <ul class="pill-list" role="menu" aria-label="Bubble menu links">
+      <li class="pill-col" role="none">
+        <a role="menuitem" href="#top" class="pill-link" aria-label="Home" style="--item-rot: -8deg; --hover-bg: #f59e0b; --hover-color: #070908;">
+          <span class="pill-label">home</span>
+        </a>
+      </li>
+      <li class="pill-col" role="none">
+        <a role="menuitem" href="#about" class="pill-link" aria-label="About" style="--item-rot: 8deg; --hover-bg: #10b981; --hover-color: #070908;">
+          <span class="pill-label">about</span>
+        </a>
+      </li>
+      <li class="pill-col" role="none">
+        <a role="menuitem" href="#skills" class="pill-link" aria-label="Capabilities" style="--item-rot: 8deg; --hover-bg: #06b6d4; --hover-color: #070908;">
+          <span class="pill-label">capabilities</span>
+        </a>
+      </li>
+      <li class="pill-col" role="none">
+        <a role="menuitem" href="#work" class="pill-link" aria-label="Projects" style="--item-rot: 8deg; --hover-bg: #e44b3c; --hover-color: #ffffff;">
+          <span class="pill-label">projects</span>
+        </a>
+      </li>
+      <li class="pill-col" role="none">
+        <a role="menuitem" href="#contact" class="pill-link" aria-label="Contact" style="--item-rot: -8deg; --hover-bg: #8b5cf6; --hover-color: #ffffff;">
+          <span class="pill-label">contact</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="bubble-menu__foot mono">
+      <button type="button" class="bubble-menu__foot-btn cv-btn-view" id="mobileCvViewBtn">View CV Online</button>
+      <a href="assets/Sangeeth_Sasikumar_CV.pdf" download="Sangeeth_Sasikumar_CV.pdf" class="bubble-menu__foot-link">Resume PDF ↓</a>
+      <a href="https://github.com/sangeeth2008" target="_blank" rel="noopener noreferrer" class="bubble-menu__foot-link">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/sangeeth-sasikumar-k-s-1b4703422/" target="_blank" rel="noopener noreferrer" class="bubble-menu__foot-link">LinkedIn ↗</a>
     </div>
   </div>
 
   <main id="main">
 
-    <!-- ============ HERO: AMBER BURN ============ -->
-    <section class="hero" id="top" aria-labelledby="heroTitle">
-      <div class="hero__scene" id="heroScene">
-        <h1 class="hero__burn" id="heroTitle" data-text="Sangeeth" aria-label="Sangeeth Sasikumar K S">Sangeeth</h1>
+    <!-- ============ STAGE 1 · HERO: MOLTEN EMBER & AMBER BURN ============ -->
+    <section class="hero stage stage--hero" id="top" data-pin-stage="hero" aria-labelledby="heroTitle">
+      <div class="stage__pin hero__pin">
+        <canvas class="hero__glow-canvas" id="heroEmberCanvas" aria-hidden="true"></canvas>
 
-        <div class="hero__subject" id="heroSubject">
-          <div class="hero__actor" id="heroActor">
-            <img
-              class="hero__figure"
-              id="heroFigure"
-              src="assets/img/hero/sangeeth-portrait.webp"
-              width="900"
-              height="1200"
-              fetchpriority="high"
-              decoding="async"
-              alt="Sangeeth Sasikumar in aviator sunglasses, lit by warm amber light"
-            >
-            <div class="hero__rim" id="heroRim" aria-hidden="true"></div>
-            <div class="hero__glint" aria-hidden="true"></div>
+        <div class="hero__scene" id="heroScene">
+          <h1 class="hero__burn" id="heroTitle" data-text="Sangeeth" aria-label="Sangeeth Sasikumar K S">Sangeeth</h1>
+
+          <div class="hero__subject" id="heroSubject">
+            <div class="hero__actor" id="heroActor">
+              <img
+                class="hero__figure"
+                id="heroFigure"
+                src="assets/img/hero/sangeeth-portrait.webp"
+                width="900"
+                height="1200"
+                fetchpriority="high"
+                decoding="async"
+                alt="Sangeeth Sasikumar in aviator sunglasses, lit by warm amber light"
+              >
+              <div class="hero__rim" id="heroRim" aria-hidden="true"></div>
+              <div class="hero__glint" aria-hidden="true"></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="hero__copy" id="heroIntro">
-        <p class="hero__name" data-intro>Sasikumar K S, Kerala</p>
-        <p class="hero__statement" data-intro>Mechatronics engineer. I build machines like craft, not decoration.</p>
-        <div class="hero__ctas" data-intro>
-          <a class="btn btn--primary magnetic" href="#work" data-cursor="Explore">
-            <span class="btn__label">Selected work</span>
-            <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-          </a>
-          <button class="hero__link magnetic" type="button" id="reelBtn" data-cursor="Play">
-            <span>Watch showreel (0:42)</span>
-          </button>
+        <div class="hero__copy" id="heroIntro">
+          <p class="hero__name" data-intro>Sasikumar K S, Kerala</p>
+          <p class="hero__statement" data-intro>Mechatronics engineer. I build machines like craft, not decoration.</p>
+          <div class="hero__ctas" data-intro>
+            <a class="btn btn--primary magnetic" href="#work" data-cursor="Explore">
+              <span class="btn__label">Selected work</span>
+              <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </a>
+            <button class="hero__link magnetic" type="button" id="reelBtn" data-cursor="Play">
+              <span>Watch showreel (0:42)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="stage__cue mono" aria-hidden="true">
+          <span>Scroll to ignite</span>
+          <span class="stage__cue-line"><i></i></span>
         </div>
       </div>
     </section>
@@ -306,13 +333,38 @@
       </div>
     </div>
 
+    <!-- ============ STAGE 2 · LEFT-TO-RIGHT CLIP-PATH WIPE ============ -->
+    <section class="stage stage--wipe" id="wipeStage" data-pin-stage="wipe" aria-label="Engineering manifesto">
+      <div class="stage__pin wipe__pin">
+        <div class="wipe__inner">
+          <div class="wipe__eyebrow mono" data-rev>
+            <span>01 / MANIFESTO</span>
+            <span>EDGE-FIRST DETERMINISM</span>
+          </div>
+
+          <div class="wipe__wrap" id="wipeWrap">
+            <h2 class="wipe__text wipe__text--base" id="wipeBase">I build deterministic machines that sense, compute and actuate in real time — without waiting on the cloud.</h2>
+            <div class="wipe__text wipe__text--fill" id="wipeFill" aria-hidden="true">I build deterministic machines that sense, compute and actuate in real time — without waiting on the cloud.</div>
+          </div>
+
+          <div class="wipe__rule" aria-hidden="true">
+            <span class="wipe__rule-fill"></span>
+          </div>
+
+          <div class="wipe__foot mono">
+            <span data-rev style="--d: 40ms">ESP32 · FREERTOS</span>
+            <span data-rev style="--d: 100ms">TINYML · INT8</span>
+            <span data-rev style="--d: 160ms">HARDWARE FAILSAFES</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ ABOUT ============ -->
     <section class="section about" id="about">
-      <div class="section-head mono" data-reveal>
+      <div class="section-head mono" data-rev>
         <span>(01)</span><span>About</span><span class="section-head__end">Who builds this stuff</span>
       </div>
-
-      <h2 class="statement" data-words>I build deterministic machines that sense, compute and actuate in real time: hardware that solves practical problems <em class="serif">without waiting on the cloud.</em></h2>
 
       <div class="about__grid">
         <figure class="about__photo" data-reveal-img data-cursor="Inspect">
@@ -343,6 +395,60 @@
               <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span class="btn__label">Download Curriculum Vitae (PDF)</span>
             </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STAGE 3 · SCROLL-TRACED DATA CURVE ============ -->
+    <section class="stage stage--curve" id="curveStage" data-pin-stage="curve" aria-labelledby="curveTitle">
+      <div class="stage__pin curve__pin">
+        <div class="curve__grid">
+          <div class="curve__left">
+            <p class="curve__eyebrow mono" data-rev>02 / REAL-TIME RESPONSE PROFILE</p>
+            <h2 class="curve__title" id="curveTitle" data-atom-words>Five layers. <span class="t-ember">One deterministic loop.</span></h2>
+
+            <ol class="curve__rows" id="curveRows">
+              <li class="curve__row is-lit" data-step="0">
+                <span class="curve__val">180 ms</span>
+                <span class="curve__label">Edge AI Vision</span>
+                <span class="curve__note">INT8 MobileNet inference on ESP32-CAM</span>
+              </li>
+              <li class="curve__row" data-step="1">
+                <span class="curve__val">42 ms</span>
+                <span class="curve__label">Sensor Fusion</span>
+                <span class="curve__note">Continuous I²C IMU &amp; 3-zone ultrasonic matrix</span>
+              </li>
+              <li class="curve__row" data-step="2">
+                <span class="curve__val">14.5 ms</span>
+                <span class="curve__label">Kinematics PID</span>
+                <span class="curve__note">Differential-drive velocity &amp; heading error</span>
+              </li>
+              <li class="curve__row" data-step="3">
+                <span class="curve__val">4.2 ms</span>
+                <span class="curve__label">Motor Actuation</span>
+                <span class="curve__note">20 kHz LEDC PWM through TB6612FNG H-bridge</span>
+              </li>
+              <li class="curve__row" data-step="4">
+                <span class="curve__val">0.8 ms</span>
+                <span class="curve__label">Hardware Failsafe</span>
+                <span class="curve__note">&gt;45° tilt interrupt cutoff &amp; watchdog reset</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="curve__right">
+            <div class="curve__plot" id="curvePlot">
+              <div class="curve__plot-head mono">
+                <span>LOOP LATENCY CURVE (MS)</span>
+                <span id="curveStageLabel">STAGE 01 / 05</span>
+              </div>
+              <canvas id="curveCanvas" aria-label="Scroll-traced system latency curve" role="img"></canvas>
+              <div class="curve__readout" aria-live="polite">
+                <span class="curve__readout-val" id="curveReadout">180.0</span>
+                <span class="curve__readout-unit mono">MS</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -449,6 +555,66 @@
         <ul class="stack__list">
           <li>Python</li><li>C / C++</li><li>ESP32</li><li>ESP32-CAM</li><li>Arduino</li><li>FreeRTOS</li><li>PlatformIO</li><li>ESP-IDF</li><li>Edge Impulse</li><li>TensorFlow Lite Micro</li><li>OpenCV</li><li>MQTT</li><li>Blynk</li>
         </ul>
+      </div>
+    </section>
+
+    <!-- ============ HORIZONTAL TICKER-TAPE FLOW (GSAP SCROLLTRIGGER) ============ -->
+    <section class="tape-stage" id="tickerTape" aria-label="Mechatronics engineering creed">
+      <div class="tape__rail tape__rail--top mono">
+        <span>02.5 / SIGNAL FLOW</span>
+        <span>ESP32 · KINEMATICS · TINYML</span>
+      </div>
+
+      <div class="tape__viewport">
+        <div class="tape__track" id="tapeTrack">
+          <span class="tape__word">In every circuit,</span>
+
+          <!-- Inline SVG: Signal Pulse Curve -->
+          <svg class="tape__svg tape__svg--curve tape__gap--sm" viewBox="0 0 220 64" width="220" height="64" fill="none" aria-hidden="true">
+            <path class="tape__draw" d="M4 32 C 28 32, 34 32, 48 32 L 62 10 L 82 54 L 100 18 L 116 42 L 130 32 C 154 32, 180 12, 216 32" stroke="var(--sig-power)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="216" cy="32" r="4" fill="var(--ember-accent)"/>
+          </svg>
+
+          <span class="tape__word tape__word--muted">discover the undeniable</span>
+          <em class="tape__word tape__accent serif tape__gap--md">Real Precision</em>
+
+          <!-- Inline SVG: Microcontroller Core Icon -->
+          <span class="tape__badge tape__gap--sm" aria-hidden="true">
+            <svg class="tape__spin" viewBox="0 0 48 48" width="48" height="48" fill="none">
+              <rect x="13" y="13" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.8"/>
+              <rect x="19" y="19" width="10" height="10" fill="var(--ember-accent)" fill-opacity="0.28" stroke="var(--ember-accent)" stroke-width="1.5"/>
+              <path d="M18 13V6M24 13V6M30 13V6M18 42v-7M24 42v-7M30 42v-7M13 18H6M13 24H6M13 30H6M42 18h-7M42 24h-7M42 30h-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+
+          <span class="tape__word tape__word--muted">of building</span>
+          <em class="tape__word tape__ember tape__gap--md">Autonomous Machines</em>
+
+          <!-- Inline SVG: Closed-Loop PID Damping Curve -->
+          <svg class="tape__svg tape__svg--pid tape__gap--sm" viewBox="0 0 260 68" width="260" height="68" fill="none" aria-hidden="true">
+            <line x1="0" y1="34" x2="260" y2="34" stroke="var(--hairline)" stroke-dasharray="4 6"/>
+            <path class="tape__draw" d="M4 58 C 26 4, 46 6, 70 46 C 90 72, 114 14, 146 38 C 172 52, 196 26, 224 35 C 238 38, 248 34, 256 34" stroke="var(--ember-accent)" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="256" cy="34" r="4" fill="var(--bone)"/>
+          </svg>
+
+          <span class="tape__word tape__word--muted">that sense, compute &amp;</span>
+          <em class="tape__word tape__accent serif tape__gap--lg">Act Together.</em>
+
+          <!-- Inline SVG: Telemetry Compass Reticle -->
+          <span class="tape__badge tape__badge--ember" aria-hidden="true">
+            <svg class="tape__spin" viewBox="0 0 48 48" width="48" height="48" fill="none">
+              <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 4"/>
+              <path d="M24 10 L29 24 L24 38 L19 24 Z" fill="var(--sig-power)" fill-opacity="0.25" stroke="var(--sig-power)" stroke-width="1.6"/>
+              <circle cx="24" cy="24" r="2.5" fill="var(--bone)"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div class="tape__rail tape__rail--bot mono">
+        <span>SCROLL HORIZONTAL TAPE</span>
+        <div class="tape__progress" aria-hidden="true"><i id="tapeBar"></i></div>
+        <span id="tapePct">00%</span>
       </div>
     </section>
 
@@ -619,6 +785,25 @@
         </div>
 
         <div class="journey__progress" aria-hidden="true"><i id="journeyBar"></i></div>
+      </div>
+    </section>
+
+    <!-- ============ STAGE 4 · SCALING MOLTEN FORM (GATHER) ============ -->
+    <section class="stage stage--gather" id="gatherStage" data-pin-stage="gather" aria-labelledby="gatherTitle">
+      <div class="stage__pin gather__pin">
+        <canvas class="gather__canvas" id="gatherCanvas" aria-hidden="true"></canvas>
+
+        <div class="gather__content">
+          <p class="gather__eyebrow mono" data-rev>04 / OPERATING CREED</p>
+          <h2 class="gather__title" id="gatherTitle" data-atom-words>Good code. Cool robots. <span class="t-ember">Built to endure.</span></h2>
+          <div class="gather__foot">
+            <p class="gather__lede" data-atom-words>From breadboard prototypes to autonomous field hardware — engineered for reliability when the network drops.</p>
+            <a class="btn btn--ember magnetic" href="#contact" data-rev style="--d: 140ms" data-cursor="Transmit">
+              <span class="btn__label">Start a transmission</span>
+              <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1030,6 +1215,69 @@
       </div>
     </div>
   </dialog>
+
+  <!-- ============ FLOATING MAGNIFICATION DOCK ============ -->
+  <nav class="mag-dock-wrap" id="magDockWrap" aria-label="Quick navigation dock">
+    <div class="mag-dock" id="magDock" role="toolbar" aria-label="Portfolio navigation dock">
+      <button type="button" class="mag-dock__item is-active" data-dock-action="nav" data-dock-target="#top" aria-label="Home">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">Home</span>
+      </button>
+
+      <button type="button" class="mag-dock__item" data-dock-action="nav" data-dock-target="#about" aria-label="About">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">About</span>
+      </button>
+
+      <button type="button" class="mag-dock__item" data-dock-action="nav" data-dock-target="#skills" aria-label="Capabilities">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">Capabilities</span>
+      </button>
+
+      <button type="button" class="mag-dock__item" data-dock-action="nav" data-dock-target="#work" aria-label="Work">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">Work</span>
+      </button>
+
+      <button type="button" class="mag-dock__item" data-dock-action="nav" data-dock-target="#journey" aria-label="Journey">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">Journey</span>
+      </button>
+
+      <button type="button" class="mag-dock__item" data-dock-action="nav" data-dock-target="#contact" aria-label="Contact">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">Contact</span>
+      </button>
+
+      <span class="mag-dock__sep" aria-hidden="true"></span>
+
+      <button type="button" class="mag-dock__item" data-dock-action="cmd" aria-label="Command Palette (Ctrl+K)">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">Search · ⌘K</span>
+      </button>
+
+      <button type="button" class="mag-dock__item" data-dock-action="cv" aria-label="Resume Preview">
+        <span class="mag-dock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </span>
+        <span class="mag-dock__label mono" role="tooltip">Resume</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- Sonar Touch Waves for Mobile -->
   <div class="sonar-container" id="sonarContainer" aria-hidden="true"></div>
