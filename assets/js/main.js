@@ -12,7 +12,7 @@
      ========================================================================== */
   const PROJECTS = {
     'patrol-robot': {
-      idx: '01 / 07',
+      idx: '01 / 09',
       num: '01',
       domain: 'robotics',
       badge: 'Flagship · Autonomous Robotics',
@@ -132,7 +132,7 @@
       nextId: 'mark-ai'
     },
     'mark-ai': {
-      idx: '07 / 07',
+      idx: '07 / 09',
       num: '07',
       domain: 'ai',
       badge: 'Edge AI Lab Companion',
@@ -149,6 +149,48 @@
       ],
       details: 'Acts as the central command node for testing robotics prototypes on the hardware workbench, querying sensor packets, issuing motor calibrations over serial buses, and tracking component inventories in real time.',
       stack: ['Python', 'WebSockets', 'Serial UART', 'Audio Synthesis', 'Signal Processing', 'Bench Automation'],
+      nextId: 'vibe-lab'
+    },
+    'vibe-lab': {
+      idx: '08 / 09',
+      num: '08',
+      domain: 'web ai',
+      badge: 'Web Development & Vibecoding · Three.js',
+      title: 'Vibe-Coded 3D Interactive Lab',
+      desc: 'An experimental 3D WebGL showcase built via AI-accelerated vibecoding, combining real-time Three.js particle fields, liquid-glass HUD surfaces, and live scroll-depth telemetry.',
+      image: 'assets/img/reel-poster.jpg',
+      liveUrl: 'vibe.html',
+      liveLabel: 'Launch Live 3D Lab ↗',
+      specs: [
+        { label: '3D Engine', val: 'Three.js r128 Real-Time WebGL' },
+        { label: 'UI System', val: 'Multi-Layer Liquid Glass & Backdrop Blur' },
+        { label: 'Typography', val: 'Space Grotesk + Outfit + JetBrains Mono' },
+        { label: 'Workflow', val: 'AI-Assisted Vibecoding Rapid Sprint' },
+        { label: 'Telemetry', val: 'Scroll-Depth Meter & Cursor Spotlight' },
+        { label: 'Deployment', val: 'Vercel Edge Static Hosting' }
+      ],
+      details: 'Built as a standalone 3D web laboratory to demonstrate high-impact interactive frontend craft for freelance clients — pairing custom WebGL geometry with glassmorphic cards and responsive mobile fallbacks.',
+      stack: ['Three.js', 'WebGL', 'Vibecoding', 'Liquid Glass CSS', 'JavaScript', 'Vercel'],
+      nextId: 'amber-portfolio'
+    },
+    'amber-portfolio': {
+      idx: '09 / 09',
+      num: '09',
+      domain: 'web',
+      badge: 'Flagship Web Craft · Scroll Choreography',
+      title: 'Amber Burn Scroll-Choreographed Engine',
+      desc: 'A custom zero-template portfolio architecture featuring 4 pinned scroll stages, cursor-reactive rim lighting, a spring-physics macOS dock, GSAP bubble menu, and adaptive mobile lite mode.',
+      image: 'assets/img/hero/sangeeth-portrait.webp',
+      specs: [
+        { label: 'Scroll Engine', val: 'Single rAF-Throttled CSS Var Choreographer' },
+        { label: 'Motion Stack', val: 'GSAP 3.12 + ScrollTrigger + Lenis' },
+        { label: 'Canvas FX', val: 'Drifting Ember Orbs, Data Curve & Polar Forms' },
+        { label: 'Navigation', val: 'Liquid-Glass Spring Dock & Bubble Menu' },
+        { label: 'Optimization', val: 'Adaptive is-lite Profile (24fps Glow / 0 Lag)' },
+        { label: 'SEO & Core', val: 'JSON-LD Entity Graph + Sitemap + Semantic HTML' }
+      ],
+      details: 'Engineered from scratch without heavy frameworks to prove how fast, expressive, and reliable a bespoke website can feel on both flagship desktops and mid-range phones — ideal for founders, creators, and technical studios.',
+      stack: ['GSAP ScrollTrigger', 'HTML5 Canvas', 'Spring Physics', 'Vibecoding', 'SEO Schema', 'Responsive UI'],
       nextId: 'patrol-robot'
     }
   };
@@ -166,6 +208,9 @@
   const IS_TOUCH = window.matchMedia('(hover: none), (pointer: coarse)').matches;
   const LITE = IS_TOUCH || window.innerWidth < 1025 || (navigator.hardwareConcurrency || 8) <= 2;
   if (LITE) document.documentElement.classList.add('is-lite');
+
+  /* Frame-rate independent exponential damping for 60Hz / 120Hz / 144Hz / 240Hz displays */
+  const damp = (alpha, dt) => 1 - Math.pow(1 - alpha, Math.min(Math.max(dt, 0.002), 0.06) * 60);
 
   /* Live Clock (IST) */
   function updateClock() {
@@ -526,6 +571,7 @@
       this.hasGyro = false;
       this.isVisible = true;
       this.startTime = performance.now();
+      this.lastTick = this.startTime;
 
       this.bind();
     }
@@ -540,6 +586,7 @@
             const was = this.isVisible;
             this.isVisible = entry.isIntersecting;
             if (!was && this.isVisible) {
+              this.lastTick = performance.now();
               requestAnimationFrame((t) => this.tick(t));
             }
           });
@@ -548,28 +595,23 @@
       }
 
       window.addEventListener('pointermove', (e) => {
-        if (e.pointerType === 'touch') return;
-        const rect = this.hero.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+        if (e.pointerType === 'touch' || !this.isVisible) return;
+        const w = Math.max(1, window.innerWidth);
+        const h = Math.max(1, window.innerHeight);
 
         this.hasPointer = true;
-        const w = Math.max(1, rect.width);
-        const h = Math.max(1, rect.height);
-        const xPct = ((e.clientX - rect.left) / w) * 100;
-        const yPct = ((e.clientY - rect.top) / h) * 100;
+        const xPct = (e.clientX / w) * 100;
+        const yPct = (e.clientY / h) * 100;
         this.targetX = Math.max(4, Math.min(96, xPct));
         this.targetY = Math.max(6, Math.min(92, yPct));
 
-        this.nx = Math.max(-0.5, Math.min(0.5, (e.clientX - rect.left) / w - 0.5));
-        this.ny = Math.max(-0.5, Math.min(0.5, (e.clientY - rect.top) / h - 0.5));
+        this.nx = Math.max(-0.5, Math.min(0.5, e.clientX / w - 0.5));
+        this.ny = Math.max(-0.5, Math.min(0.5, e.clientY / h - 0.5));
 
-        if (this.subject) {
-          const sRect = this.subject.getBoundingClientRect();
-          const rx = ((e.clientX - sRect.left) / Math.max(1, sRect.width)) * 100;
-          const ry = ((e.clientY - sRect.top) / Math.max(1, sRect.height)) * 100;
-          this.targetRimX = Math.max(-15, Math.min(115, rx));
-          this.targetRimY = Math.max(-10, Math.min(105, ry));
-        }
+        const rx = ((e.clientX - w * 0.29) / (w * 0.42)) * 100;
+        const ry = ((e.clientY - h * 0.12) / (h * 0.88)) * 100;
+        this.targetRimX = Math.max(-15, Math.min(115, rx));
+        this.targetRimY = Math.max(-10, Math.min(105, ry));
       }, { passive: true });
 
       if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission !== 'function') {
@@ -594,6 +636,8 @@
       if (!this.isVisible || document.hidden || prefersReduced()) return;
 
       const elapsed = (now - this.startTime) * 0.001;
+      const dt = (now - (this.lastTick || now)) * 0.001;
+      this.lastTick = now;
 
       if (!this.hasPointer && !this.hasGyro) {
         const phase = (elapsed * Math.PI * 2) / 14;
@@ -605,15 +649,18 @@
         this.ny = Math.cos(phase * 0.7) * 0.2;
       }
 
-      // Smoothly interpolate light & 3D figure coordinates
+      // Frame-rate independent damping (smooth across 60Hz, 120Hz, 144Hz, 240Hz)
+      const kLight = damp(0.085, dt);
+      const kRim = damp(0.095, dt);
+      const kTilt = damp(0.065, dt);
       const prevRimX = this.rimX;
       const prevRimY = this.rimY;
-      this.curX += (this.targetX - this.curX) * 0.085;
-      this.curY += (this.targetY - this.curY) * 0.085;
-      this.rimX += (this.targetRimX - this.rimX) * 0.095;
-      this.rimY += (this.targetRimY - this.rimY) * 0.095;
-      this.curNx += (this.nx - this.curNx) * 0.065;
-      this.curNy += (this.ny - this.curNy) * 0.065;
+      this.curX += (this.targetX - this.curX) * kLight;
+      this.curY += (this.targetY - this.curY) * kLight;
+      this.rimX += (this.targetRimX - this.rimX) * kRim;
+      this.rimY += (this.targetRimY - this.rimY) * kRim;
+      this.curNx += (this.nx - this.curNx) * kTilt;
+      this.curNy += (this.ny - this.curNy) * kTilt;
 
       this.hero.style.setProperty('--lx', `${this.curX.toFixed(2)}%`);
       this.hero.style.setProperty('--ly', `${this.curY.toFixed(2)}%`);
@@ -655,8 +702,9 @@
       // Deeper parallax plane for the burning SANGEETH display type behind the figure
       if (this.burn) {
         const burnX = this.curNx * 18;
-        const burnY = this.curNy * 9 - scrollP * 32;
-        this.burn.style.transform = `translate3d(${burnX.toFixed(2)}px, ${burnY.toFixed(2)}px, 0)`;
+        const burnY = this.curNy * 9;
+        this.burn.style.setProperty('--bx', `${burnX.toFixed(2)}px`);
+        this.burn.style.setProperty('--by-parallax', `${burnY.toFixed(2)}px`);
       }
 
       requestAnimationFrame((t) => this.tick(t));
@@ -721,10 +769,11 @@
       }
 
       this.resizeCanvases();
+      this.cacheStageMetrics();
       this.bindScroll();
       this.bindVisibility();
       this.initAtomMotion();
-      this.updateStages();
+      this.updateStages(true);
 
       if (prefersReduced()) {
         this.progress.wipe = 1;
@@ -758,12 +807,27 @@
       fit(this.gatherCanvas, this.gatherScale);
     }
 
+    cacheStageMetrics() {
+      const vh = Math.max(1, window.innerHeight);
+      const sy = window.scrollY || window.pageYOffset || 0;
+      this.stageMetrics = this.stages.map((stage) => {
+        const rect = stage.getBoundingClientRect();
+        return {
+          stage,
+          key: stage.dataset.pinStage,
+          top: rect.top + sy,
+          travel: Math.max(1, stage.offsetHeight - vh),
+          lastP: -1
+        };
+      });
+    }
+
     bindScroll() {
       const onScroll = () => {
         if (this.scrollTicking) return;
         this.scrollTicking = true;
         requestAnimationFrame(() => {
-          this.updateStages();
+          this.updateStages(false);
           this.scrollTicking = false;
         });
       };
@@ -784,9 +848,17 @@
             this.lastVh = vh;
             this.resizeCanvases();
           }
-          this.updateStages();
+          this.cacheStageMetrics();
+          this.updateStages(true);
         }, 150);
       }, { passive: true });
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.addEventListener('refresh', () => {
+          this.cacheStageMetrics();
+          this.updateStages(true);
+        });
+      }
     }
 
     bindVisibility() {
@@ -810,18 +882,40 @@
       this.stages.forEach((stage) => obs.observe(stage));
     }
 
-    updateStages() {
-      const vh = Math.max(1, window.innerHeight);
+    updateStages(force = false) {
+      if (!this.stageMetrics) this.cacheStageMetrics();
+      const sy = window.scrollY || window.pageYOffset || 0;
 
-      this.stages.forEach((stage) => {
-        const key = stage.dataset.pinStage;
-        const rect = stage.getBoundingClientRect();
-        const travel = Math.max(1, stage.offsetHeight - vh);
-        const p = prefersReduced() ? (key === 'hero' ? 0 : 1) : Math.max(0, Math.min(1, -rect.top / travel));
+      for (let i = 0; i < this.stageMetrics.length; i++) {
+        const m = this.stageMetrics[i];
+        const { stage, key, top, travel } = m;
+        const p = prefersReduced() ? (key === 'hero' ? 0 : 1) : Math.max(0, Math.min(1, (sy - top) / travel));
+
+        if (!force && Math.abs(p - m.lastP) < 0.0001) continue;
+        m.lastP = p;
 
         stage._scrollP = p;
         this.progress[key] = p;
         stage.style.setProperty('--p', p.toFixed(4));
+
+        if (key === 'hero') {
+          // Back-to-front scroll surge: SANGEETH comes forward past the portrait and dissolves smoothly
+          const easeIn = p * p * (1.8 - 0.8 * p);
+          const burnScale = 1 + easeIn * 2.45;
+          const burnDropY = p * 72;
+          // Smoothstep fade-out between 55% and 96% scroll progress
+          const fadeT = Math.max(0, Math.min(1, (p - 0.55) / 0.41));
+          const burnOp = 1 - fadeT * fadeT * (3 - 2 * fadeT);
+          // Portrait fades smoothly as text passes in front of it
+          const subjFadeT = Math.max(0, Math.min(1, (p - 0.25) / 0.5));
+          const subjOp = 1 - subjFadeT * subjFadeT * (3 - 2 * subjFadeT);
+
+          stage.style.setProperty('--bscale', burnScale.toFixed(4));
+          stage.style.setProperty('--by', `${burnDropY.toFixed(2)}px`);
+          stage.style.setProperty('--bop', burnOp.toFixed(4));
+          stage.style.setProperty('--bz', p >= 0.22 ? '4' : '1');
+          stage.style.setProperty('--sop', subjOp.toFixed(4));
+        }
 
         if (key === 'wipe') {
           const wipe = Math.max(0, Math.min(1, p * 1.2));
@@ -831,7 +925,7 @@
         if (key === 'curve') {
           this.updateCurveUI(p);
         }
-      });
+      }
     }
 
     sampleSeries(t) {
@@ -865,14 +959,10 @@
     }
 
     // Single loop that sleeps entirely when no canvas stage is on screen.
-    // Glow fields redraw at 24–30fps (slow drift needs no more); the curve keeps 60fps on desktop.
+    // Runs at native refresh rate (60Hz / 120Hz) for zero scroll judder; low-res glow buffers keep fill cost tiny.
     ensureLoop() {
       if (this.loopRunning || prefersReduced()) return;
       this.loopRunning = true;
-      let lastGlow = 0;
-      let lastCurve = 0;
-      const glowInterval = 1000 / (this.lite ? 24 : 30);
-      const curveInterval = this.lite ? 1000 / 30 : 0;
 
       const tick = (now) => {
         const anyVisible = this.visible.hero || this.visible.curve || this.visible.gather;
@@ -884,15 +974,9 @@
         if (document.hidden) return;
 
         const t = (now - this.startTime) * 0.001;
-        if (now - lastGlow >= glowInterval) {
-          lastGlow = now;
-          if (this.visible.hero) this.drawHeroEmbers(t);
-          if (this.visible.gather) this.drawGatherForms(t);
-        }
-        if (this.visible.curve && now - lastCurve >= curveInterval) {
-          lastCurve = now;
-          this.drawCurve(this.progress.curve, t);
-        }
+        if (this.visible.hero) this.drawHeroEmbers(t);
+        if (this.visible.gather) this.drawGatherForms(t);
+        if (this.visible.curve) this.drawCurve(this.progress.curve, t);
       };
       requestAnimationFrame(tick);
     }
@@ -953,7 +1037,7 @@
       }
       ctx.stroke();
 
-      const samples = 120;
+      const samples = this.lite ? 72 : 120;
       const toXY = (u) => {
         const val = this.sampleSeries(u);
         const x = padX + u * plotW;
@@ -1181,12 +1265,22 @@
     }
 
     bindEvents() {
+      this.dockRect = null;
+      const cacheCenters = () => {
+        this.dockRect = this.dock.getBoundingClientRect();
+        this.states.forEach((s) => {
+          const r = s.el.getBoundingClientRect();
+          s.centerX = r.left + r.width * 0.5;
+        });
+      };
+
       // Hover spring magnification + liquid glass caustic sheen (desktop / fine pointer)
       if (!this.isTouch && !prefersReduced()) {
+        this.dock.addEventListener('mouseenter', cacheCenters, { passive: true });
         this.dock.addEventListener('mousemove', (e) => {
+          if (!this.dockRect) cacheCenters();
           this.mouseX = e.clientX;
-          const rect = this.dock.getBoundingClientRect();
-          const relX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+          const relX = Math.max(0, Math.min(this.dockRect.width, e.clientX - this.dockRect.left));
           this.dock.style.setProperty('--dock-mx', `${relX.toFixed(1)}px`);
           this.dock.style.setProperty('--dock-sheen', '1');
           this.startLoop();
@@ -1194,12 +1288,14 @@
 
         this.dock.addEventListener('mouseleave', () => {
           this.mouseX = Infinity;
+          this.dockRect = null;
           this.dock.style.setProperty('--dock-sheen', '0');
           this.startLoop();
         }, { passive: true });
       }
 
       window.addEventListener('resize', () => {
+        this.dockRect = null;
         const base = this.getBaseSize();
         this.states.forEach((s) => {
           s.size = base;
@@ -1244,18 +1340,33 @@
 
       if (!sections.length) return;
 
+      let lastActive = '';
+      const cacheTops = () => {
+        const sy = window.scrollY || window.pageYOffset || 0;
+        sections.forEach((s) => {
+          s.top = s.el.getBoundingClientRect().top + sy;
+        });
+      };
+      cacheTops();
+      window.addEventListener('resize', cacheTops, { passive: true });
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.addEventListener('refresh', cacheTops);
+      }
+
       const updateActive = () => {
-        const scrollMid = window.innerHeight * 0.4;
+        const threshold = (window.scrollY || window.pageYOffset || 0) + window.innerHeight * 0.4;
         let current = '#top';
         for (let i = 0; i < sections.length; i++) {
-          const rect = sections[i].el.getBoundingClientRect();
-          if (rect.top <= scrollMid) {
+          if (sections[i].top <= threshold) {
             current = sections[i].sel;
           }
         }
-        navButtons.forEach((b) => {
-          b.classList.toggle('is-active', b.dataset.dockTarget === current);
-        });
+        if (current !== lastActive) {
+          lastActive = current;
+          navButtons.forEach((b) => {
+            b.classList.toggle('is-active', b.dataset.dockTarget === current);
+          });
+        }
       };
 
       let ticking = false;
@@ -1286,8 +1397,7 @@
           if (this.mouseX === Infinity) {
             s.target = base;
           } else {
-            const rect = s.el.getBoundingClientRect();
-            const centerX = rect.left + rect.width * 0.5;
+            const centerX = s.centerX || (s.el.getBoundingClientRect().left + base * 0.5);
             const dist = Math.abs(this.mouseX - centerX);
             if (dist < this.distance) {
               const norm = 1 - dist / this.distance;
@@ -1379,7 +1489,7 @@
       gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
       });
-      gsap.ticker.lagSmoothing(500, 33);
+      gsap.ticker.lagSmoothing(0);
     }
 
     // 2. Nav Header Scroll states
@@ -1509,7 +1619,8 @@
         pin: true,
         anticipatePin: 1,
         animation: tapeTween,
-        scrub: 1,
+        scrub: 0.35,
+        fastScrollEnd: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const p = self.progress;
@@ -1685,20 +1796,19 @@
 
     start() {
       if (this.rafId) cancelAnimationFrame(this.rafId);
-      let last = 0;
-      const interval = LITE ? 1000 / 30 : 0;
+      let last = performance.now();
       const render = (now) => {
         if (!this.isVisible && 'IntersectionObserver' in window) { this.rafId = null; return; }
         this.rafId = requestAnimationFrame(render);
         if (document.hidden) return;
-        if (interval && now - last < interval) return;
+        const dt = Math.min(0.05, Math.max(0.002, (now - last) * 0.001));
         last = now;
-        this.draw();
+        this.draw(dt);
       };
       this.rafId = requestAnimationFrame(render);
     }
 
-    draw() {
+    draw(dt = 0.016) {
       const { ctx, canvas } = this;
       const w = canvas.width;
       const h = canvas.height;
@@ -1726,8 +1836,8 @@
       ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
       ctx.stroke();
 
-      // 2. Waveform Synthesis based on Mode
-      this.phase += 0.04;
+      // 2. Waveform Synthesis based on Mode (120Hz delta-time locked)
+      this.phase += 2.4 * dt;
       const cy = h / 2;
       const amp = h * 0.28;
 
@@ -1817,39 +1927,60 @@
       });
     });
 
-    // Desktop Cursor Image Follower
+    // Desktop Cursor Image Follower (sleeps when hidden, 120Hz delta-time damped)
     const preview = document.getElementById('workPreview');
-    if (preview && !isMobile()) {
+    if (preview && !isMobile() && !IS_TOUCH) {
       let previewX = 0, previewY = 0;
       let targetX = 0, targetY = 0;
+      let previewRaf = null;
+      let lastTime = 0;
+      let isHovering = false;
+
+      const startPreviewLoop = () => {
+        if (previewRaf) return;
+        lastTime = performance.now();
+        const tick = (now) => {
+          const dt = (now - lastTime) * 0.001;
+          lastTime = now;
+          const k = damp(0.14, dt);
+          previewX += (targetX - previewX) * k;
+          previewY += (targetY - previewY) * k;
+          preview.style.transform = `translate3d(${previewX.toFixed(2)}px, ${previewY.toFixed(2)}px, 0)`;
+
+          if (isHovering || Math.hypot(targetX - previewX, targetY - previewY) > 0.5) {
+            previewRaf = requestAnimationFrame(tick);
+          } else {
+            previewRaf = null;
+          }
+        };
+        previewRaf = requestAnimationFrame(tick);
+      };
 
       window.addEventListener('mousemove', (e) => {
         targetX = e.clientX + 32;
         targetY = e.clientY - 120;
+        if (isHovering) startPreviewLoop();
       }, { passive: true });
-
-      const tick = () => {
-        previewX += (targetX - previewX) * 0.12;
-        previewY += (targetY - previewY) * 0.12;
-        preview.style.transform = `translate(${previewX}px, ${previewY}px)`;
-        requestAnimationFrame(tick);
-      };
-      tick();
 
       rows.forEach(row => {
         const btn = row.querySelector('[data-open]');
         if (!btn) return;
         const id = btn.dataset.open;
 
-        btn.addEventListener('mouseenter', () => {
+        btn.addEventListener('mouseenter', (e) => {
+          isHovering = true;
+          targetX = e.clientX + 32;
+          targetY = e.clientY - 120;
           preview.classList.add('is-visible');
           preview.querySelectorAll('img').forEach(img => {
             if (img.dataset.id === id) img.classList.add('is-active');
             else img.classList.remove('is-active');
           });
+          startPreviewLoop();
         });
 
         btn.addEventListener('mouseleave', () => {
+          isHovering = false;
           preview.classList.remove('is-visible');
         });
       });
@@ -1910,6 +2041,13 @@
           <ul class="case__stack">
             ${stackHtml}
           </ul>
+          ${data.liveUrl ? `
+            <div style="margin-top: 28px;">
+              <a href="${data.liveUrl}" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+                <span class="btn__label">${data.liveLabel || 'Open Live Build ↗'}</span>
+              </a>
+            </div>
+          ` : ''}
         </div>
         ${nextData ? `
           <button type="button" class="case__next" data-open="${data.nextId}">
@@ -2276,24 +2414,21 @@ SAFETY CONE: &gt; 25cm all zones clear`);
         this.decay = Math.random() * 0.04 + 0.025;
         this.isCyan = Math.random() > 0.82;
       }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vx *= 0.94;
-        this.vy *= 0.94;
-        this.life -= this.decay;
+      update(stepScale = 1) {
+        this.x += this.vx * stepScale;
+        this.y += this.vy * stepScale;
+        const drag = Math.pow(0.94, stepScale);
+        this.vx *= drag;
+        this.vy *= drag;
+        this.life -= this.decay * stepScale;
       }
       draw(c) {
         if (this.life <= 0) return;
-        c.save();
         c.globalAlpha = Math.max(0, this.life);
         c.fillStyle = this.isCyan ? '#06b6d4' : '#f59e0b';
-        c.shadowColor = this.isCyan ? 'rgba(6,182,212,0.8)' : 'rgba(245,158,11,0.8)';
-        c.shadowBlur = 6;
         c.beginPath();
         c.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
         c.fill();
-        c.restore();
       }
     }
 
@@ -2333,6 +2468,7 @@ SAFETY CONE: &gt; 25cm all zones clear`);
         if (spotlight) spotlight.classList.remove('is-hidden');
         if (trailCanvas) trailCanvas.classList.remove('is-hidden');
       }
+      startCursorLoop();
     };
 
     window.addEventListener('mousemove', onPointerMove, { passive: true });
@@ -2353,11 +2489,13 @@ SAFETY CONE: &gt; 25cm all zones clear`);
       isPressed = true;
       cursor.classList.add('is-pressed');
       triggerClickPulse(e.clientX, e.clientY);
+      startCursorLoop();
     });
 
     window.addEventListener('mouseup', () => {
       isPressed = false;
       cursor.classList.remove('is-pressed');
+      startCursorLoop();
     });
 
     document.addEventListener('mouseleave', () => {
@@ -2413,42 +2551,49 @@ SAFETY CONE: &gt; 25cm all zones clear`);
       });
     });
 
-    // Main 60fps / 120fps Animation Loop
-    const render = () => {
+    // Main 120Hz Delta-Time Locked Animation Loop (sleeps when cursor & particles settle)
+    let cursorRaf = null;
+    let lastCursorTime = performance.now();
+    let canvasDirty = false;
+
+    const render = (now) => {
+      const dt = Math.min(0.05, Math.max(0.002, (now - lastCursorTime) * 0.001));
+      lastCursorTime = now;
+      const stepScale = dt * 60;
+      let stillActive = false;
+
       if (hasMoved && !isHidden) {
         // Dot tracks target with zero latency (instant hardware sync)
         dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
 
-        // Ring follows with smooth spring inertia
+        // Ring follows with smooth 120Hz frame-rate independent spring inertia
         let targetRingX = targetX;
         let targetRingY = targetY;
 
-        // If magnetizing towards an element, apply magnetic pull
         if (activeMagnetic) {
           targetRingX = activeMagnetic.x + (targetX - activeMagnetic.x) * 0.45;
           targetRingY = activeMagnetic.y + (targetY - activeMagnetic.y) * 0.45;
         }
 
-        const lerpFactor = 0.18;
-        ringX += (targetRingX - ringX) * lerpFactor;
-        ringY += (targetRingY - ringY) * lerpFactor;
+        const kRing = damp(0.18, dt);
+        ringX += (targetRingX - ringX) * kRing;
+        ringY += (targetRingY - ringY) * kRing;
 
-        // Calculate velocity & movement delta
+        // Calculate velocity & movement delta normalized to 60Hz reference
         const dx = targetX - prevTargetX;
         const dy = targetY - prevTargetY;
         prevTargetX = targetX;
         prevTargetY = targetY;
-        const instantSpeed = Math.hypot(dx, dy);
+        const instantSpeed = Math.hypot(dx, dy) / Math.max(0.5, stepScale);
 
-        currentVelocity += (instantSpeed - currentVelocity) * 0.22;
+        currentVelocity += (instantSpeed - currentVelocity) * damp(0.22, dt);
 
-        // Dynamic directional stretch angle & rotation
         if (instantSpeed > 1.2 && !prefersReducedMotion) {
           const targetAngle = Math.atan2(dy, dx) * (180 / Math.PI);
           let diff = targetAngle - currentAngle;
           while (diff < -180) diff += 360;
           while (diff > 180) diff -= 360;
-          currentAngle += diff * 0.32;
+          currentAngle += diff * damp(0.32, dt);
         }
 
         const stretch = prefersReducedMotion ? 0 : Math.min(currentVelocity * 0.0035, 0.42);
@@ -2456,38 +2601,63 @@ SAFETY CONE: &gt; 25cm all zones clear`);
         const scaleX = (1 + stretch) * pressScale;
         const scaleY = (1 - stretch * 0.52) * pressScale;
 
-        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) rotate(${currentAngle}deg) scale(${scaleX}, ${scaleY})`;
+        ring.style.transform = `translate3d(${ringX.toFixed(2)}px, ${ringY.toFixed(2)}px, 0) rotate(${currentAngle.toFixed(2)}deg) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
 
-        // Keep label horizontal and upright
         if (label) {
-          label.style.transform = `rotate(${-currentAngle}deg)`;
+          label.style.transform = `rotate(${(-currentAngle).toFixed(2)}deg)`;
         }
 
-        // Spotlight follows smoothly
         if (spotlight) {
-          spotlightX += (targetX - spotlightX) * 0.09;
-          spotlightY += (targetY - spotlightY) * 0.09;
-          spotlight.style.transform = `translate3d(${spotlightX}px, ${spotlightY}px, 0)`;
+          const kSpot = damp(0.09, dt);
+          spotlightX += (targetX - spotlightX) * kSpot;
+          spotlightY += (targetY - spotlightY) * kSpot;
+          spotlight.style.transform = `translate3d(${spotlightX.toFixed(1)}px, ${spotlightY.toFixed(1)}px, 0)`;
         }
 
-        // Generate spark trail
         spawnSparks(targetX, targetY, dx, dy, instantSpeed);
-      }
 
-      // Render particle trail on canvas
-      if (ctx && trailCanvas) {
-        ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.update();
-          p.draw(ctx);
-          if (p.life <= 0) particles.splice(i, 1);
+        if (
+          Math.hypot(targetRingX - ringX, targetRingY - ringY) > 0.15 ||
+          (spotlight && Math.hypot(targetX - spotlightX, targetY - spotlightY) > 0.5) ||
+          currentVelocity > 0.2 ||
+          tourActive
+        ) {
+          stillActive = true;
         }
       }
 
-      requestAnimationFrame(render);
+      // Render particle trail on canvas only when particles exist
+      if (ctx && trailCanvas) {
+        if (particles.length > 0) {
+          ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.update(stepScale);
+            p.draw(ctx);
+            if (p.life <= 0) particles.splice(i, 1);
+          }
+          ctx.globalAlpha = 1;
+          canvasDirty = true;
+          stillActive = true;
+        } else if (canvasDirty) {
+          ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+          canvasDirty = false;
+        }
+      }
+
+      if (stillActive) {
+        cursorRaf = requestAnimationFrame(render);
+      } else {
+        cursorRaf = null;
+      }
     };
-    requestAnimationFrame(render);
+
+    const startCursorLoop = () => {
+      if (cursorRaf) return;
+      lastCursorTime = performance.now();
+      cursorRaf = requestAnimationFrame(render);
+    };
+    startCursorLoop();
 
     // ========================================================================
     // OPTIONAL AUTOMATED CURSOR SHOWCASE TOUR (Triggerable via Ctrl+K or Terminal)
@@ -3094,6 +3264,29 @@ SAFETY CONE: &gt; 25cm all zones clear`);
         playSfx('boot');
         showToast(`✓ Transmission Confirmed! Message from ${senderName} logged to Google Sheets.`);
       }, 900);
+    });
+
+    // Pre-select Web Dev & Vibecoding scope from Fiverr commission rows
+    document.querySelectorAll('[data-fiverr-package]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pkg = btn.getAttribute('data-fiverr-package') || 'Website Dev & Vibecoding';
+        const webPill = Array.from(topicPills).find(p => (p.dataset.topic || '').includes('Vibecoding'));
+        if (webPill) {
+          topicPills.forEach(p => p.classList.remove('is-active'));
+          webPill.classList.add('is-active');
+          if (topicInput) topicInput.value = webPill.dataset.topic;
+        }
+        if (messageInput && !messageInput.value.trim()) {
+          messageInput.value = `Interested in: ${pkg}\n\nProject goals & timeline: `;
+          if (messageCounter) messageCounter.textContent = `${messageInput.value.length} / 1000`;
+        }
+        playSfx('click');
+        showToast(`Selected: ${pkg}`);
+        const contactEl = document.getElementById('contact');
+        if (contactEl && lenis) lenis.scrollTo(contactEl);
+        else if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => messageInput?.focus(), 550);
+      });
     });
 
     // Reset button

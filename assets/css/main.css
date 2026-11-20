@@ -704,6 +704,7 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   min-height: 600px;
   overflow: hidden;
   isolation: isolate;
+  contain: layout paint;
 }
 
 .hero {
@@ -772,7 +773,11 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   white-space: nowrap;
   color: var(--ember);
   user-select: none;
-  z-index: 1;
+  z-index: var(--bz, 1);
+  transform-origin: 50% 48%;
+  transform: translate3d(var(--bx, 0px), calc(var(--by, 0px) + var(--by-parallax, 0px)), 0) scale(var(--bscale, 1));
+  opacity: var(--bop, 1);
+  will-change: transform, opacity;
 }
 
 .hero__burn::after {
@@ -801,13 +806,16 @@ a:hover .roll > span { transform: translateY(-1.3em); }
   position: absolute;
   bottom: 0;
   left: 59%;
-  transform: translate3d(-50%, 0, 0);
+  transform: translate3d(-50%, calc(var(--p, 0) * 28px), 0) scale(calc(1 - var(--p, 0) * 0.1));
+  transform-origin: 50% 75%;
+  opacity: var(--sop, 1);
   height: var(--fig-h);
   aspect-ratio: 3 / 4;
   width: auto;
   z-index: 2;
   pointer-events: none;
   perspective: 1100px;
+  will-change: transform, opacity;
 }
 
 .hero__actor {
@@ -1052,7 +1060,7 @@ a:hover .roll > span { transform: translateY(-1.3em); }
 /* ---------- Capabilities ---------- */
 .caps__intro { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 48px; align-items: end; margin-bottom: clamp(56px, 7vw, 100px); }
 .caps__desc { color: var(--fg-2); font-size: 17px; max-width: 42ch; }
-.caps__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.caps__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .cap {
   --mx: 50%; --my: 50%;
   position: relative; padding: 30px 28px 32px; min-height: 480px;
@@ -3287,6 +3295,7 @@ body.is-loading .mag-dock-wrap {
   border-top: 1px solid var(--hairline-soft);
   border-bottom: 1px solid var(--hairline-soft);
   overflow: hidden;
+  contain: layout paint;
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: clamp(84px, 10vh, 118px) 0 clamp(92px, 11vh, 120px);
@@ -3593,4 +3602,139 @@ html.is-lite[data-theme="light"] .mag-dock {
 @media (max-width: 560px) {
   .btn { --h: 50px; padding: 0 20px; font-size: 15px; }
   .curve__row { grid-template-columns: 96px 1fr; }
+}
+
+/* ==========================================================================
+   FREELANCE & VIBECODING SERVICES (FIVERR COMMISSION BAND)
+   ========================================================================== */
+.freelance__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: end;
+  margin-bottom: clamp(48px, 6vw, 88px);
+}
+
+.freelance__lede {
+  color: var(--fg-2);
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 44ch;
+}
+
+.freelance__pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  margin-bottom: clamp(56px, 7vw, 96px);
+}
+
+.freelance__pillar {
+  padding: clamp(24px, 3vw, 36px);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.freelance__num {
+  color: var(--ember-accent);
+  letter-spacing: 0.16em;
+}
+
+.freelance__pillar h3 {
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.freelance__pillar p {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--fg-2);
+}
+
+.commission__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-2);
+  color: var(--fg-3);
+  letter-spacing: 0.14em;
+}
+
+.commission__table {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.commission__row {
+  border-bottom: 1px solid var(--line);
+}
+
+.commission__btn {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(210px, 1.15fr) minmax(0, 1.5fr) auto;
+  gap: 16px 28px;
+  align-items: center;
+  text-align: left;
+  padding: clamp(20px, 2.6vw, 28px) 6px;
+  transition: background-color 0.3s var(--ease-out), padding-inline 0.35s var(--ease-out);
+}
+
+.commission__btn:hover,
+.commission__btn:focus-visible {
+  background: rgba(228, 75, 60, 0.06);
+  padding-inline: 16px;
+}
+
+.commission__name {
+  font-size: clamp(18px, 1.7vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.commission__desc {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+
+.commission__meta {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ember-accent);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.freelance__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+@media (max-width: 900px) {
+  .freelance__intro,
+  .freelance__pillars {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .commission__btn {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
 }

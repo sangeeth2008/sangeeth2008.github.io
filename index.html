@@ -126,13 +126,13 @@
   <!-- Hero portrait is the LCP candidate -->
   <link rel="preload" as="image" href="assets/img/hero/sangeeth-portrait.webp" type="image/webp" fetchpriority="high">
 
-  <link rel="stylesheet" href="assets/css/main.css?v=7.5.0">
+  <link rel="stylesheet" href="assets/css/main.css?v=7.8.0">
 
   <!-- Motion stack -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script defer src="assets/js/main.js?v=7.5.0"></script>
+  <script defer src="assets/js/main.js?v=7.8.0"></script>
 </head>
 
 <body class="is-loading">
@@ -525,6 +525,18 @@
             <li>Hardware watchdogs</li><li>Brownout recovery</li><li>Tilt auto-cutoff &gt; 45°</li><li>RC522 RFID auth</li><li>Optocoupled relays</li><li>Failsafe isolation</li>
           </ul>
         </article>
+
+        <article class="cap tilt-card" data-reveal data-sig="web">
+          <div class="tilt-glare"></div>
+          <div class="cap__top"><span class="mono">06</span>
+            <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><rect x="4" y="7" width="32" height="26" rx="2" fill="none" stroke="currentColor"/><path d="M4 14h32" stroke="currentColor"/><path d="M15 20l-4 4 4 4M25 20l4 4-4 4M21 19l-2 10" fill="none" stroke="var(--sig-power)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="cap__title">Web dev &amp; vibecoding</h3>
+          <p class="cap__desc">High-craft interactive websites, 3D WebGL scenes, and scroll choreography built at AI-native speed for Fiverr clients.</p>
+          <ul class="cap__list mono">
+            <li>GSAP ScrollTrigger</li><li>Three.js &amp; WebGL</li><li>Liquid glass UI</li><li>AI-assisted vibecoding</li><li>60fps mobile optimization</li><li>SEO &amp; Vercel deploy</li>
+          </ul>
+        </article>
       </div>
 
       <!-- Live instrument -->
@@ -553,7 +565,7 @@
       <div class="stack" data-reveal>
         <p class="mono stack__label">Toolbox</p>
         <ul class="stack__list">
-          <li>Python</li><li>C / C++</li><li>ESP32</li><li>ESP32-CAM</li><li>Arduino</li><li>FreeRTOS</li><li>PlatformIO</li><li>ESP-IDF</li><li>Edge Impulse</li><li>TensorFlow Lite Micro</li><li>OpenCV</li><li>MQTT</li><li>Blynk</li>
+          <li>Python</li><li>C / C++</li><li>ESP32</li><li>ESP32-CAM</li><li>Arduino</li><li>FreeRTOS</li><li>PlatformIO</li><li>ESP-IDF</li><li>Edge Impulse</li><li>TensorFlow Lite Micro</li><li>OpenCV</li><li>MQTT</li><li>Blynk</li><li>GSAP</li><li>Three.js</li><li>WebGL</li><li>HTML / CSS / JS</li><li>Vibecoding</li>
         </ul>
       </div>
     </section>
@@ -622,7 +634,7 @@
     <section class="section work" id="work">
       <span id="projects" class="anchor-alias" aria-hidden="true"></span>
       <div class="section-head mono" data-reveal>
-        <span>(03)</span><span>Selected work</span><span class="section-head__end">07 builds</span>
+        <span>(03)</span><span>Selected work</span><span class="section-head__end">09 builds</span>
       </div>
 
       <h2 class="section-title work__title" data-split>Things I've <em class="serif">built.</em></h2>
@@ -654,12 +666,13 @@
       <div class="work__bar">
         <div class="filters" role="group" aria-label="Filter projects">
           <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="chip" data-filter="web" aria-pressed="false">Web &amp; vibecoding</button>
           <button type="button" class="chip" data-filter="robotics" aria-pressed="false">Robotics</button>
           <button type="button" class="chip" data-filter="ai" aria-pressed="false">AI &amp; vision</button>
           <button type="button" class="chip" data-filter="iot" aria-pressed="false">IoT</button>
           <button type="button" class="chip" data-filter="safety" aria-pressed="false">Safety</button>
         </div>
-        <p class="mono work__count" aria-live="polite"><span id="workCount">06</span> more projects</p>
+        <p class="mono work__count" aria-live="polite"><span id="workCount">08</span> more projects</p>
       </div>
 
       <ul class="work-list" id="workList">
@@ -717,6 +730,24 @@
             <span class="work-row__arrow" aria-hidden="true">↗</span>
           </button>
         </li>
+        <li class="work-row" data-domain="web ai">
+          <button type="button" data-open="vibe-lab" data-cursor="Open">
+            <img class="work-row__thumb" src="assets/img/reel-poster.jpg" alt="" width="1200" height="896" loading="lazy" decoding="async">
+            <span class="work-row__idx mono">08</span>
+            <span class="work-row__title">Vibe-Coded 3D Interactive Lab</span>
+            <span class="work-row__meta mono">Three.js &amp; liquid glass web</span>
+            <span class="work-row__arrow" aria-hidden="true">↗</span>
+          </button>
+        </li>
+        <li class="work-row" data-domain="web">
+          <button type="button" data-open="amber-portfolio" data-cursor="Open">
+            <img class="work-row__thumb" src="assets/img/hero/sangeeth-portrait.webp" alt="" width="900" height="1200" loading="lazy" decoding="async">
+            <span class="work-row__idx mono">09</span>
+            <span class="work-row__title">Amber Burn Scroll-Choreographed Engine</span>
+            <span class="work-row__meta mono">GSAP ScrollTrigger &amp; Canvas</span>
+            <span class="work-row__arrow" aria-hidden="true">↗</span>
+          </button>
+        </li>
       </ul>
       <p class="work__empty mono" id="workEmpty" hidden>No projects in this category yet. More are on the bench.</p>
 
@@ -729,6 +760,8 @@
           <img data-id="smart-classroom" src="assets/img/work/smart-classroom.jpg" alt="" loading="lazy">
           <img data-id="lpg-safety" src="assets/img/work/lpg-safety.jpg" alt="" loading="lazy">
           <img data-id="mark-ai" src="assets/img/work/mark-ai.jpg" alt="" loading="lazy">
+          <img data-id="vibe-lab" src="assets/img/reel-poster.jpg" alt="" loading="lazy">
+          <img data-id="amber-portfolio" src="assets/img/hero/sangeeth-portrait.webp" alt="" loading="lazy">
         </div>
       </div>
     </section>
@@ -804,6 +837,85 @@
             </a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ FREELANCE & VIBECODING SERVICES (FIVERR) ============ -->
+    <section class="section freelance" id="freelance" aria-labelledby="freelanceTitle">
+      <div class="section-head mono" data-rev>
+        <span>(05)</span><span>Freelance &amp; Vibecoding</span><span class="section-head__end">Available for Fiverr &amp; direct commissions</span>
+      </div>
+
+      <div class="freelance__intro">
+        <h2 class="section-title" id="freelanceTitle" data-atom-words>Websites built like <em class="serif">craft</em>, shipped at vibecoding speed.</h2>
+        <p class="freelance__lede" data-rev>I combine AI-accelerated vibecoding workflows with custom GSAP scroll choreography, Three.js 3D scenes, and mobile-first optimization — delivering flagship websites in days instead of months.</p>
+      </div>
+
+      <div class="freelance__pillars">
+        <article class="freelance__pillar" data-rev style="--d: 40ms">
+          <span class="mono freelance__num">01 / SPEED</span>
+          <h3>Rapid Vibecoding Delivery</h3>
+          <p>From concept prompt to live Vercel/custom-domain deployment in 48–72 hours with clean, maintainable HTML/CSS/JS or React code.</p>
+        </article>
+        <article class="freelance__pillar" data-rev style="--d: 100ms">
+          <span class="mono freelance__num">02 / MOTION</span>
+          <h3>Scroll &amp; 3D Choreography</h3>
+          <p>Pinned ScrollTrigger sequences, custom HTML5 Canvas fields, liquid glass docks, and interactive 3D WebGL heroes that convert visitors.</p>
+        </article>
+        <article class="freelance__pillar" data-rev style="--d: 160ms">
+          <span class="mono freelance__num">03 / CRAFT</span>
+          <h3>60fps Mobile &amp; SEO Ready</h3>
+          <p>Adaptive performance profiles for phones and tablets, semantic structured data, fast LCP, and zero bloated template dependencies.</p>
+        </article>
+      </div>
+
+      <div class="commission">
+        <div class="commission__head mono" data-rev>
+          <span>FIVERR &amp; DIRECT SERVICE TIERS</span>
+          <span>CLICK ANY TIER TO REQUEST A QUOTE ↓</span>
+        </div>
+
+        <ul class="commission__table">
+          <li class="commission__row" data-rev style="--d: 40ms">
+            <button type="button" class="commission__btn" data-fiverr-package="Landing Page &amp; Scroll Choreography (3–5 Days · From $80)" data-cursor="Select">
+              <span class="commission__name">Landing Page &amp; Scroll Choreography</span>
+              <span class="commission__desc">Custom hero, GSAP ScrollTrigger pins, responsive mobile-first layout, &amp; SEO meta setup.</span>
+              <span class="commission__meta mono">3–5 DAYS · FROM $80 ↗</span>
+            </button>
+          </li>
+          <li class="commission__row" data-rev style="--d: 90ms">
+            <button type="button" class="commission__btn" data-fiverr-package="3D WebGL &amp; Interactive Portfolio (5–7 Days · From $150)" data-cursor="Select">
+              <span class="commission__name">3D WebGL &amp; Interactive Portfolio</span>
+              <span class="commission__desc">Three.js scenes, liquid glass UI, custom kinetic cursor, &amp; bespoke interactive showcases.</span>
+              <span class="commission__meta mono">5–7 DAYS · FROM $150 ↗</span>
+            </button>
+          </li>
+          <li class="commission__row" data-rev style="--d: 140ms">
+            <button type="button" class="commission__btn" data-fiverr-package="IoT / Hardware Web Dashboard (5–7 Days · From $140)" data-cursor="Select">
+              <span class="commission__name">IoT &amp; Hardware Web Dashboard</span>
+              <span class="commission__desc">Real-time telemetry UI, WebSocket/MQTT data curves, live status HUDs, &amp; device controls.</span>
+              <span class="commission__meta mono">5–7 DAYS · FROM $140 ↗</span>
+            </button>
+          </li>
+          <li class="commission__row" data-rev style="--d: 190ms">
+            <button type="button" class="commission__btn" data-fiverr-package="Vibecoding Express UI Overhaul (48–72 Hrs · From $60)" data-cursor="Select">
+              <span class="commission__name">Vibecoding Express UI Overhaul</span>
+              <span class="commission__desc">Rapid AI-assisted redesign, mobile lag &amp; FPS optimization, and instant production deploy.</span>
+              <span class="commission__meta mono">48–72 HRS · FROM $60 ↗</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="freelance__actions" data-rev>
+        <button type="button" class="btn btn--ember magnetic" data-fiverr-package="Custom Fiverr / Web Development Project" data-cursor="Book">
+          <span class="btn__label">Book a Web / Vibecoding Project</span>
+          <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        <a class="btn btn--ghost magnetic" href="vibe.html" data-cursor="3D Lab">
+          <span class="btn__label">Open Live 3D Vibecoded Lab</span>
+          <svg class="btn__icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
       </div>
     </section>
 
@@ -1016,6 +1128,7 @@
                 <input type="hidden" id="formTopic" value="Autonomous Robotics">
                 <div class="topic-pills" role="radiogroup" aria-label="Project Scope">
                   <button type="button" class="topic-pill is-active" data-topic="Autonomous Robotics">🤖 Autonomous Robotics</button>
+                  <button type="button" class="topic-pill" data-topic="Website Dev &amp; Vibecoding (Fiverr)">🌐 Web Dev &amp; Vibecoding (Fiverr)</button>
                   <button type="button" class="topic-pill" data-topic="Embedded Systems &amp; ESP32">⚡ Embedded Firmware &amp; ESP32</button>
                   <button type="button" class="topic-pill" data-topic="Edge AI &amp; TinyML">🧠 Edge AI &amp; TinyML</button>
                   <button type="button" class="topic-pill" data-topic="Internship / Research Fellowship">🔬 Internship / Research</button>
